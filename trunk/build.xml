@@ -1,0 +1,146 @@
+<project name="biasviz" default="compile" basedir=".">
+    <description>
+        Simple ant build file for the BiasViz applet.
+    </description>
+
+    <property name="javasrc"   location="src/java"/>
+    <property name="websrc"    location="src/web"/>
+    <property name="build"     location="build"/>
+    <property name="dist"      location="dist"/>
+    <property name="examples"  location="examples"/>
+
+    <property name="live.server" value="mhuska@www.scgp.ca"/>
+    <property name="live.dir" value="/data/projects/${ant.project.name}"/>
+
+    <property name="test.server" value="mhuska@10.246.159.27"/> <!-- ohri-129030 -->
+    <property name="test.dir" value="~/public_html/${ant.project.name}"/>
+
+    <property name="testinput" location="${examples}/ddbb2.fasta"/>
+
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init"
+        description="Compiles code, output goes to the build directory.">
+        <javac srcdir="${javasrc}" destdir="${build}"/>
+    </target>
+
+    <target name="debug" depends="init"
+        description="Compiles code with debug symbols and warnings, output goes to the build directory.">
+        <javac srcdir="${javasrc}" debug="on" destdir="${build}">
+            <compilerarg value="-Xlint:all,-serial"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile,makekey"
+        description="Creates signed jar of the applet.">
+
+        <!-- Create the distribution directory -->
+        <mkdir dir="${dist}/lib"/>
+
+        <!-- Put everything in ${build} into the biasviz.jar file -->
+        <jar jarfile="${dist}/lib/biasviz-unsigned.jar" basedir="${build}"/>
+    </target>
+
+    <target name="sign" depends="jar,makekey">
+        <!--<signjar jar="${jar-file}" alias="biasviz-key" storepass="secret" keystore="~/.keystore"/>-->
+        <signjar jar="${dist}/lib/biasviz-unsigned.jar" alias="biasviz-key"
+            storepass="secret" signedjar="${dist}/lib/biasviz.jar"/>
+    </target>
+
+    <target name="check-keystore" >
+        <condition property="keystore-exists">
+            <available file="${user.home}/.keystore" type="file"/>
+        </condition>
+    </target>
+
+    <target name="makekey" depends="check-keystore" unless="keystore-exists">
+        <genkey alias="biasviz-key" storepass="secret">
+            <dname>
+                <param name="CN" value="Dummy Key"/>
+                <param name="OU" value="Dummy Division"/>
+                <param name="O"  value="ogic.ca"/>
+                <param name="C"  value="CA"/>
+            </dname>
+        </genkey>
+    </target>
+
+    <target name="dist" depends="sign"
+        description="Builds signed jar and copies web front end to ./dist/web/ directory." >
+        <!-- Copy in the php front end files -->
+        <mkdir dir="${dist}/web"/>
+        <copy todir="${dist}/web">
+            <fileset dir="${websrc}"/>
+            <fileset file="${dist}/lib/biasviz.jar"/>
+        </copy>
+    </target>
+
+    <target name="clean" 
+        description="Destroys all generated files and directories.">
+        <delete dir="${build}"/>
+        <delete dir="${dist}"/>
+    </target>
+
+    <target name="run" depends="compile"
+        description="Run the applet in a stand-alone window.">
+        <java classname="CompositionMain" classpath="${build}" fork="true">
+            <arg value="${testinput}"/>
+        </java>
+    </target>
+    
+    <target name="profileShark" depends="compile"
+        description="Run the applet in the OS X's Shark profiler.">
+        <java classname="CompositionMain" classpath="${build}" fork="true">
+            <arg value="${testinput}"/>
+            <jvmarg value="-XrunShark"/>
+        </java>
+    </target>
+
+    <target name="deploy-live" depends="dist">
+        <exec executable="rsync">
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <arg value="-Cavzr"/>
+            <arg value="--delete"/>
+            <arg value="${dist}/web/"/>
+            <arg value="${live.server}:${live.dir}"/>
+        </exec>
+    </target>
+
+    <target name="deploy-test" depends="dist"
+        description="Builds everything and pushes files to the test server.">
+        <exec executable="rsync">
+            <arg value="-e"/>
+            <arg value="ssh"/>
+            <arg value="-Cavzr"/>
+            <arg value="--delete"/>
+            <arg value="${dist}/web/"/>
+            <arg value="${test.server}:${test.dir}"/>
+        </exec>
+    </target>
+
+    <target name="deploy" depends="deploy-live"
+        description="Builds everything and pushes files to the live server."/>
+
+    <target name="srcdist" depends="clean"
+        description="Creates archives for release purposes.">
+        <mkdir dir="${dist}/src"/>
+        <tar destfile="${dist}/src/biasviz.tar.gz" compression="gzip">
+            <tarfileset dir=".">
+                <exclude name=".svn"/>
+                <exclude name="dist/**"/>
+            </tarfileset>
+        </tar>
+        <zip destfile="${dist}/src/biasviz.zip">
+            <fileset dir=".">
+                <exclude name=".svn"/>
+                <exclude name="dist/**"/>
+            </fileset>
+        </zip>
+    </target>
+
+</project>
