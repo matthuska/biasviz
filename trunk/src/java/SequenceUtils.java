@@ -21,14 +21,51 @@
  *
  */
 
-public class SequenceUtils {
+import java.io.*;
 
-    public static Sequence[] parseFasta(String input) {
-        return new Sequence[1];
+public class Parser {
+
+    public Alignment parseFasta(String input) {
+        Alignment alignment = new Alignment();
+        BufferedReader in = new BufferedReader(new StringReader(input));
+        String line = null;
+        String name = null;
+        StringBuffer seq = new StringBuffer();
+
+        try {
+            while ((line = in.readLine()) != null) {
+                if (line.length() > 0 && line.charAt(0) == '>') {
+                    // Start of header
+                    if (name != null) {
+                        // save current sequence
+                        Sequence s = new Sequence(name, seq.toString());
+                        alignment.addSequence(s);
+                        seq = new StringBuffer();
+                    }
+                    String header = line.split("\\s+")[0];
+                    name = header.substring(1); // strip off '>'
+                } else if (line.length() > 0 && line.charAt(0) == ';') {
+                    // Start of comment
+                    continue;
+                } else {
+                    String pureLine = line.replaceAll("\\s", "");
+                    seq.append(pureLine.toUpperCase());
+                    // Sequence data
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Exception parsing fasta text.");
+        }
+        if (name != null) {
+            // save current sequence
+            Sequence s = new Sequence(name, seq.toString());
+            alignment.addSequence(s);
+        }
+        return alignment;
     }
 
-    public static Sequence[] parseClustalW(String input) {
-        return new Sequence[1];
+    public Alignment parseClustalW(String input) {
+        return new Alignment();
     }
 
 }
