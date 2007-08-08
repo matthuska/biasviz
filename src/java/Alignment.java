@@ -27,7 +27,6 @@ import java.io.*;
 public class Alignment {
 
     ArrayList sequences;
-    String rawinput;
 
     public Alignment() {
         sequences = new ArrayList();
@@ -35,6 +34,10 @@ public class Alignment {
 
     public ArrayList getSequences() {
         return sequences;
+    }
+
+    public void addSequence(Sequence s) {
+        sequences.add(s);
     }
 
     public Sequence getSequence(int index) {
@@ -72,46 +75,6 @@ public class Alignment {
         return max;
     }
 
-    public void parseFasta(String input) {
-        this.rawinput = input;
-        BufferedReader in = new BufferedReader(new StringReader(input));
-        sequences = new ArrayList<Sequence>();
-        String line = null;
-        String name = null;
-        StringBuffer seq = new StringBuffer();
-
-        try {
-            while (( line = in.readLine()) != null) {
-                if (line.length() > 0 && line.charAt(0) == '>') {
-                    // Start of header
-                    if (name != null) {
-                        // save current sequence
-                        Sequence s = new Sequence(name, seq.toString());
-                        sequences.add(s);
-                        seq = new StringBuffer();
-                    }
-                    String header = line.split("\\s+")[0];
-                    name = header.substring(1); // strip off '>'
-                } else if (line.length() > 0 && line.charAt(0) == ';') {
-                    // Start of comment
-                    continue;
-                } else {
-                    String pureLine = line.replaceAll("\\s", "");
-                    seq.append(pureLine.toUpperCase());
-                    // Sequence data
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Exception parsing fasta text.");
-        }
-        if (name != null) {
-            // save current sequence
-            Sequence s = new Sequence(name, seq.toString());
-            sequences.add(s);
-        }
-    }
-
-    
     public String toString() {
         // For fun
         StringBuffer output = new StringBuffer();

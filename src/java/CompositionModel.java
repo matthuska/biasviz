@@ -41,6 +41,7 @@ public class CompositionModel {
 
     ArrayList<IView> views;
 
+    String rawinput;
     Alignment alignment;
     String aminoAcids;
     int windowSize;
@@ -228,7 +229,9 @@ public class CompositionModel {
     }
 
     public void setAlignment(String input) {
-        alignment.parseFasta(input);
+        Parser parser = new Parser();
+        alignment = parser.parseFasta(input);
+        rawinput = input;
         this.updateAllViews();
     }
 
