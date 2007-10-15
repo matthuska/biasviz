@@ -27,6 +27,7 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
 import java.io.*;
+import javax.swing.filechooser.FileFilter;
 
 public class ControlView extends JPanel implements IView {
 
@@ -277,7 +278,12 @@ public class ControlView extends JPanel implements IView {
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fc = new JFileChooser();
 
+                FileFilter filter = new CsvFilenameFilter();
+                fc.setFileFilter(filter);
+
+                fc.setSelectedFile(new File("biasviz-output.csv"));
                 int retval = fc.showSaveDialog(ControlView.this);
+
                 if (retval == JFileChooser.APPROVE_OPTION) {
                     File file = fc.getSelectedFile();
                     try {

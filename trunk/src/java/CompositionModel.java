@@ -162,16 +162,16 @@ public class CompositionModel {
         int halfWindowSize = windowSize / 2;
         String acids = this.getAminoAcids();
 
-        csvString.append("Amino Acid Composition Values\n");
-        csvString.append("\n");
-        csvString.append("Settings:\n");
-        csvString.append(" Window size: " + windowSize + "\n");
-        csvString.append(" Amino acid(s): " + acids + "\n");
+        csvString.append("\"Amino Acid Composition Values\"\n");
+        csvString.append("\"\"\n");
+        csvString.append("\"Settings:\"\n");
+        csvString.append("\" Window size: " + windowSize + "\"\n");
+        csvString.append("\" Amino acid(s): " + acids + "\"\n");
 
         // Iterate through sequences
         for (int seq = 0; seq < height; seq++) {
 
-            csvString.append("\n>" + align.getSequenceName(seq) + "\n");
+            csvString.append("\n\">" + align.getSequenceName(seq) + "\"\n");
 
             Sequence sobj = align.getSequence(seq);
             String seqGaps = sobj.getSequence();
@@ -200,7 +200,7 @@ public class CompositionModel {
                 }
 
                 double comp = (double)matches / windowSize;
-                csvString.append(nongaps + ", " + comp + ", " + seqNoGaps.charAt(nongaps) + "\n");
+                csvString.append((nongaps + 1) + ", " + comp + ", \"" + seqNoGaps.charAt(nongaps) + "\"\n");
                 nongaps += 1;
             }
         }
