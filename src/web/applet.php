@@ -7,6 +7,7 @@
 <STYLE type="text/css">
 * {
     margin: 0 0 0 0;
+    overflow: hidden;
 }
 </STYLE>
 </HEAD>
