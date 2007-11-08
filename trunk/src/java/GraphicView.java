@@ -36,7 +36,7 @@ public class GraphicView extends JPanel implements IView {
     JScrollPane scroll;
     Rule aarule;
     SequenceLabels names;
-
+    ZoomControlView zoomControls;
 
     public GraphicView(CompositionModel model) {
         assert model != null;
@@ -51,6 +51,8 @@ public class GraphicView extends JPanel implements IView {
     public void layoutView() {
         this.setLayout(new BorderLayout());
 
+        this.zoomControls = new ZoomControlView(model);
+
         this.plot = new CompositionPlot(model);
         this.plot.setBackground(Color.WHITE);
 
@@ -64,6 +66,7 @@ public class GraphicView extends JPanel implements IView {
         scroll.setColumnHeaderView(aarule);
         scroll.setRowHeaderView(names);
 
+        this.add(zoomControls, BorderLayout.SOUTH);
         this.add(scroll, BorderLayout.CENTER);
     }
 

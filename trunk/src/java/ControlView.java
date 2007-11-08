@@ -41,9 +41,6 @@ public class ControlView extends JPanel implements IView {
     JSlider windowSizeSlide;
     JSpinner windowSizeSpin;
 
-    JButton zoomIn;
-    JButton zoomOut;
-
     JLabel downloadLabel;
     JButton download;
 
@@ -83,9 +80,6 @@ public class ControlView extends JPanel implements IView {
         windowSizeControls.setLayout(new BorderLayout());
         windowSizeControls.add(windowSizeSlide, BorderLayout.CENTER);
         windowSizeControls.add(windowSizeSpin, BorderLayout.EAST);
-
-        this.zoomIn = new JButton("Zoom In");
-        this.zoomOut = new JButton("Zoom Out");
 
         this.downloadLabel = new JLabel("Download data as CSV:");
         this.download = new JButton("Download");
@@ -141,18 +135,12 @@ public class ControlView extends JPanel implements IView {
         aaPanel.add(aaGroups, BorderLayout.EAST);
         this.add(aaPanel);
 
-        this.add(zoomIn);
-
         this.add(windowSizeLabel);
         this.add(windowSizeControls);
-
-        this.add(zoomOut);
 
         this.displayPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.add(displayOptions);
         this.add(displayPanel);
-
-        this.add(new JLabel());
 
         this.add(downloadLabel);
         JPanel downloadPanel = new JPanel();
@@ -162,7 +150,7 @@ public class ControlView extends JPanel implements IView {
         this.add(new JLabel());
 
         SpringUtilities.makeCompactGrid(this,
-                4, 3, // Rows, Cols
+                4, 2, // Rows, Cols
                 6, 6,
                 6, 6);
 
@@ -256,20 +244,6 @@ public class ControlView extends JPanel implements IView {
                 JSpinner spinner = (JSpinner)e.getSource();
                 Integer val = (Integer)spinner.getValue();
                 model.setDisplayThreshold(val.intValue());
-            }
-        });
-
-        this.zoomIn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) {
-                model.incZoomWidth();
-            }
-        });
-
-        this.zoomOut.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) {
-                model.decZoomWidth();
             }
         });
 

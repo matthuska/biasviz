@@ -8,6 +8,7 @@
     <property name="build"     location="build"/>
     <property name="dist"      location="dist"/>
     <property name="examples"  location="examples"/>
+    <property name="icons"     location="src/java/icons"/>
 
     <property name="live.server" value="mhuska@www.scgp.ca"/>
     <property name="live.dir" value="/data/projects/${ant.project.name}"/>
@@ -22,6 +23,11 @@
         <tstamp/>
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${build}"/>
+        <!-- Put icons in build directory for inclusion in jar -->
+        <mkdir dir="${build}/icons"/>
+        <copy todir="${build}/icons">
+            <fileset dir="${icons}"/>
+        </copy>
     </target>
 
     <target name="compile" depends="init"
