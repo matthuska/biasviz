@@ -144,6 +144,12 @@ public class CompositionModel {
         this.updateAllViews();
     }
 
+    // Reset zoom level to 1:1
+    public void zoomWidth1to1() {
+        this.zoomWidth = 1.0f;
+        this.updateAllViews();
+    }
+
     // Returns the composition data in comma separated value format
     public String getCSV() {
         Alignment align = alignment;
