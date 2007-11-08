@@ -54,7 +54,6 @@ public class CompositionUI extends JPanel implements IView {
     private void layoutView() {
         this.setLayout(new BorderLayout());
 
-        gv.setBorder(BorderFactory.createTitledBorder("Graphical View"));
         this.add(gv, BorderLayout.CENTER);
 
         cv.setBorder(BorderFactory.createTitledBorder("Settings"));
