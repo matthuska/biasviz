@@ -220,5 +220,6 @@ class CompositionPlot extends JPanel implements IView {
             }
         }
     }
+
 }
 
