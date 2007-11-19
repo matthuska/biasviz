@@ -1,9 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-"http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>BiasViz</title>
-<link href="style.css" type="text/css" rel="stylesheet">
+<link href="style.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
 <div id="content">
@@ -16,7 +16,7 @@
 <p>
 <label for="datafile">Upload a file:</label>
 </p>
-<input type="file" name="datafile" size="40">
+<input type="file" name="datafile" size="40" />
 <p> or </p>
 <p>
 <label for="alignment">Paste an alignment:</label>
@@ -283,10 +283,10 @@ VIQFQKTGGSIQAFLDNTKETKS-Q--PFLLAIGNSKARITNYMIIVDHKAIPCSARTVE
 AAVDLLFKTHFVFGLQYCLSLRQFWTFVQTAIFEIDIG-VSRETPR--------VYVK--
 ------LDRNC--
 </textarea>
-</p>
+<br />
 <p>
-<input type="submit" value="Submit">
-<input type="button" value="Clear Input Box" onclick="document.getElementById('alignment').value=''">
+<input type="submit" value="Submit" />
+<input type="button" value="Clear Input Box" onclick="document.getElementById('alignment').value=''" />
 </p>
 </form>
 <div id="footer"><p>BiasViz is an open source project. Download the source code from <a href="http://sourceforge.net/projects/biasviz/">our Sourceforge page</a>.</p>
