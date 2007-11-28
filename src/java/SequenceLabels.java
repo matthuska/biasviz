@@ -52,6 +52,10 @@ public class SequenceLabels extends JComponent implements IView {
         Graphics2D g2 = (Graphics2D)g;
         Rectangle drawHere = g2.getClipBounds();
 
+        // Fill clipping area with dirty brown/orange.
+        g.setColor(this.getBackground());
+        g.fillRect(drawHere.x, drawHere.y, drawHere.width, drawHere.height);
+
         g2.setFont(new Font("SansSerif", Font.PLAIN, 9));
         g2.setColor(Color.BLACK);
 
