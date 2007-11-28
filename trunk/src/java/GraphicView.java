@@ -60,7 +60,6 @@ public class GraphicView extends JPanel implements IView {
         this.zoomControls = new ZoomControlView(model);
 
         this.plot = new CompositionPlot(model);
-        this.plot.setBackground(Color.WHITE);
 
         this.scroll = new JScrollPane(plot);
         // Use wheel for zoom instead of default action.
@@ -76,6 +75,15 @@ public class GraphicView extends JPanel implements IView {
 
         this.add(zoomControls, BorderLayout.SOUTH);
         this.add(scroll, BorderLayout.CENTER);
+
+        JPanel blankPanel = new JPanel();
+        scroll.setCorner(JScrollPane.UPPER_LEFT_CORNER, blankPanel);
+
+        Color bgColor = Color.WHITE;
+        blankPanel.setBackground(bgColor);
+        this.plot.setBackground(bgColor);
+        this.aarule.setBackground(bgColor);
+        this.names.setBackground(bgColor);
     }
 
     public void updateView() {

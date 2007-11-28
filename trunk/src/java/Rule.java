@@ -62,6 +62,10 @@ public class Rule extends JComponent implements IView {
         Graphics2D g2 = (Graphics2D)g;
         Rectangle drawHere = g2.getClipBounds();
 
+        // Fill clipping area with dirty brown/orange.
+        g.setColor(this.getBackground());
+        g.fillRect(drawHere.x, drawHere.y, drawHere.width, drawHere.height);
+
         // Do the ruler labels in a small font that's black.
         g2.setFont(new Font("SansSerif", Font.PLAIN, 10));
         g2.setColor(Color.black);

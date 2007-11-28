@@ -59,8 +59,10 @@ class CompositionPlot extends JPanel implements IView {
         // Recalculate image matrix
         parseAlignment(model.getAlignment());
 
-        Dimension mySize = new Dimension((int)(image.getWidth() * model.getZoomWidth()),
-                                         (int)(image.getHeight() * model.getZoomHeight()));
+        Dimension mySize = new Dimension(
+                (int)(image.getWidth() * model.getZoomWidth()),
+                (int)(image.getHeight() * model.getZoomHeight())
+                );
         setSize(mySize);
         setPreferredSize(mySize);
         this.repaint(this.getVisibleRect());
@@ -80,6 +82,11 @@ class CompositionPlot extends JPanel implements IView {
                                         model.getZoomWidth(),
                                         model.getZoomHeight()));
 
+        g2.setColor(Color.black); // Draw border around image
+        g2.drawRect(0, 0, 
+                (int)(model.getZoomWidth() * model.getAlignment().maxLength()) + 1,
+                (int)(model.getZoomHeight() * model.getAlignment().size())
+                );
 
     }
 
