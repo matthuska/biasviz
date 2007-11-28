@@ -84,7 +84,7 @@ class CompositionPlot extends JPanel implements IView {
 
         g2.setColor(Color.black); // Draw border around image
         g2.drawRect(0, 0, 
-                (int)(model.getZoomWidth() * model.getAlignment().maxLength()) + 1,
+                (int)(model.getZoomWidth() * model.getAlignment().maxLength()),
                 (int)(model.getZoomHeight() * model.getAlignment().size())
                 );
 
