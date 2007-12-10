@@ -11,9 +11,14 @@ class CoreUI extends JPanel {
     JLabel plotTypeLabel;
     JComboBox plotType;
 
+    JPanel topPanel;
+
     CoreUI(CoreModel m) {
         assert m != null;
         model = m;
+
+        // Holds Zoom and Plot Type controls
+        topPanel = new JPanel();
 
         plotTypeLabel = new JLabel("Plot Type:");
         plotType = new JComboBox(UIFactory.getUINames());
@@ -26,12 +31,20 @@ class CoreUI extends JPanel {
     }
 
     void layoutWidgets() {
-        this.add(plotTypeLabel);
-        this.add(plotType);
+
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
+        topPanel.add(Box.createHorizontalStrut(6));
+        topPanel.add(plotTypeLabel);
+        topPanel.add(plotType);
+        topPanel.add(Box.createHorizontalGlue());
+        topPanel.add(zoomControls);
+
+        //this.add(plotTypeLabel);
+        //this.add(plotType);
 
         this.setLayout(new BorderLayout());
-        this.add(zoomControls, BorderLayout.NORTH);
-        this.add(plotType, BorderLayout.SOUTH);
+        this.add(topPanel, BorderLayout.NORTH);
+        //this.add(plotType, BorderLayout.SOUTH);
         this.add(ui, BorderLayout.CENTER);
     }
 
