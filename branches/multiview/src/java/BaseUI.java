@@ -21,27 +21,25 @@
  *
  */
 
-import java.util.TreeMap;
-import java.util.Map;
+import java.awt.*;
+import javax.swing.*;
 
-class AAConstants {
+abstract class BaseUI extends JPanel {
 
-    public final static String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
+    protected PlotModel model;
+    protected JPanel graphics;
+    protected JPanel controls;
 
-    public final static Map<String, String> AMINO_ACID_GROUPS = new TreeMap<String, String>();
-    static {
-        //AMINO_ACID_GROUPS.put("",    "");
-        AMINO_ACID_GROUPS.put("Hydrophobic",    "ILVCAGMFYWHT");
-        AMINO_ACID_GROUPS.put("Polar",          "YWHKREQDNSTP");
-        AMINO_ACID_GROUPS.put("Small",          "VCAGDNSTP");
-        AMINO_ACID_GROUPS.put("Tiny",           "AGS");
-        AMINO_ACID_GROUPS.put("Aliphatic",      "ILV");
-        AMINO_ACID_GROUPS.put("Aromatic",       "FYWH");
-        AMINO_ACID_GROUPS.put("Positive",       "HKR");
-        AMINO_ACID_GROUPS.put("Negative",       "ED");
-        AMINO_ACID_GROUPS.put("Charged",        "HKRED");
-        AMINO_ACID_GROUPS.put("Alcohols",       "ST");
+    /*
+     * Layout the applet window.
+     */
+    protected void layoutView() {
+        this.setLayout(new BorderLayout());
+
+        this.add(graphics, BorderLayout.CENTER);
+        this.add(controls, BorderLayout.SOUTH);
+
+        controls.setBorder(BorderFactory.createTitledBorder("Settings"));
     }
-
 }
 

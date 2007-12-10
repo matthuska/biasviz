@@ -21,27 +21,34 @@
  *
  */
 
-import java.util.TreeMap;
-import java.util.Map;
+//import java.util.ArrayList;
+//import java.util.List;
 
-class AAConstants {
+class UIFactory {
 
-    public final static String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
+    final static String[] UITypes = {
+        "Amino Acid Composition",
+        "Test UI",
+//        "Hydrophobicity Plot 2",
+//        "Hydrophobicity Plot 2",
+//        "Hydrophobicity Plot 3"
+    };
 
-    public final static Map<String, String> AMINO_ACID_GROUPS = new TreeMap<String, String>();
-    static {
-        //AMINO_ACID_GROUPS.put("",    "");
-        AMINO_ACID_GROUPS.put("Hydrophobic",    "ILVCAGMFYWHT");
-        AMINO_ACID_GROUPS.put("Polar",          "YWHKREQDNSTP");
-        AMINO_ACID_GROUPS.put("Small",          "VCAGDNSTP");
-        AMINO_ACID_GROUPS.put("Tiny",           "AGS");
-        AMINO_ACID_GROUPS.put("Aliphatic",      "ILV");
-        AMINO_ACID_GROUPS.put("Aromatic",       "FYWH");
-        AMINO_ACID_GROUPS.put("Positive",       "HKR");
-        AMINO_ACID_GROUPS.put("Negative",       "ED");
-        AMINO_ACID_GROUPS.put("Charged",        "HKRED");
-        AMINO_ACID_GROUPS.put("Alcohols",       "ST");
+    static BaseUI getUI(String name, CoreModel model) {
+        if (name.equals("Amino Acid Composition")) {
+            return new CompositionUI(model);
+        } else if (name.equals("Test UI")) {
+            return new TestUI(model);
+//        } else if (name.equals("Hydrophobicity Plot 2")) {
+//            return new HydrophobicityChangeUI(model);
+//        } else if (name.equals("Hydrophobicity Plot 3")) {
+//            return new HydrophobicityChangePlot2(model);
+        }
+        System.err.println("User interface not found.");
+        return null;
     }
 
+    static String[] getUINames() {
+        return UITypes;
+    }
 }
-

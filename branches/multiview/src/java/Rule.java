@@ -16,9 +16,9 @@ public class Rule extends JComponent implements IView {
     public int orientation;
     private int increment;
 
-    private CompositionModel model;
+    private PlotModel model;
 
-    public Rule(CompositionModel m, int o) {
+    public Rule(PlotModel m, int o) {
         assert m != null;
         this.model = m;
 
@@ -32,17 +32,17 @@ public class Rule extends JComponent implements IView {
 
     public void updateView() {
         setIncrement();
-        setPreferredWidth((int)(model.maxLength() * model.getZoomWidth()));
+        //setPreferredWidth(100);
+        setPreferredWidth((int)(model.getCoreModel().maxLength() * model.getCoreModel().getZoomWidth()));
         this.repaint();
     }
 
     private void layoutView() {
-        setPreferredWidth((int)(model.maxLength() * model.getZoomWidth()));
+        setPreferredWidth((int)(model.getCoreModel().maxLength() * model.getCoreModel().getZoomWidth()));
     }
 
 
     private void setIncrement() {
-        //increment = (int) (100 * model.getZoomWidth());
         increment = 50;
     }
 
@@ -107,7 +107,8 @@ public class Rule extends JComponent implements IView {
         for (int i = start; i < end; i += increment) {
             //if (i % units == 0)  {
             tickLength = 10;
-            text = Integer.toString((int)(i/model.getZoomWidth()));
+            //text = Integer.toString(10);
+            text = Integer.toString((int)(i/model.getCoreModel().getZoomWidth()));
             //} else {
             //tickLength = 7;
             //text = null;

@@ -26,10 +26,10 @@ import java.io.*;
 
 public class Alignment {
 
-    ArrayList sequences;
+    ArrayList<Sequence> sequences;
 
     public Alignment() {
-        sequences = new ArrayList();
+        sequences = new ArrayList<Sequence>();
     }
 
     public ArrayList getSequences() {
@@ -58,7 +58,7 @@ public class Alignment {
     }
 
     // Returns the number of sequences in the alignment
-    public int size() {
+    public int numSequences() {
         return sequences.size();
     }
 

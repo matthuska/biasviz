@@ -283,6 +283,11 @@ VIQFQKTGGSIQAFLDNTKETKS-Q--PFLLAIGNSKARITNYMIIVDHKAIPCSARTVE
 AAVDLLFKTHFVFGLQYCLSLRQFWTFVQTAIFEIDIG-VSRETPR--------VYVK--
 ------LDRNC--
 </textarea>
+<p>
+<label for="secondary">Optional: Secondary structure information from <a href="http://www.compbio.dundee.ac.uk/~www-jpred/">JPred</a>:</label>
+</p>
+<textarea id="secondary" name="secondary" rows="5" cols="90">
+</textarea>
 <br />
 <p>
 <input type="submit" value="Submit" />

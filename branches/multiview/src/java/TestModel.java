@@ -31,14 +31,14 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel implements PlotModel, IView {
+public class TestModel implements PlotModel, IView {
 
     //final static float ZOOM_WIDTH_STEP = 1.2f; 
     //final static float ZOOM_HEIGHT_STEP = 1.2f; 
 
-    final static int DISPLAY_DYNAMIC    = 1;
-    final static int DISPLAY_FIXED      = 2;
-    final static int DISPLAY_THRESHOLD  = 3;
+    //final static int DISPLAY_DYNAMIC    = 1;
+    //final static int DISPLAY_FIXED      = 2;
+    //final static int DISPLAY_THRESHOLD  = 3;
 
     List<IView> views;
     CoreModel coreModel;
@@ -46,17 +46,18 @@ public class CompositionModel implements PlotModel, IView {
     //String plotName; // type of plot
 
     String aminoAcids;
-    int windowSize;
+    //int windowSize;
+    //int stepSize;
 
     ///* Zoom level */
     //float zoomWidth;
     //float zoomHeight;
 
     ///* Dynamically adjust intensity */
-    int displayType;
-    int displayThreshold;
+    //int displayType;
+    //int displayThreshold;
 
-    public CompositionModel(CoreModel m) {
+    public TestModel(CoreModel m) {
         assert m != null;
         coreModel = m;
 
@@ -64,9 +65,10 @@ public class CompositionModel implements PlotModel, IView {
 
     //    // Set some defaults
         this.aminoAcids = "A";
-        this.windowSize = 100;
-        this.displayType = DISPLAY_DYNAMIC;
-        this.displayThreshold = 15;
+    //    this.windowSize = 100;
+    //    this.stepSize = 1;
+    //    this.displayType = DISPLAY_DYNAMIC;
+    //    this.displayThreshold = 15;
     //    this.plotName = "Hydrophobicity Plot 2";
 
     //    this.zoomWidth = 1.0f;
@@ -90,39 +92,40 @@ public class CompositionModel implements PlotModel, IView {
         }
     }
 
-    public void setDisplayType(int d) {
-        if (d != displayType) {
-            displayType = d;
-            this.updateAllViews();
-        }
-    }
+    //public void setDisplayType(int d) {
+    //    if (d != displayType) {
+    //        displayType = d;
+    //        this.updateAllViews();
+    //    }
+    //}
 
-    public int getDisplayType() {
-        return displayType;
-    }
+    //public int getDisplayType() {
+    //    return displayType;
+    //}
 
-    public void setDisplayThreshold(int t) {
-        if (t != displayThreshold) {
-            displayThreshold = t;
-            this.updateAllViews();
-        }
-    }
+    //public void setDisplayThreshold(int t) {
+    //    if (t != displayThreshold) {
+    //        displayThreshold = t;
+    //        this.updateAllViews();
+    //    }
+    //}
 
-    public int getDisplayThreshold() {
-        return displayThreshold;
-    }
+    //public int getDisplayThreshold() {
+    //    return displayThreshold;
+    //}
 
-    public int getWindowSize() {
-        return this.windowSize;
-    }
+    //public int getWindowSize() {
+    //    return this.windowSize;
+    //}
 
-    public void setWindowSize(int size) {
-        if (this.windowSize != size) {
-            this.windowSize = size;
-            this.updateAllViews();
-        }
-    }
+    //public void setWindowSize(int size) {
+    //    if (this.windowSize != size) {
+    //        this.windowSize = size;
+    //        this.updateAllViews();
+    //    }
+    //}
 
+    //public float getZoomHeight() { return 1.0; }
 
     //public float getZoomWidth() { return 1.0; }
 
@@ -178,5 +181,6 @@ public class CompositionModel implements PlotModel, IView {
             view.updateView();
         }
     }
+
 }
 

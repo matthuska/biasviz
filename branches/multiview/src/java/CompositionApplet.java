@@ -34,32 +34,30 @@ import java.awt.*;
 
 public class CompositionApplet extends JApplet {
 
-    public void init(String input) {
+    public void init(String input, String secondary) {
         // Load and parse input
         setLookAndFeel();
-        Alignment align = new Alignment();
-        CompositionModel model = new CompositionModel(align);
 
-        model.setAlignment(input);
+        CoreModel model = new CoreModel();
 
-        CompositionUI ui = new CompositionUI(model);
+        if (input != null) {
+            model.setAlignment(input);
+        }
+
+        if (secondary != null) {
+            model.setSecondary(secondary);
+        }
+
+        CoreUI ui = new CoreUI(model);
         this.add(ui);
     }
 
     public void init() {
-        int lines = Integer.parseInt(getParameter("numlines"));
-        StringBuffer buf = new StringBuffer();
-        
-        for (int i = 0; i < lines; i++) {
-            buf.append(getParameter("line" + i) + "\n");
-        }
-        init(buf.toString());
+        String alignment = loadAlignment();
+        String secondary = loadSecondary();
+        init(alignment, secondary);
     }
 
-    /**
-     * This is the default constructor
-     *
-     */
     public void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -67,6 +65,31 @@ public class CompositionApplet extends JApplet {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private String loadAlignment() {
+        if (getParameter("numlines") == null) {
+            return null;
+        }
+        int lines = Integer.parseInt(getParameter("numlines"));
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < lines; i++) {
+            buf.append(getParameter("line" + i) + "\n");
+        }
+        return buf.toString();
+    }
+
+    private String loadSecondary() {
+        if (getParameter("snumlines") == null) {
+            return null;
+        }
+            
+        int lines = Integer.parseInt(getParameter("snumlines"));
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < lines; i++) {
+            buf.append(getParameter("sline" + i) + "\n");
+        }
+        return buf.toString();
     }
 }
 
