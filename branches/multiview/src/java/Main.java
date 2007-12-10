@@ -31,7 +31,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 
-public class CompositionMain {
+public class Main {
 
     // not needed for applet version
     public static void main(String[] args) {
@@ -43,7 +43,7 @@ public class CompositionMain {
         f.setSize(800, 600);
         f.setLayout(new BorderLayout());
 
-        CompositionApplet comp = new CompositionApplet();
+        MainApplet comp = new MainApplet();
 
         if (args.length > 0) { input = readInput(args[0]); }
         if (args.length > 1) { secondary = readInput(args[1]); }

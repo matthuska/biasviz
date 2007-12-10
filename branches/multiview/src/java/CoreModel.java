@@ -36,7 +36,7 @@ public class CoreModel {
     String rawInput;
     Alignment alignment;
     String secondary;
-    String userData;
+    UserData userData;
 
     /* Zoom level */
     float zoomWidth;
@@ -46,8 +46,8 @@ public class CoreModel {
 
     public CoreModel() {
         alignment = new Alignment();
+        userData = new UserData();
         rawInput = "";
-        userData = "";
         zoomWidth = 1.0f;
         zoomHeight = 10.0f;
         secondary = null;
@@ -66,11 +66,12 @@ public class CoreModel {
     }
 
     public void setUserData(String input) {
-        this.userData = input;
+        Parser parser = new Parser();
+        this.userData = parser.parseUserData(input);
         this.updateAllViews();
     }
 
-    public String getUserData() {
+    public UserData getUserData() {
         return userData;
     }
 

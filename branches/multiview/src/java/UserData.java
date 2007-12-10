@@ -21,30 +21,24 @@
  *
  */
 
-//import java.util.ArrayList;
-//import java.util.List;
+import java.util.*;
 
-class UIFactory {
+class UserData {
 
-    final static String[] UITypes = {
-        "Amino Acid Composition",
-        "User Provided Values",
-        "Test UI",
-    };
+    List<String> names;
+    List<List<Float>> data;
 
-    static BaseUI getUI(String name, CoreModel model) {
-        if (name.equals("Amino Acid Composition")) {
-            return new CompositionUI(model);
-        } else if (name.equals("User Provided Values")) {
-            return new UserDataUI(model);
-        } else if (name.equals("Test UI")) {
-            return new TestUI(model);
-        }
-        System.err.println("User interface not found.");
-        return null;
+    public UserData() {
+        names = new ArrayList<String>();
+        data = new ArrayList<List<Float>>();
     }
 
-    static String[] getUINames() {
-        return UITypes;
+    public void add(String name, List<Float> d) {
+        names.add(name);
+        data.add(d);
+    }
+
+    public float get(int seq, int pos) {
+        return (data.get(seq)).get(pos);
     }
 }
