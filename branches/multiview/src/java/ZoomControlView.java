@@ -28,9 +28,7 @@ import java.net.URL;
 
 public class ZoomControlView extends JPanel implements IView {
 
-    CompositionModel model;
-
-//    PlotTypeView pt;
+    CoreModel model;
 
     Icon zoom1to1Icon;
     Icon zoomInIcon;
@@ -40,25 +38,18 @@ public class ZoomControlView extends JPanel implements IView {
     JButton zoom1to1;
     JButton zoomOut;
 
-    //public ZoomControlView(CompositionModel model) {
-    public ZoomControlView() {
-//        assert model != null;
-//        this.model = model;
-//
+    public ZoomControlView(CoreModel model) {
+        assert model != null;
+        this.model = model;
+
         this.layoutView();
 
-//        this.registerControllers();
-//
-//        this.model.addView(this);
-
+        this.registerControllers();
     }
 
     public void layoutView() {
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-//        this.pt = new PlotTypeView(model);
-//        this.add(pt);
-//
         URL zoom100Url = getClass().getResource("icons/gtk-zoom-100.png");
         URL zoomInUrl = getClass().getResource("icons/gtk-zoom-in.png");
         URL zoomOutUrl = getClass().getResource("icons/gtk-zoom-out.png");
@@ -97,28 +88,28 @@ public class ZoomControlView extends JPanel implements IView {
 //
     public void updateView() {
     }
-//
-//    /* Controllers using anonymous classes */
-//    public void registerControllers() {
-//        this.zoomIn.addActionListener(new ActionListener()
-//        {
-//            public void actionPerformed(ActionEvent e) {
-//                model.incZoomWidth();
-//            }
-//        });
-//
-//        this.zoom1to1.addActionListener(new ActionListener()
-//        {
-//            public void actionPerformed(ActionEvent e) {
-//                model.zoomWidth1to1();
-//            }
-//        });
-//
-//        this.zoomOut.addActionListener(new ActionListener()
-//        {
-//            public void actionPerformed(ActionEvent e) {
-//                model.decZoomWidth();
-//            }
-//        });
-//    }
+
+    /* Controllers using anonymous classes */
+    public void registerControllers() {
+        this.zoomIn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                model.incZoomWidth();
+            }
+        });
+
+        this.zoom1to1.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                model.zoomWidth1to1();
+            }
+        });
+
+        this.zoomOut.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                model.decZoomWidth();
+            }
+        });
+    }
 }

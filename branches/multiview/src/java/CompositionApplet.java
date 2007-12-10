@@ -34,7 +34,7 @@ import java.awt.*;
 
 public class CompositionApplet extends JApplet {
 
-    public void init(String input, String secondary) {
+    public void init(String input, String secondary, String userData) {
         // Load and parse input
         setLookAndFeel();
 
@@ -48,6 +48,10 @@ public class CompositionApplet extends JApplet {
             model.setSecondary(secondary);
         }
 
+        if (userData != null) {
+            model.setUserData(userData);
+        }
+
         CoreUI ui = new CoreUI(model);
         this.add(ui);
     }
@@ -55,7 +59,8 @@ public class CompositionApplet extends JApplet {
     public void init() {
         String alignment = loadAlignment();
         String secondary = loadSecondary();
-        init(alignment, secondary);
+        String userData = loadUserData();
+        init(alignment, secondary, userData);
     }
 
     public void setLookAndFeel() {
@@ -91,5 +96,19 @@ public class CompositionApplet extends JApplet {
         }
         return buf.toString();
     }
+
+    private String loadUserData() {
+        if (getParameter("unumlines") == null) {
+            return null;
+        }
+
+        int lines = Integer.parseInt(getParameter("unumlines"));
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < lines; i++) {
+            buf.append(getParameter("uline" + i) + "\n");
+        }
+        return buf.toString();
+    }
+
 }
 

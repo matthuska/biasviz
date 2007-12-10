@@ -30,7 +30,7 @@ class CompositionGraphics extends JPanel {
     CompositionPlot plot;
     JScrollPane scroll;
     SequenceLabels names;
-    public static final Color SCROLL_BACKGROUND = Color.RED;
+    public static final Color SCROLL_BACKGROUND = Color.WHITE;
 
     CompositionGraphics(PlotModel model) {
         plot = new CompositionPlot(model);

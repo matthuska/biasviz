@@ -36,10 +36,20 @@ public class CoreModel {
     String rawInput;
     Alignment alignment;
     String secondary;
+    String userData;
+
+    /* Zoom level */
+    float zoomWidth;
+    float zoomHeight;
+    final static float ZOOM_WIDTH_STEP = 1.2f; 
+    final static float ZOOM_HEIGHT_STEP = 1.2f; 
 
     public CoreModel() {
         alignment = new Alignment();
         rawInput = "";
+        userData = "";
+        zoomWidth = 1.0f;
+        zoomHeight = 10.0f;
         secondary = null;
         this.views = new CopyOnWriteArrayList<IView>();
     }
@@ -53,6 +63,15 @@ public class CoreModel {
 
     public Alignment getAlignment() {
         return alignment;
+    }
+
+    public void setUserData(String input) {
+        this.userData = input;
+        this.updateAllViews();
+    }
+
+    public String getUserData() {
+        return userData;
     }
 
     public void setSecondary(String input) {
@@ -104,8 +123,30 @@ public class CoreModel {
         return alignment.numSequences();
     }
 
-    public float getZoomHeight() { return 10.0f; }
-    public float getZoomWidth() { return 1.0f; }
+    public float getZoomHeight() { return zoomHeight; }
+    public float getZoomWidth() { return zoomWidth; }
+
+    public void setZoomHeight(float zoom) {
+        this.zoomHeight = zoom;
+    }
+
+    // Increase zoom level for width
+    public void incZoomWidth() {
+        this.zoomWidth *= ZOOM_WIDTH_STEP;
+        this.updateAllViews();
+    }
+
+    // Decrease zoom level for width
+    public void decZoomWidth() {
+        this.zoomWidth /= ZOOM_WIDTH_STEP;
+        this.updateAllViews();
+    }
+
+    // Reset zoom level to 1:1
+    public void zoomWidth1to1() {
+        this.zoomWidth = 1.0f;
+        this.updateAllViews();
+    }
 
     /* View management */
 
