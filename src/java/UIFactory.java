@@ -28,21 +28,17 @@ class UIFactory {
 
     final static String[] UITypes = {
         "Amino Acid Composition",
+        "User Provided Values",
         "Test UI",
-//        "Hydrophobicity Plot 2",
-//        "Hydrophobicity Plot 2",
-//        "Hydrophobicity Plot 3"
     };
 
     static BaseUI getUI(String name, CoreModel model) {
         if (name.equals("Amino Acid Composition")) {
             return new CompositionUI(model);
+        } else if (name.equals("User Provided Values")) {
+            //return new UserDataUI(model);
         } else if (name.equals("Test UI")) {
             return new TestUI(model);
-//        } else if (name.equals("Hydrophobicity Plot 2")) {
-//            return new HydrophobicityChangeUI(model);
-//        } else if (name.equals("Hydrophobicity Plot 3")) {
-//            return new HydrophobicityChangePlot2(model);
         }
         System.err.println("User interface not found.");
         return null;

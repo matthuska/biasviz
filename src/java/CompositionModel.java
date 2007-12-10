@@ -69,9 +69,6 @@ public class CompositionModel implements PlotModel, IView {
         this.displayThreshold = 15;
     //    this.plotName = "Hydrophobicity Plot 2";
 
-    //    this.zoomWidth = 1.0f;
-    //    this.zoomHeight = 10.0f;
-
         coreModel.addView(this);
     }
 
@@ -160,6 +157,7 @@ public class CompositionModel implements PlotModel, IView {
     }
 
     public void updateView() {
+        this.updateAllViews();
     }
 
     /*

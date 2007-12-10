@@ -19,7 +19,7 @@ class CoreUI extends JPanel {
         plotType = new JComboBox(UIFactory.getUINames());
 
         ui = new CompositionUI(model);
-        zoomControls = new ZoomControlView();
+        zoomControls = new ZoomControlView(model);
 
         layoutWidgets();
         registerControllers();
