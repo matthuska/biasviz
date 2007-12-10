@@ -289,6 +289,14 @@ AAVDLLFKTHFVFGLQYCLSLRQFWTFVQTAIFEIDIG-VSRETPR--------VYVK--
 <textarea id="secondary" name="secondary" rows="5" cols="90">
 </textarea>
 <br />
+
+<p>
+<label for="secondary">Optional: Raw scores for each amino acid</label>
+</p>
+<textarea id="userData" name="userData" rows="5" cols="90">
+</textarea>
+<br />
+
 <p>
 <input type="submit" value="Submit" />
 <input type="button" value="Clear Input Box" onclick="document.getElementById('alignment').value=''" />

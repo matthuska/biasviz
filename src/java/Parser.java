@@ -22,6 +22,7 @@
  */
 
 import java.io.*;
+import java.util.*;
 import javax.swing.JOptionPane;
 
 public class Parser {
@@ -85,11 +86,49 @@ public class Parser {
         }
 
         return secondary;
-
     }
 
-    public Alignment parseClustalW(String input) {
-        return new Alignment();
+    public UserData parseUserData(String input) {
+        UserData ud = new UserData();
+        BufferedReader in = new BufferedReader(new StringReader(input));
+        String line = null;
+        String name = null;
+        List<Float> data = new ArrayList<Float>();
+
+        try {
+            while ((line = in.readLine()) != null) {
+                if (line.length() > 0 && line.charAt(0) == '>') {
+                    // Start of header
+                    if (name != null) {
+                        // save current sequence
+                        ud.add(name, data);
+                        data = new ArrayList<Float>();
+                    }
+                    String header = line.split("\\s+")[0];
+                    name = header.substring(1); // strip off '>'
+                } else if (line.length() > 0 && line.charAt(0) == ';') {
+                    // Start of comment
+                    continue;
+                } else {
+                    String[] splitLine = line.split("\\t");
+                    if (splitLine.length >= 3) {
+                        data.add(Float.parseFloat(splitLine[2]));
+                    } else {
+                        System.err.println("Missing data when parsing user provided input.");
+                    }
+                }
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error reading user entered data.",
+                    "Input Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        if (name != null) {
+            // save current sequence
+            ud.add(name, data);
+        }
+        return ud;
     }
 
 }

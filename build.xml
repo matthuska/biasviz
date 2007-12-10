@@ -16,8 +16,9 @@
     <property name="test.server" value="mhuska@10.246.159.27"/> <!-- ohri-129030 -->
     <property name="test.dir" value="~/public_html/${ant.project.name}"/>
 
-    <property name="testinput"     location="${examples}/cluster_3931.fasta"/>
+    <property name="testinput"     location="${examples}/clip2.fasta"/>
     <property name="testsecondary" location="${examples}/cluster_3931_secondary.txt"/>
+    <property name="testuserdata" location="${examples}/clip_heat.txt"/>
 
     <target name="init">
         <!-- Create the time stamp -->
@@ -70,6 +71,10 @@
             <dname>
                 <param name="CN" value="Dummy Key"/>
                 <param name="OU" value="Dummy Division"/>
+                <!--
+                <param name="CN" value="OGIC Key"/>
+                <param name="OU" value="Bioinformatics Division"/>
+                -->
                 <param name="O"  value="ogic.ca"/>
                 <param name="C"  value="CA"/>
             </dname>
@@ -94,15 +99,16 @@
 
     <target name="run" depends="debug"
         description="Run the applet in a stand-alone window.">
-        <java classname="CompositionMain" classpath="${build}" fork="true">
+        <java classname="Main" classpath="${build}" fork="true">
             <arg value="${testinput}"/>
             <arg value="${testsecondary}"/>
+            <arg value="${testuserdata}"/>
         </java>
     </target>
     
     <target name="profileShark" depends="compile"
         description="Run the applet in the OS X's Shark profiler.">
-        <java classname="CompositionMain" classpath="${build}" fork="true">
+        <java classname="Main" classpath="${build}" fork="true">
             <arg value="${testinput}"/>
             <jvmarg value="-XrunShark"/>
         </java>

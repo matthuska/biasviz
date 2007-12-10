@@ -21,30 +21,26 @@
  *
  */
 
-//import java.util.ArrayList;
-//import java.util.List;
+/**
+ *
+ * @author mhuska
+ */
 
-class UIFactory {
+import java.awt.*;
+import javax.swing.*;
 
-    final static String[] UITypes = {
-        "Amino Acid Composition",
-        "User Provided Values",
-        "Test UI",
-    };
+public class UserDataUI extends BaseUI {
 
-    static BaseUI getUI(String name, CoreModel model) {
-        if (name.equals("Amino Acid Composition")) {
-            return new CompositionUI(model);
-        } else if (name.equals("User Provided Values")) {
-            return new UserDataUI(model);
-        } else if (name.equals("Test UI")) {
-            return new TestUI(model);
-        }
-        System.err.println("User interface not found.");
-        return null;
+    UserDataPlot plot;
+
+    UserDataUI(CoreModel coreModel) {
+
+        model = new UserDataModel(coreModel);
+        controls = new UserDataControls((UserDataModel)model);
+        graphics = new UserDataGraphics(model);
+
+        this.layoutView();
     }
 
-    static String[] getUINames() {
-        return UITypes;
-    }
 }
+

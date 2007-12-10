@@ -32,7 +32,7 @@ import javax.swing.JLabel;
 import javax.swing.*;
 import java.awt.*;
 
-public class CompositionApplet extends JApplet {
+public class MainApplet extends JApplet {
 
     public void init(String input, String secondary, String userData) {
         // Load and parse input
