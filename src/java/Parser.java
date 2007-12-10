@@ -22,6 +22,7 @@
  */
 
 import java.io.*;
+import javax.swing.JOptionPane;
 
 public class Parser {
 
@@ -54,7 +55,10 @@ public class Parser {
                 }
             }
         } catch (IOException e) {
-            System.err.println("Exception parsing fasta text.");
+            JOptionPane.showMessageDialog(null,
+                    "Error reading Fasta format input.",
+                    "Input Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
         if (name != null) {
             // save current sequence
@@ -62,6 +66,26 @@ public class Parser {
             alignment.addSequence(s);
         }
         return alignment;
+    }
+
+    public String parseJPred(String input) {
+        String secondary = "";
+
+        // Remove empty lines
+        String inputNoEmpty = input.trim().replaceAll("\n+", "\n");
+
+        String[] lines = inputNoEmpty.split("\n");
+        int numLines = lines.length;
+        if (numLines == 1) {
+            secondary = lines[0];
+        } else if (numLines == 2) {
+            secondary = lines[1];
+        } else {
+            // What to do here? Return null or ""?
+        }
+
+        return secondary;
+
     }
 
     public Alignment parseClustalW(String input) {

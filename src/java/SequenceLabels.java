@@ -28,9 +28,9 @@ import java.util.ArrayList;
 public class SequenceLabels extends JComponent implements IView {
 
     ArrayList<String> names;
-    CompositionModel model;
+    CoreModel model;
 
-    SequenceLabels(CompositionModel model) {
+    SequenceLabels(CoreModel model) {
         assert model != null;
         this.model = model;
 

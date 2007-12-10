@@ -21,27 +21,23 @@
  *
  */
 
-import java.util.TreeMap;
-import java.util.Map;
+/**
+ *
+ * @author mhuska
+ */
 
-class AAConstants {
+import java.awt.*;
+import javax.swing.*;
 
-    public final static String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
+public class TestUI extends BaseUI {
 
-    public final static Map<String, String> AMINO_ACID_GROUPS = new TreeMap<String, String>();
-    static {
-        //AMINO_ACID_GROUPS.put("",    "");
-        AMINO_ACID_GROUPS.put("Hydrophobic",    "ILVCAGMFYWHT");
-        AMINO_ACID_GROUPS.put("Polar",          "YWHKREQDNSTP");
-        AMINO_ACID_GROUPS.put("Small",          "VCAGDNSTP");
-        AMINO_ACID_GROUPS.put("Tiny",           "AGS");
-        AMINO_ACID_GROUPS.put("Aliphatic",      "ILV");
-        AMINO_ACID_GROUPS.put("Aromatic",       "FYWH");
-        AMINO_ACID_GROUPS.put("Positive",       "HKR");
-        AMINO_ACID_GROUPS.put("Negative",       "ED");
-        AMINO_ACID_GROUPS.put("Charged",        "HKRED");
-        AMINO_ACID_GROUPS.put("Alcohols",       "ST");
+    TestUI(CoreModel coreModel) {
+
+        model = new TestModel(coreModel);
+        graphics = new JPanel();
+        controls = new TestControls((TestModel)model);
+
+        this.layoutView();
     }
-
 }
 

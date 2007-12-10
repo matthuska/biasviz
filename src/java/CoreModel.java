@@ -1,0 +1,127 @@
+/*
+ * Copyright (c) 2007 Matthew R. Huska
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
+/**
+ *
+ * @author mhuska
+ */
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class CoreModel {
+
+    List<IView> views;
+
+    String rawInput;
+    Alignment alignment;
+    String secondary;
+
+    public CoreModel() {
+        alignment = new Alignment();
+        rawInput = "";
+        secondary = null;
+        this.views = new CopyOnWriteArrayList<IView>();
+    }
+
+    public void setAlignment(String input) {
+        Parser parser = new Parser();
+        alignment = parser.parseFasta(input);
+        rawInput = input;
+        this.updateAllViews();
+    }
+
+    public Alignment getAlignment() {
+        return alignment;
+    }
+
+    public void setSecondary(String input) {
+        Parser parser = new Parser();
+        secondary = parser.parseJPred(input);
+        this.updateAllViews();
+    }
+
+    public String getSecondary() {
+        return secondary;
+    }
+
+    // FIXME: compute this when secondary is first set and save for future use
+    public String getSecondaryWithGaps() {
+        String seq = alignment.getSequence(0).getSequence();
+        StringBuilder swg = new StringBuilder();
+        int j = 0;
+        // FIXME: Rewrite to use indexOf or something like that
+        for (int i = 0; i < seq.length(); i++) {
+            if (seq.charAt(i) == '-') {
+                swg.append('_');
+            } else {
+                swg.append(secondary.charAt(j));
+                j++;
+            }
+        }
+        return swg.toString();
+    }
+
+    public boolean hasSecondary() {
+        if (secondary != null) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /* Misc useful methods */
+
+    public String toString() {
+        return alignment.toString();
+    }
+
+    public int maxLength() {
+        return alignment.maxLength();
+    }
+
+    public int numSeqs() {
+        return alignment.numSequences();
+    }
+
+    public float getZoomHeight() { return 10.0f; }
+    public float getZoomWidth() { return 1.0f; }
+
+    /* View management */
+
+    public void addView(IView view) {
+        views.add(view);
+    }
+
+    public void removeView(IView view) {
+        views.remove(view);
+    }
+
+    private void updateAllViews() {
+        for (IView view : views) {
+            view.updateView();
+        }
+    }
+
+}
+

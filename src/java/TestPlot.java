@@ -27,33 +27,41 @@ import java.awt.image.BufferedImage;
 import java.lang.Math;
 import java.awt.geom.AffineTransform;
 
-class CompositionPlot extends BasePlot {
+class TestPlot extends BasePlot {
 
     boolean dynamicIntensity;
-//    CompositionModel cmodel;
+    TestModel model;
 
-    CompositionPlot(PlotModel m) {
+    TestPlot(TestModel m) {
         super(m);
-//        assert m != null;
-//        cmodel = m;
-//        cmodel.addView(this);
+        assert m != null;
+        model = m;
+        model.addView(this);
     }
 
     // Takes in an alignment and returns a visualization of it.
     protected void parseAlignment(Alignment align) {
 
-        CompositionModel cmodel = (CompositionModel)model;
+        //this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
 
-        int height = align.numSequences();
+        image.setRGB(10, 10, GAP_RGB);
+        //Graphics2D g2 = image.createGraphics();
+
+        //g2.setColor(Color.red);
+        //g2.drawRect(10, 10, 20, 20);
+
+        /*
+        int height = align.size();
         int width = align.maxLength();
 
         if (height == 0 || width == 0) {
             return;
         }
 
-        String acids = cmodel.getAminoAcids();
-        int windowSize = cmodel.getWindowSize();
+        int windowSize = model.getWindowSize();
         int halfWindowSize = windowSize / 2;
+        String acids = model.getAminoAcids();
 
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
@@ -76,8 +84,8 @@ class CompositionPlot extends BasePlot {
                 }
 
                 int startpos = Math.max(0, nongaps - halfWindowSize);
-                int endpos = Math.min(seqNoGaps.length() - 1, nongaps - halfWindowSize + windowSize);
-                assert startpos < endpos;
+                int endpos = Math.min(seqNoGaps.length() - 1, nongaps + halfWindowSize);
+                assert startpos <= endpos;
 
                 int matches = 0;
 
@@ -93,7 +101,7 @@ class CompositionPlot extends BasePlot {
                 // New and slightly optimized
                 if (nongaps == 0) {
                     // Compute the whole window (should only happen once per sequence)
-                    for (int pos = startpos; pos < endpos; pos++) {
+                    for (int pos = startpos; pos <= endpos; pos++) {
                         for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
                             if (seqNoGaps.charAt(pos) == acids.charAt(acidpos)) {
                                 matches += 1;
@@ -114,7 +122,7 @@ class CompositionPlot extends BasePlot {
 
                     if (endpos < seqNoGaps.length() - 1) {
                         for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
-                            if (seqNoGaps.charAt(endpos - 1) == acids.charAt(acidpos)) {
+                            if (seqNoGaps.charAt(endpos) == acids.charAt(acidpos)) {
                                 matches += 1;
                             }
                         }
@@ -152,15 +160,15 @@ class CompositionPlot extends BasePlot {
                 int divisor;
                 int shade;
 
-                if (cmodel.getDisplayType() == cmodel.DISPLAY_DYNAMIC) {
+                if (model.getDisplayType() == model.DISPLAY_DYNAMIC) {
                     divisor = matchMax;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
-                } else if (cmodel.getDisplayType() == cmodel.DISPLAY_FIXED) {
+                } else if (model.getDisplayType() == model.DISPLAY_FIXED) {
                     divisor = windowSize;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
                 } else {
                     if (((float)matchArray[seq][aa] / windowSize) >= 
-                            (cmodel.getDisplayThreshold() / 100.0f)) {
+                            (model.getDisplayThreshold() / 100.0f)) {
                         shade = 255;
                     } else {
                         shade = 0;
@@ -173,6 +181,7 @@ class CompositionPlot extends BasePlot {
 
             }
         }
+            */
     }
 }
 

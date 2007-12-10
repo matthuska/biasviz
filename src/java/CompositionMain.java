@@ -35,13 +35,14 @@ public class CompositionMain {
 
     // not needed for applet version
     public static void main(String[] args) {
-        JFrame f = new JFrame("Test java app");
+        JFrame f = new JFrame("BiasViz");
         f.setSize(800, 600);
+        f.setLayout(new BorderLayout());
 
         CompositionApplet comp = new CompositionApplet();
         String input = readInput(args[0]);
-        //String input = readInput("input.txt");
-        comp.init(input);
+        String secondary = readInput(args[1]);
+        comp.init(input, secondary);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(comp);
 

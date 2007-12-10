@@ -16,7 +16,8 @@
     <property name="test.server" value="mhuska@10.246.159.27"/> <!-- ohri-129030 -->
     <property name="test.dir" value="~/public_html/${ant.project.name}"/>
 
-    <property name="testinput" location="${examples}/ddbb2.fasta"/>
+    <property name="testinput"     location="${examples}/cluster_3931.fasta"/>
+    <property name="testsecondary" location="${examples}/cluster_3931_secondary.txt"/>
 
     <target name="init">
         <!-- Create the time stamp -->
@@ -91,10 +92,11 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="run" depends="compile"
+    <target name="run" depends="debug"
         description="Run the applet in a stand-alone window.">
         <java classname="CompositionMain" classpath="${build}" fork="true">
             <arg value="${testinput}"/>
+            <arg value="${testsecondary}"/>
         </java>
     </target>
     

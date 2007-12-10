@@ -21,26 +21,41 @@
  *
  */
 
-/**
- *
- * @author mhuska
- */
-
 import java.awt.*;
 import javax.swing.*;
 
-public class CompositionUI extends BaseUI {
+class CompositionGraphics extends JPanel {
 
+    Rule aarule;
     CompositionPlot plot;
+    JScrollPane scroll;
+    SequenceLabels names;
+    public static final Color SCROLL_BACKGROUND = Color.RED;
 
-    CompositionUI(CoreModel coreModel) {
-
-        model = new CompositionModel(coreModel);
-        controls = new CompositionControls((CompositionModel)model);
-        graphics = new CompositionGraphics(model);
+    CompositionGraphics(PlotModel model) {
+        plot = new CompositionPlot(model);
+        scroll = new JScrollPane(plot);
+        aarule = new Rule(model, Rule.HORIZONTAL);
+        names = new SequenceLabels(model.getCoreModel());
+        names.setPreferredHeight((int)(model.getCoreModel().numSeqs() *
+                    model.getCoreModel().getZoomHeight()));
 
         this.layoutView();
     }
 
-}
+    void layoutView() {
+        this.setLayout(new BorderLayout());
+        scroll.setColumnHeaderView(aarule);
+        scroll.setRowHeaderView(names);
+        scroll.setCorner(JScrollPane.UPPER_LEFT_CORNER, new JPanel());
+        this.setScrollBackground();
+        this.add(scroll);
+    }
 
+    void setScrollBackground() {
+        this.plot.setBackground(SCROLL_BACKGROUND);
+        scroll.getCorner(JScrollPane.UPPER_LEFT_CORNER).setBackground(SCROLL_BACKGROUND);
+        scroll.getRowHeader().setBackground(SCROLL_BACKGROUND);
+        scroll.getColumnHeader().setBackground(SCROLL_BACKGROUND);
+    }
+}

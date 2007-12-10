@@ -25,6 +25,7 @@ html, body {
         <param name="archive" value="biasviz.jar" />
         <?php
         insert_alignment();
+        insert_secondary();
         ?>
       <!--<![endif]-->
         <!-- MSIE (Microsoft Internet Explorer) will use inner object --> 
@@ -35,6 +36,7 @@ html, body {
           <param name="archive" value="biasviz.jar" />
         <?php
         insert_alignment();
+        insert_secondary();
         ?>
           <strong>
             This browser does not have a Java Plug-in.
@@ -52,6 +54,11 @@ html, body {
 
 function insert_alignment() {
 
+    if (!isset($_POST['alignment']) && $_FILES['datafile']['error'] != 0) {
+        // No alignment. Skip this function.
+        return;
+    }
+
     if ($_FILES['datafile']['error'] == 0) {
         $alignment_raw = file_get_contents($_FILES['datafile']['tmp_name']);
     } else {
@@ -68,6 +75,24 @@ function insert_alignment() {
     for ($i = 0; $i < $numlines; $i++) {
         $line = rtrim($alines[$i]);
         print "<param name=\"line$i\" value=\"$line\" />\n";
+    }
+
+}
+
+function insert_secondary() {
+    if (!isset($_POST['secondary']) || strlen(trim($_POST['secondary'])) <= 0) {
+        // No secondary structure information. Skip this function.
+        return;
+    }
+
+    $secondary = htmlspecialchars($_POST['secondary'], ENT_QUOTES);
+    $alines = split("\n", $secondary);
+    $numlines = count($alines);
+
+    print "<param name=\"snumlines\" value=\"$numlines\" />\n";
+    for ($i = 0; $i < $numlines; $i++) {
+        $line = rtrim($alines[$i]);
+        print "<param name=\"sline$i\" value=\"$line\" />\n";
     }
 
 }
