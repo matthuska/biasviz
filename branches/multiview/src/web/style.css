@@ -25,17 +25,27 @@ textarea {
     font-size: 12px;
 }
 
-form {
-    margin-left: 0.5em;
+#launchbox {
+    margin: 0.5em;
     padding: 1em;
     border: 1px solid #bbb;
     background-color: #ccc;
+    text-align: center;
+    line-height: 100%;
+    font-size: 2em;
+    font-family: Georgia, serif;
+}
+
+#notice {
+    font-size: 0.8em;
+    font-family: Helvetica, "Bitstream Vera Sans", Arial, sans-serif;
 }
 
 p {
     font-size: 0.9em;
     font-family: Helvetica, "Bitstream Vera Sans", Arial, sans-serif;
     color: #222;
+    line-height: 150%;
     /*margin-left: 0.5em;*/
 }
 

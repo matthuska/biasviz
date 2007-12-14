@@ -49,7 +49,8 @@ public class Main {
         if (args.length > 1) { secondary = readInput(args[1]); }
         if (args.length > 2) { userData = readInput(args[2]); }
 
-        comp.init(input, secondary, userData);
+        //comp.init(input, secondary, userData);
+        comp.init();
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(comp);
 

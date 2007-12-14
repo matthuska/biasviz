@@ -16,9 +16,11 @@
     <property name="test.server" value="mhuska@10.246.159.27"/> <!-- ohri-129030 -->
     <property name="test.dir" value="~/public_html/${ant.project.name}"/>
 
-    <property name="testinput"     location="${examples}/clip2.fasta"/>
+    <!--
+    <property name="testinput"     location="${examples}/clip1bluster.fasta"/>
     <property name="testsecondary" location="${examples}/cluster_3931_secondary.txt"/>
-    <property name="testuserdata" location="${examples}/clip_heat.txt"/>
+    <property name="testuserdata" location="${examples}/clip1bluster_aarep.txt"/>
+    -->
 
     <target name="init">
         <!-- Create the time stamp -->
@@ -100,9 +102,6 @@
     <target name="run" depends="debug"
         description="Run the applet in a stand-alone window.">
         <java classname="Main" classpath="${build}" fork="true">
-            <arg value="${testinput}"/>
-            <arg value="${testsecondary}"/>
-            <arg value="${testuserdata}"/>
         </java>
     </target>
     
