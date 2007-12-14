@@ -5,6 +5,8 @@ import javax.swing.*;
 class CoreUI extends JPanel {
     
     CoreModel model;
+    JPanel cards;
+
     BaseUI ui;
     ZoomControlView zoomControls;
 
@@ -12,10 +14,14 @@ class CoreUI extends JPanel {
     JComboBox plotType;
 
     JPanel topPanel;
+    JButton loadFilesButton;
 
-    CoreUI(CoreModel m) {
+    public CoreUI(CoreModel m, JPanel c) {
         assert m != null;
         model = m;
+
+        assert c != null;
+        cards = c;
 
         // Holds Zoom and Plot Type controls
         topPanel = new JPanel();
@@ -25,26 +31,24 @@ class CoreUI extends JPanel {
 
         ui = new CompositionUI(model);
         zoomControls = new ZoomControlView(model);
+        loadFilesButton = new JButton("Change Input Files");
 
         layoutWidgets();
         registerControllers();
     }
 
-    void layoutWidgets() {
+    private void layoutWidgets() {
 
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(Box.createHorizontalStrut(6));
+        topPanel.add(loadFilesButton);
         topPanel.add(plotTypeLabel);
         topPanel.add(plotType);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(zoomControls);
 
-        //this.add(plotTypeLabel);
-        //this.add(plotType);
-
         this.setLayout(new BorderLayout());
         this.add(topPanel, BorderLayout.NORTH);
-        //this.add(plotType, BorderLayout.SOUTH);
         this.add(ui, BorderLayout.CENTER);
     }
 
@@ -58,6 +62,13 @@ class CoreUI extends JPanel {
                 CoreUI.this.ui = UIFactory.getUI(name, model);
                 CoreUI.this.add(CoreUI.this.ui, BorderLayout.CENTER);
                 CoreUI.this.revalidate();
+            }
+        });
+
+        this.loadFilesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout)(CoreUI.this.cards.getLayout());
+                cl.next(CoreUI.this.cards);
             }
         });
     }

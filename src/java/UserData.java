@@ -41,4 +41,13 @@ class UserData {
     public float get(int seq, int pos) {
         return (data.get(seq)).get(pos);
     }
+
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < names.size(); i++) {
+            buf.append(names.get(i) + "\n" + data.get(i) + "\n");
+        }
+        return buf.toString();
+    }
+
 }

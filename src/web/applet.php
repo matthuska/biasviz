@@ -16,32 +16,23 @@ html, body {
 </head>
 <body>
 
-      <!--[if !IE]> Firefox and others will use outer object -->
-      <object classid="java:CompositionApplet.class" 
+      <object classid="java:MainApplet.class" 
               type="application/x-java-applet"
               archive="biasviz.jar" 
               height="100%" width="100%" >
         <!-- Konqueror browser needs the following param -->
         <param name="archive" value="biasviz.jar" />
-        <?php
-        insert_alignment();
-        insert_secondary();
-        ?>
       <!--<![endif]-->
         <!-- MSIE (Microsoft Internet Explorer) will use inner object --> 
         <object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
                 codebase="http://java.sun.com/update/1.5.0/jinstall-1_5_0-windows-i586.cab"
                 height="100%" width="100%" > 
-          <param name="code" value="CompositionApplet" />
+          <param name="code" value="MainApplet" />
           <param name="archive" value="biasviz.jar" />
-        <?php
-        insert_alignment();
-        insert_secondary();
-        ?>
           <strong>
             This browser does not have a Java Plug-in.
             <br />
-            <a href="http://java.sun.com/products/plugin/downloads/index.html">
+            <a href="http://www.java.com/download/">
               Get the latest Java Plug-in here.
             </a>
           </strong>
@@ -50,6 +41,8 @@ html, body {
       </object>
       <!--<![endif]-->
 
+</body>
+</html>
 <?php
 
 function insert_alignment() {
@@ -96,9 +89,39 @@ function insert_secondary() {
     }
 
 }
-?>
-</body>
-</html>
-<?php
+
+function insert_userdata() {
+    if (!isset($_POST['userData']) || strlen(trim($_POST['userData'])) <= 0) {
+        // No secondary structure information. Skip this function.
+        return;
+    }
+
+    //$secondary = str_replace("\r\n", "|", htmlspecialchars($_POST['userData'], ENT_QUOTES));
+    //$secondary = base64_encode($_POST['userData']);
+    $secondary = $_POST['userData'];
+    $alines = str_split_php4($secondary, 100);
+    $numlines = count($alines);
+
+    print "<param name=\"unumlines\" value=\"$numlines\" />\n";
+    for ($i = 0; $i < $numlines; $i++) {
+        $line = $alines[$i];
+        //$line_no_white = str_replace("\t", ",", $line);
+        //print "<param name=\"uline$i\" value=\"$line\" />\n";
+        print "uline$i $line \n";
+    }
+
+}
+
+// From http://www.php.net/str_split
+function str_split_php4($text, $split = 1){
+    //place each character of the string into and array
+    $array = array();
+    $i = 0;
+    for($i=0; $i < strlen($text) - $split; $i = $i + $split){
+        array_push($array, substr($text, $i, $split));
+    }
+    //array_push($array, substr($text, $i + $split, strlen($text)));
+    return $array;
+}
 
 ?>

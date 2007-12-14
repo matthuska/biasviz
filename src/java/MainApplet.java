@@ -34,33 +34,46 @@ import java.awt.*;
 
 public class MainApplet extends JApplet {
 
-    public void init(String input, String secondary, String userData) {
-        // Load and parse input
-        setLookAndFeel();
+    CoreModel model;
+    // Layout that contains the file loading interface and main UI
+    JPanel cards; 
+    JPanel loader;
+    JPanel ui;
 
-        CoreModel model = new CoreModel();
+    //public void init(String input, String secondary, String userData) {
+    //    // Load and parse input
+    //    setLookAndFeel();
 
-        if (input != null) {
-            model.setAlignment(input);
-        }
+    //    CoreModel model = new CoreModel();
 
-        if (secondary != null) {
-            model.setSecondary(secondary);
-        }
+    //    if (input != null) {
+    //        model.setAlignment(input);
+    //    }
 
-        if (userData != null) {
-            model.setUserData(userData);
-        }
+    //    if (secondary != null) {
+    //        model.setSecondary(secondary);
+    //    }
 
-        CoreUI ui = new CoreUI(model);
-        this.add(ui);
-    }
+    //    if (userData != null) {
+    //        model.setUserData(userData);
+    //    }
+
+    //    JPanel ui = new CoreUI(model);
+    //    this.add(ui);
+    //}
 
     public void init() {
-        String alignment = loadAlignment();
-        String secondary = loadSecondary();
-        String userData = loadUserData();
-        init(alignment, secondary, userData);
+        setLookAndFeel();
+
+        model = new CoreModel();
+ 
+        cards = new JPanel(new CardLayout());
+        loader = new LoaderUI(model, cards);
+        ui = new CoreUI(model, cards);
+
+        cards.add(loader, "Loader");
+        cards.add(ui, "Main");
+        this.add(cards);
     }
 
     public void setLookAndFeel() {
@@ -107,6 +120,8 @@ public class MainApplet extends JApplet {
         for (int i = 0; i < lines; i++) {
             buf.append(getParameter("uline" + i) + "\n");
         }
+
+        System.err.println(buf.toString());
         return buf.toString();
     }
 

@@ -110,7 +110,7 @@ public class Parser {
                     // Start of comment
                     continue;
                 } else {
-                    String[] splitLine = line.split("\\t");
+                    String[] splitLine = line.split(",");
                     if (splitLine.length >= 3) {
                         data.add(Float.parseFloat(splitLine[2]));
                     } else {
@@ -128,6 +128,7 @@ public class Parser {
             // save current sequence
             ud.add(name, data);
         }
+        System.err.println(ud);
         return ud;
     }
 
