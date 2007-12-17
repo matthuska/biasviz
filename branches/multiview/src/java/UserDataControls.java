@@ -37,10 +37,10 @@ public class UserDataControls extends JPanel implements IView {
     //JTextField aminoAcids;
     //JComboBox aaGroups;
 
-    //JLabel windowSizeLabel;
-    //JPanel windowSizeControls;
-    //JSlider windowSizeSlide;
-    //JSpinner windowSizeSpin;
+    JLabel windowSizeLabel;
+    JPanel windowSizeControls;
+    JSlider windowSizeSlide;
+    JSpinner windowSizeSpin;
 
     JLabel displayOptions;
     JPanel displayPanel;
@@ -71,15 +71,15 @@ public class UserDataControls extends JPanel implements IView {
         //this.aminoAcidsLabel.setLabelFor(aminoAcids);
         //this.aminoAcids.setMinimumSize(aminoAcids.getPreferredSize());
 
-        //this.windowSizeLabel = new JLabel("Windows Size:");
-        //this.windowSizeSlide = new JSlider(1, 200, model.getWindowSize());
-        //// FIXME: make an adapter for this interface in our model
-        //this.windowSizeSpin = new JSpinner(new SpinnerNumberModel(model.getWindowSize(), 1, 200, 1));
-        //this.windowSizeControls = new JPanel();
+        this.windowSizeLabel = new JLabel("Windows Size:");
+        this.windowSizeSlide = new JSlider(1, 200, model.getWindowSize());
+        // FIXME: make an adapter for this interface in our model
+        this.windowSizeSpin = new JSpinner(new SpinnerNumberModel(model.getWindowSize(), 1, 200, 1));
+        this.windowSizeControls = new JPanel();
 
-        //windowSizeControls.setLayout(new BorderLayout());
-        //windowSizeControls.add(windowSizeSlide, BorderLayout.CENTER);
-        //windowSizeControls.add(windowSizeSpin, BorderLayout.EAST);
+        windowSizeControls.setLayout(new BorderLayout());
+        windowSizeControls.add(windowSizeSlide, BorderLayout.CENTER);
+        windowSizeControls.add(windowSizeSpin, BorderLayout.EAST);
 
         //this.downloadLabel = new JLabel("Download data as CSV:");
         //this.download = new JButton("Download");
@@ -136,8 +136,8 @@ public class UserDataControls extends JPanel implements IView {
         //aaPanel.add(aaGroups, BorderLayout.EAST);
         //this.add(aaPanel);
 
-        //this.add(windowSizeLabel);
-        //this.add(windowSizeControls);
+        this.add(windowSizeLabel);
+        this.add(windowSizeControls);
 
         this.displayPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.add(displayOptions);
@@ -151,7 +151,7 @@ public class UserDataControls extends JPanel implements IView {
         //this.add(new JLabel());
 
         SpringUtilities.makeCompactGrid(this,
-                1, 2, // Rows, Cols
+                2, 2, // Rows, Cols
                 6, 6,
                 6, 6);
 
@@ -159,8 +159,8 @@ public class UserDataControls extends JPanel implements IView {
 
     /* Update widgets to reflect current model state */
     public void updateView() {
-        //this.windowSizeSpin.setValue(model.getWindowSize());
-        //this.windowSizeSlide.setValue(model.getWindowSize());
+        this.windowSizeSpin.setValue(model.getWindowSize());
+        this.windowSizeSlide.setValue(model.getWindowSize());
 
         this.thresholdLevelSpinner.setValue(model.getDisplayThreshold());
         this.thresholdLevelSlider.setValue(model.getDisplayThreshold());
@@ -222,22 +222,22 @@ public class UserDataControls extends JPanel implements IView {
         //    }
         //});
 
-        //this.windowSizeSlide.addChangeListener(new ChangeListener()
-        //{
-        //    public void stateChanged(ChangeEvent e) {
-        //        JSlider slider = (JSlider)e.getSource();
-        //        model.setWindowSize(slider.getValue());
-        //    }
-        //});
+        this.windowSizeSlide.addChangeListener(new ChangeListener()
+        {
+            public void stateChanged(ChangeEvent e) {
+                JSlider slider = (JSlider)e.getSource();
+                model.setWindowSize(slider.getValue());
+            }
+        });
 
-        //this.windowSizeSpin.addChangeListener(new ChangeListener()
-        //{
-        //    public void stateChanged(ChangeEvent e) {
-        //        JSpinner spinner = (JSpinner)e.getSource();
-        //        Integer val = (Integer)spinner.getValue();
-        //        model.setWindowSize(val.intValue());
-        //    }
-        //});
+        this.windowSizeSpin.addChangeListener(new ChangeListener()
+        {
+            public void stateChanged(ChangeEvent e) {
+                JSpinner spinner = (JSpinner)e.getSource();
+                Integer val = (Integer)spinner.getValue();
+                model.setWindowSize(val.intValue());
+            }
+        });
 
         this.thresholdLevelSlider.addChangeListener(new ChangeListener()
         {
