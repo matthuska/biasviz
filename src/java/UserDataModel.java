@@ -40,6 +40,8 @@ public class UserDataModel implements PlotModel, IView {
     List<IView> views;
     CoreModel coreModel;
 
+    int windowSize;
+
     ///* Dynamically adjust intensity */
     int displayType;
     int displayThreshold;
@@ -53,6 +55,7 @@ public class UserDataModel implements PlotModel, IView {
         // Set some defaults
         this.displayType = DISPLAY_DYNAMIC;
         this.displayThreshold = 15;
+        this.windowSize = 1;
 
         coreModel.addView(this);
     }
@@ -68,6 +71,17 @@ public class UserDataModel implements PlotModel, IView {
 
     public int getDisplayType() {
         return displayType;
+    }
+
+    public int getWindowSize() {
+        return this.windowSize;
+    }
+
+    public void setWindowSize(int size) {
+        if (this.windowSize != size) {
+            this.windowSize = size;
+            this.updateAllViews();
+        }
     }
 
     public void setDisplayThreshold(int t) {

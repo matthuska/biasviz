@@ -49,8 +49,11 @@ class UserDataPlot extends BasePlot {
             return;
         }
 
+        int windowSize = cmodel.getWindowSize();
+        int halfWindowSize = windowSize / 2;
+
         float[][] scoreArray = new float[height][width];
-        float matchMax = 1.0f;
+        float maxScore = 0.0f;
 
         for (int seq = 0; seq < height; seq++) {
 
@@ -64,7 +67,26 @@ class UserDataPlot extends BasePlot {
                     scoreArray[seq][aa] = -1.0f;
                     continue;
                 }
-                scoreArray[seq][aa] = ud.get(seq, nonGaps);
+
+                int startpos = Math.max(0, nonGaps - halfWindowSize);
+                int endpos = Math.min(seqNoGaps.length() - 1, nonGaps - halfWindowSize + windowSize);
+                int realWindowSize = endpos - startpos;
+                assert startpos < endpos;
+
+                float score = 0.0f;
+
+                // Old & unoptimized
+                for (int pos = startpos; pos < endpos; pos++) {
+                    score += ud.get(seq, pos);
+                }
+
+                score /= realWindowSize;
+                scoreArray[seq][aa] = score;
+
+                if (score > maxScore) {
+                    maxScore = score;
+                }
+
                 nonGaps++;
             }
         }
@@ -85,10 +107,8 @@ class UserDataPlot extends BasePlot {
                 float shade;
 
                 if (cmodel.getDisplayType() == cmodel.DISPLAY_DYNAMIC) {
-                    divisor = matchMax;
-                    shade = scoreArray[seq][aa] / divisor;
+                    shade = scoreArray[seq][aa] / maxScore;
                 } else if (cmodel.getDisplayType() == cmodel.DISPLAY_FIXED) {
-                    //divisor = windowSize;
                     shade = scoreArray[seq][aa];
                 } else {
                     if (scoreArray[seq][aa] >= (cmodel.getDisplayThreshold() / 100.0f)) {
