@@ -44,6 +44,16 @@ public class Alignment {
         return (Sequence)sequences.get(index);
     }
 
+    public Sequence getSequence(String name) {
+        for (int i = 0; i < sequences.size(); i++) {
+            Sequence seq = (Sequence)sequences.get(i);
+            if (name.equals(seq.getName())) {
+                return seq;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<String> getSequenceNames() {
         ArrayList<String> names = new ArrayList<String>();
         for (int i = 0; i < sequences.size(); i++) {

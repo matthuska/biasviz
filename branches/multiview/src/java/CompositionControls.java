@@ -62,6 +62,14 @@ public class CompositionControls extends JPanel implements IView {
         assert model != null;
         this.model = model;
 
+        createWidgets();
+        layoutView();
+        registerControllers();
+
+        this.model.addView(this);
+    }
+
+    private void createWidgets() {
         this.aminoAcidsLabel = new JLabel("Amino Acids:");
         this.aminoAcids = new JTextField(model.getAminoAcids(), 10);
         //this.aaGroups = new JComboBox(AAConstants.AMINO_ACID_GROUPS.keySet().toArray(new String[1]));
@@ -115,12 +123,6 @@ public class CompositionControls extends JPanel implements IView {
         thresholdLevelControls.add(thresholdLevelSlider, BorderLayout.CENTER);
         thresholdLevelControls.add(thresholdLevelSpinner, BorderLayout.EAST);
         this.displayPanel.add(thresholdLevelControls);
-
-        //createControls();
-        layoutView();
-        registerControllers();
-
-        this.model.addView(this);
     }
 
     

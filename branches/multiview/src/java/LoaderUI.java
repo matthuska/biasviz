@@ -2,8 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.awt.event.*;
+import java.net.URL;
 
-class LoaderUI extends JPanel {
+class LoaderUI extends JPanel implements IView {
 
     CoreModel model;
     JPanel cards;
@@ -11,6 +12,7 @@ class LoaderUI extends JPanel {
     JLabel titleLabel;
 
     JLabel loadMSALabel;
+    JLabel loadMSAStatusLabel;
     JButton loadMSAButton;
     JTextField loadMSATextField;
 
@@ -18,7 +20,14 @@ class LoaderUI extends JPanel {
     JButton loadSecondaryButton;
 
     JLabel loadUserDataLabel;
+    JLabel loadUserDataStatusLabel;
     JButton loadUserDataButton;
+
+    JPanel required;
+    JPanel optional;
+
+    //Icon successIcon;
+    //Icon failureIcon;
 
     JButton doneButton;
 
@@ -30,47 +39,88 @@ class LoaderUI extends JPanel {
         cards = c;
 
         createWidgets();
-        layoutWidgets();
+        layoutView();
         registerControllers();
 
-        //model.addView(this);
+        model.addView(this);
     }
 
     private void createWidgets() {
         titleLabel = new JLabel("<html><b>Load BiasViz Input</b></html>");
 
+        required = new JPanel();
         loadMSALabel = new JLabel("Load multiple sequence alignment:");
+        loadMSAStatusLabel = new JLabel("");
         loadMSAButton = new JButton("Choose File...");
         loadMSATextField = new JTextField();
         loadMSATextField.setEnabled(false);
 
+        optional = new JPanel();
         loadSecondaryLabel = new JLabel("Load JPred secondary structure:");
         loadSecondaryButton = new JButton("Choose File...");
 
         loadUserDataLabel = new JLabel("Load raw values for each amino acid:");
+        loadUserDataStatusLabel = new JLabel("");
         loadUserDataButton = new JButton("Choose File...");
 
+        //URL yesUrl = getClass().getResource("icons/gtk-yes.png");
+        //URL noUrl = getClass().getResource("icons/gtk-no.png");
+
+        //Toolkit tk = Toolkit.getDefaultToolkit();
+
+        //try {
+
+        //    Image yesImage = tk.createImage(yesUrl);
+        //    Image noImage = tk.createImage(noUrl);
+
+        //    successIcon = new ImageIcon(yesImage);
+        //    failureIcon = new ImageIcon(noImage);
+
+        //} catch (Exception e) {
+        //    System.err.println(e.getCause());
+        //}
 
         doneButton = new JButton("Done");
     }
 
-    private void layoutWidgets() {
-        this.setBorder(BorderFactory.createEmptyBorder(12,12,12,12));
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    private void layoutView() {
+        this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        required.setLayout(new BoxLayout(required, BoxLayout.Y_AXIS));
+        required.setBorder(BorderFactory.createTitledBorder("Required"));
+
+        optional.setLayout(new BoxLayout(optional, BoxLayout.Y_AXIS));
+        optional.setBorder(BorderFactory.createTitledBorder("Optional"));
+
         this.add(titleLabel);
 
-        this.add(loadMSALabel);
-        //this.add(loadMSATextField);
-        this.add(loadMSAButton);
+        this.add(Box.createVerticalStrut(12));
+        required.add(Box.createHorizontalGlue());
+        required.add(loadMSALabel);
 
-        //this.add(loadSecondaryLabel);
-        //this.add(loadSecondaryButton);
 
-        this.add(loadUserDataLabel);
-        this.add(loadUserDataButton);
+        required.add(loadMSAButton);
+        this.add(required);
 
+        //this.add(Box.createVerticalStrut(12));
+        //optional.add(loadSecondaryLabel);
+        //optional.add(loadSecondaryButton);
+
+        optional.add(Box.createHorizontalGlue());
+        optional.add(loadUserDataLabel);
+        optional.add(loadUserDataButton);
+
+        this.add(optional);
+
+        this.add(Box.createVerticalStrut(12));
         this.add(doneButton);
+    }
+
+    public void updateView() {
+            
+
     }
 
     private void registerControllers() {
@@ -143,9 +193,12 @@ class LoaderUI extends JPanel {
                             buf.append(line + "\n");
                         }
 
-                        // FIXME: Check to see if parsing was successful, inform
-                        // the user if it isn't.
-                        LoaderUI.this.model.setUserData(buf.toString());
+                        try {
+                            UserData ud = Parser.parseUserData(buf.toString(), LoaderUI.this.model.getAlignment());
+                            LoaderUI.this.model.setUserData(ud);
+                        } catch (Exception e) {
+                            System.err.println("Exception parsing user data.");
+                        }
                     } catch (IOException io) {
                         JOptionPane.showMessageDialog(null,
                                 "Could not save the file in that location.",
