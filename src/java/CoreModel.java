@@ -55,19 +55,21 @@ public class CoreModel {
     }
 
     public void setAlignment(String input) {
-        Parser parser = new Parser();
-        alignment = parser.parseFasta(input);
+        alignment = Parser.parseFasta(input);
         rawInput = input;
         this.updateAllViews();
     }
 
     public Alignment getAlignment() {
-        return alignment;
+        return (alignment == null) ? new Alignment() : alignment;
     }
 
-    public void setUserData(String input) {
-        Parser parser = new Parser();
-        this.userData = parser.parseUserData(input);
+    public boolean hasAlignment() {
+        return (alignment == null) ? true : false;
+    }
+
+    public void setUserData(UserData input) {
+        this.userData = input;
         this.updateAllViews();
     }
 
@@ -76,8 +78,7 @@ public class CoreModel {
     }
 
     public void setSecondary(String input) {
-        Parser parser = new Parser();
-        secondary = parser.parseJPred(input);
+        secondary = Parser.parseJPred(input);
         this.updateAllViews();
     }
 

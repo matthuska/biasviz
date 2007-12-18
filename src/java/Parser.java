@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 
 public class Parser {
 
-    public Alignment parseFasta(String input) {
+    static public Alignment parseFasta(String input) {
         Alignment alignment = new Alignment();
         BufferedReader in = new BufferedReader(new StringReader(input));
         String line = null;
@@ -66,10 +66,11 @@ public class Parser {
             Sequence s = new Sequence(name, seq.toString());
             alignment.addSequence(s);
         }
+
         return alignment;
     }
 
-    public String parseJPred(String input) {
+    static public String parseJPred(String input) {
         String secondary = "";
 
         // Remove empty lines
@@ -88,7 +89,15 @@ public class Parser {
         return secondary;
     }
 
-    public UserData parseUserData(String input) {
+    /*
+     * Read in user provided data. Ensure that it is the correct length.
+     *
+     * pre: alignment passed in is associated with this data
+     * post: return populated UserData object or throw exception if there is a
+     * problem parsing
+     *
+     */
+    static public UserData parseUserData(String input, Alignment align) throws Exception {
         UserData ud = new UserData();
         BufferedReader in = new BufferedReader(new StringReader(input));
         String line = null;
@@ -110,11 +119,13 @@ public class Parser {
                     // Start of comment
                     continue;
                 } else {
+                    // Convert tabs to commas to handle tab separated columns
+                    line = line.replace('\t', ',');
                     String[] splitLine = line.split(",");
                     if (splitLine.length >= 3) {
-                        data.add(Float.parseFloat(splitLine[2]));
+                        data.add(Float.parseFloat(splitLine[2].trim()));
                     } else {
-                        System.err.println("Missing data when parsing user provided input.");
+                        throw new Exception();
                     }
                 }
             }
@@ -128,7 +139,19 @@ public class Parser {
             // save current sequence
             ud.add(name, data);
         }
-        System.err.println(ud);
+
+        // Check length of data matches alignment
+        List<String> names = ud.getNames();
+        for (String myname : names) {
+            Sequence s = align.getSequence(myname);
+            String seqNoGaps = s.getSequenceNoGaps();
+            int lengthSequence = seqNoGaps.length();
+            int lengthData = ud.getData(myname).size();
+            if (lengthSequence != lengthData) {
+                throw new Exception();
+            }
+        }
+
         return ud;
     }
 
