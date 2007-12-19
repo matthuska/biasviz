@@ -29,7 +29,7 @@ class UIFactory {
     final static String[] UITypes = {
         "Amino Acid Composition",
         "User Provided Values",
-        "Test UI",
+//        "Test UI",
     };
 
     static BaseUI getUI(String name, CoreModel model) {

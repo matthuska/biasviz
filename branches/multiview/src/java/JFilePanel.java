@@ -133,29 +133,32 @@ class JFilePanel extends JPanel {
     private void registerControllers() {
         this.selectFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                FileDialog fc = new FileDialog(new Frame(), "Select file", FileDialog.LOAD);
+                fc.setVisible(true);
 
-                int retval = fc.showOpenDialog(JFilePanel.this);
+                // Check to see if user cancelled the dialog.
+                if (fc.getFile() == null) {
+                    return;
+                }
 
-                if (retval == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    if (!file.canRead()) {
-                        int choice = JOptionPane.showConfirmDialog(
-                            JFilePanel.this, 
-                            "The file \"" + file.getName() + 
-                            "\" can not be read.\n" +
-                            "Please select another file.", 
-                            "File Not Readable", 
-                            JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                String filename = fc.getDirectory() + fc.getFile();
 
-                    JFilePanel.this.setSelectedFile(file);
+                File file = new File(filename);
+                if (!file.canRead()) {
+                    int choice = JOptionPane.showConfirmDialog(
+                        JFilePanel.this, 
+                        "The file \"" + file.getName() + 
+                        "\" can not be read.\n" +
+                        "Please select another file.", 
+                        "File Not Readable", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
-                    for (ActionListener l: JFilePanel.this.listeners) {
-                        l.actionPerformed(evt);
-                    }
+                JFilePanel.this.setSelectedFile(file);
+
+                for (ActionListener l: JFilePanel.this.listeners) {
+                    l.actionPerformed(evt);
                 }
             }
         });
