@@ -1,3 +1,26 @@
+/*
+ * Copyright (c) 2007 Matthew R. Huska
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ */
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
@@ -11,23 +34,12 @@ class LoaderUI extends JPanel implements IView {
     
     JLabel titleLabel;
 
-    JLabel loadMSALabel;
-    JLabel loadMSAStatusLabel;
-    JButton loadMSAButton;
-    JTextField loadMSATextField;
-
-    JLabel loadSecondaryLabel;
-    JButton loadSecondaryButton;
-
-    JLabel loadUserDataLabel;
-    JLabel loadUserDataStatusLabel;
-    JButton loadUserDataButton;
-
     JPanel required;
     JPanel optional;
 
-    //Icon successIcon;
-    //Icon failureIcon;
+    JFilePanel loadMSAPanel;
+    JFilePanel secondaryPanel;
+    JFilePanel loadUserDataPanel;
 
     JButton doneButton;
 
@@ -49,19 +61,11 @@ class LoaderUI extends JPanel implements IView {
         titleLabel = new JLabel("<html><b>Load BiasViz Input</b></html>");
 
         required = new JPanel();
-        loadMSALabel = new JLabel("Load multiple sequence alignment:");
-        loadMSAStatusLabel = new JLabel("");
-        loadMSAButton = new JButton("Choose File...");
-        loadMSATextField = new JTextField();
-        loadMSATextField.setEnabled(false);
-
         optional = new JPanel();
-        loadSecondaryLabel = new JLabel("Load JPred secondary structure:");
-        loadSecondaryButton = new JButton("Choose File...");
 
-        loadUserDataLabel = new JLabel("Load raw values for each amino acid:");
-        loadUserDataStatusLabel = new JLabel("");
-        loadUserDataButton = new JButton("Choose File...");
+        loadMSAPanel = new JFilePanel("Load multiple sequence alignment:");
+        secondaryPanel = new JFilePanel("Load JPred secondary structure:");
+        loadUserDataPanel = new JFilePanel("Load raw values for each amino acid:");
 
         //URL yesUrl = getClass().getResource("icons/gtk-yes.png");
         //URL noUrl = getClass().getResource("icons/gtk-no.png");
@@ -85,37 +89,35 @@ class LoaderUI extends JPanel implements IView {
 
     private void layoutView() {
         this.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
-
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         required.setLayout(new BoxLayout(required, BoxLayout.Y_AXIS));
         required.setBorder(BorderFactory.createTitledBorder("Required"));
+        required.add(loadMSAPanel);
 
         optional.setLayout(new BoxLayout(optional, BoxLayout.Y_AXIS));
         optional.setBorder(BorderFactory.createTitledBorder("Optional"));
+        optional.add(secondaryPanel);
+        optional.add(Box.createVerticalStrut(12));
+        optional.add(loadUserDataPanel);
+
+        titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        required.setAlignmentX(Component.LEFT_ALIGNMENT);
+        optional.setAlignmentX(Component.LEFT_ALIGNMENT);
+        doneButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         this.add(titleLabel);
-
         this.add(Box.createVerticalStrut(12));
-        required.add(Box.createHorizontalGlue());
-        required.add(loadMSALabel);
-
-
-        required.add(loadMSAButton);
         this.add(required);
-
-        //this.add(Box.createVerticalStrut(12));
-        //optional.add(loadSecondaryLabel);
-        //optional.add(loadSecondaryButton);
-
-        optional.add(Box.createHorizontalGlue());
-        optional.add(loadUserDataLabel);
-        optional.add(loadUserDataButton);
-
+        this.add(Box.createVerticalStrut(12));
         this.add(optional);
-
         this.add(Box.createVerticalStrut(12));
         this.add(doneButton);
+
+        // Used to push everything to the top. Vertical glue wasn't working.
+        Dimension minsize = new Dimension(1, 1);
+        Dimension maxsize = new Dimension(Short.MAX_VALUE, Short.MAX_VALUE);
+        this.add(new Box.Filler(minsize, maxsize, maxsize));
     }
 
     public void updateView() {
@@ -124,128 +126,87 @@ class LoaderUI extends JPanel implements IView {
     }
 
     private void registerControllers() {
-        this.loadMSAButton.addActionListener(new ActionListener() {
+
+        this.loadMSAPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-                int retval = fc.showOpenDialog(LoaderUI.this);
+                JFilePanel p = LoaderUI.this.loadMSAPanel;
+                File file = p.getSelectedFile();
 
-                if (retval == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        if (!file.canRead()) {
-                            int choice = JOptionPane.showConfirmDialog(
-                                    LoaderUI.this, 
-                                    "The file \"" + file.getName() + 
-                                    "\" can not be read.\n" +
-                                    "Please select another file.", 
-                                    "File Not Readable", 
-                                    JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        //file.createNewFile();
-                        StringBuffer buf = new StringBuffer();
-                        BufferedReader in = new BufferedReader(new FileReader(file));
-                        String line = new String();
-                        while ((line = in.readLine()) != null) {
-                            buf.append(line + "\n");
-                        }
-
-                        // FIXME: Check to see if parsing was successful, inform
-                        // the user if it isn't.
-                        LoaderUI.this.model.setAlignment(buf.toString());
-                    } catch (IOException io) {
-                        JOptionPane.showMessageDialog(null,
-                                "Could not save the file in that location.",
-                                "File Save Error",
-                                JOptionPane.ERROR_MESSAGE);
+                StringBuffer buf = new StringBuffer();
+                try {
+                    BufferedReader in = new BufferedReader(new FileReader(file));
+                    String line = new String();
+                    while ((line = in.readLine()) != null) {
+                        buf.append(line + "\n");
                     }
+                } catch (IOException e) {
+                    p.setStatus("Parsing input failed.");
+                }
+
+                try {
+                    CoreModel m = LoaderUI.this.model;
+                    Alignment align = Parser.parseFasta(buf.toString());
+                    m.setAlignment(align, buf.toString());
+                    p.setStatus("Loaded successfully.");
+                } catch (Exception e) {
+                    p.setStatus("Parsing input failed.");
                 }
             }
         });
 
-        this.loadUserDataButton.addActionListener(new ActionListener() {
+        this.loadUserDataPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
-                int retval = fc.showOpenDialog(LoaderUI.this);
+                JFilePanel p = LoaderUI.this.loadUserDataPanel;
+                File file = p.getSelectedFile();
 
-                if (retval == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        if (!file.canRead()) {
-                            int choice = JOptionPane.showConfirmDialog(
-                                    LoaderUI.this, 
-                                    "The file \"" + file.getName() + 
-                                    "\" can not be read.\n" +
-                                    "Please select another file.", 
-                                    "File Not Readable", 
-                                    JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        //file.createNewFile();
-                        StringBuffer buf = new StringBuffer();
-                        BufferedReader in = new BufferedReader(new FileReader(file));
-                        String line = new String();
-                        while ((line = in.readLine()) != null) {
-                            buf.append(line + "\n");
-                        }
-
-                        try {
-                            UserData ud = Parser.parseUserData(buf.toString(), LoaderUI.this.model.getAlignment());
-                            LoaderUI.this.model.setUserData(ud);
-                        } catch (Exception e) {
-                            System.err.println("Exception parsing user data.");
-                        }
-                    } catch (IOException io) {
-                        JOptionPane.showMessageDialog(null,
-                                "Could not save the file in that location.",
-                                "File Save Error",
-                                JOptionPane.ERROR_MESSAGE);
+                StringBuffer buf = new StringBuffer();
+                try {
+                    BufferedReader in = new BufferedReader(new FileReader(file));
+                    String line = new String();
+                    while ((line = in.readLine()) != null) {
+                        buf.append(line + "\n");
                     }
+                } catch (IOException e) {
+                    p.setStatus("Parsing input failed.");
+                }
+
+                try {
+                    CoreModel m = LoaderUI.this.model;
+                    UserData ud = Parser.parseUserData(buf.toString(), 
+                            m.getAlignment());
+                    m.setUserData(ud);
+                    p.setStatus("Loaded successfully.");
+                } catch (Exception e) {
+                    p.setStatus("Parsing input failed.");
                 }
             }
         });
 
-        this.loadSecondaryButton.addActionListener(new ActionListener() {
+        this.secondaryPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                JFileChooser fc = new JFileChooser();
-                fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                JFilePanel p = LoaderUI.this.secondaryPanel;
+                File file = p.getSelectedFile();
 
-                int retval = fc.showOpenDialog(LoaderUI.this);
-
-                if (retval == JFileChooser.APPROVE_OPTION) {
-                    File file = fc.getSelectedFile();
-                    try {
-                        if (!file.canRead()) {
-                            int choice = JOptionPane.showConfirmDialog(
-                                    LoaderUI.this, 
-                                    "The file \"" + file.getName() + 
-                                    "\" can not be read.\n" +
-                                    "Please select another file.", 
-                                    "File Not Readable", 
-                                    JOptionPane.ERROR_MESSAGE);
-                            return;
-                        }
-                        //file.createNewFile();
-                        StringBuffer buf = new StringBuffer();
-                        BufferedReader in = new BufferedReader(new FileReader(file));
-                        String line = new String();
-                        while ((line = in.readLine()) != null) {
-                            buf.append(line + "\n");
-                        }
-
-                        // FIXME: Check to see if parsing was successful, inform
-                        // the user if it isn't.
-                        LoaderUI.this.model.setSecondary(buf.toString());
-                    } catch (IOException io) {
-                        JOptionPane.showMessageDialog(null,
-                                "Could not save the file in that location.",
-                                "File Save Error",
-                                JOptionPane.ERROR_MESSAGE);
+                StringBuffer buf = new StringBuffer();
+                try {
+                    BufferedReader in = new BufferedReader(new FileReader(file));
+                    String line = new String();
+                    while ((line = in.readLine()) != null) {
+                        buf.append(line + "\n");
                     }
+                } catch (IOException e) {
+                    p.setStatus("Parsing input failed.");
+                }
+
+                String secondary;
+                try {
+                    secondary = Parser.parseJPred(buf.toString());
+                    LoaderUI.this.model.setSecondary(buf.toString());
+                    p.setStatus("Secondary structure set successfully.");
+                } catch (Exception e) {
+                    p.setStatus("Parsing input failed.");
                 }
             }
         });

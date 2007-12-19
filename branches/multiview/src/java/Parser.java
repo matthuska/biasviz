@@ -119,13 +119,15 @@ public class Parser {
                     // Start of comment
                     continue;
                 } else {
-                    // Convert tabs to commas to handle tab separated columns
-                    line = line.replace('\t', ',');
-                    String[] splitLine = line.split(",");
-                    if (splitLine.length >= 3) {
-                        data.add(Float.parseFloat(splitLine[2].trim()));
-                    } else {
-                        throw new Exception();
+                    if (line.trim().length() > 0) {
+                        // Convert tabs to commas to handle tab separated columns
+                        line = line.replace('\t', ',');
+                        String[] splitLine = line.split(",");
+                        if (splitLine.length >= 3) {
+                            data.add(Float.parseFloat(splitLine[2].trim()));
+                        } else {
+                            System.err.println("Line too short: " + line);
+                        }
                     }
                 }
             }
@@ -147,7 +149,11 @@ public class Parser {
             String seqNoGaps = s.getSequenceNoGaps();
             int lengthSequence = seqNoGaps.length();
             int lengthData = ud.getData(myname).size();
+
             if (lengthSequence != lengthData) {
+                System.err.println(">" + myname);
+                System.err.println("Sequence length: " + lengthSequence);
+                System.err.println("Data length: " + lengthData);
                 throw new Exception();
             }
         }
