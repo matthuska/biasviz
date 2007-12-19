@@ -26,6 +26,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.lang.Math;
 import java.awt.geom.AffineTransform;
+import java.util.List;
 
 class UserDataPlot extends BasePlot {
 
@@ -60,6 +61,9 @@ class UserDataPlot extends BasePlot {
             Sequence sobj = align.getSequence(seq);
             String seqGaps = sobj.getSequence();
             String seqNoGaps = sobj.getSequenceNoGaps();
+            String name = sobj.getName();
+            java.util.List<Float> data = ud.getData(name);
+
             int nonGaps = 0;
 
             for (int aa = 0; aa < seqGaps.length(); aa++) {
@@ -77,7 +81,7 @@ class UserDataPlot extends BasePlot {
 
                 // Old & unoptimized
                 for (int pos = startpos; pos < endpos; pos++) {
-                    score += ud.get(seq, pos);
+                    score += (float)data.get(pos);
                 }
 
                 score /= realWindowSize;

@@ -54,9 +54,9 @@ public class CoreModel {
         this.views = new CopyOnWriteArrayList<IView>();
     }
 
-    public void setAlignment(String input) {
-        alignment = Parser.parseFasta(input);
-        rawInput = input;
+    public void setAlignment(Alignment aln, String raw) {
+        alignment = aln;
+        rawInput = raw;
         this.updateAllViews();
     }
 
