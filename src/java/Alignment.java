@@ -22,17 +22,18 @@
  */
 
 import java.util.ArrayList;
+import java.util.List;
 import java.io.*;
 
 public class Alignment {
 
-    ArrayList<Sequence> sequences;
+    List<Sequence> sequences;
 
     public Alignment() {
         sequences = new ArrayList<Sequence>();
     }
 
-    public ArrayList getSequences() {
+    public List<Sequence> getSequences() {
         return sequences;
     }
 
@@ -41,12 +42,11 @@ public class Alignment {
     }
 
     public Sequence getSequence(int index) {
-        return (Sequence)sequences.get(index);
+        return sequences.get(index);
     }
 
     public Sequence getSequence(String name) {
-        for (int i = 0; i < sequences.size(); i++) {
-            Sequence seq = (Sequence)sequences.get(i);
+        for (Sequence seq : sequences) {
             if (name.equals(seq.getName())) {
                 return seq;
             }
@@ -54,17 +54,16 @@ public class Alignment {
         return null;
     }
 
-    public ArrayList<String> getSequenceNames() {
-        ArrayList<String> names = new ArrayList<String>();
-        for (int i = 0; i < sequences.size(); i++) {
-            Sequence seq = (Sequence)sequences.get(i);
+    public List<String> getNames() {
+        List<String> names = new ArrayList<String>();
+        for (Sequence seq : sequences) {
             names.add(seq.getName());
         }
         return names;
     }
 
     public String getSequenceName(int i) {
-        return ((Sequence)sequences.get(i)).getName();
+        return sequences.get(i).getName();
     }
 
     // Returns the number of sequences in the alignment
@@ -75,9 +74,7 @@ public class Alignment {
     // Returns the length of the longest sequence in the alignment.
     public int maxLength() {
         int max = 0;
-
-        for (int i = 0; i < sequences.size(); i++) {
-            Sequence seq = (Sequence)sequences.get(i);
+        for (Sequence seq : sequences) {
             if (seq.size() > max) {
                 max = seq.size();
             }
@@ -86,13 +83,11 @@ public class Alignment {
     }
 
     public String toString() {
-        // For fun
         StringBuffer output = new StringBuffer();
-        for (int i = 0; i < sequences.size(); i++) {
-            Sequence s = (Sequence)sequences.get(i);
-            output.append(s.getName());
+        for (Sequence seq : sequences) {
+            output.append(seq.getName());
             output.append(System.getProperty("line.separator"));
-            output.append(s.getSequence());
+            output.append(seq.getSequence());
             output.append(System.getProperty("line.separator"));
         }
         return output.toString();

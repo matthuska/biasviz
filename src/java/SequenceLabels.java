@@ -23,18 +23,18 @@
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class SequenceLabels extends JComponent implements IView {
 
-    ArrayList<String> names;
+    List<String> names;
     CoreModel model;
 
     SequenceLabels(CoreModel model) {
         assert model != null;
         this.model = model;
 
-        this.names = model.getAlignment().getSequenceNames();
+        this.names = model.getAlignment().getNames();
 
         this.model.addView(this);
         updateView();
@@ -66,7 +66,7 @@ public class SequenceLabels extends JComponent implements IView {
     }
 
     public void updateView() {
-        this.names = model.getAlignment().getSequenceNames();
+        this.names = model.getAlignment().getNames();
         this.repaint();
     }
 

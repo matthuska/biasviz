@@ -143,7 +143,7 @@ public class Parser {
         }
 
         // Check length of data matches alignment
-        List<String> names = ud.getNames();
+        List<String> names = align.getNames();
         for (String myname : names) {
             Sequence s = align.getSequence(myname);
             String seqNoGaps = s.getSequenceNoGaps();
