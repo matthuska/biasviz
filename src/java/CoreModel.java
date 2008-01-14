@@ -32,11 +32,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class CoreModel {
 
     List<IView> views;
+    List<BaseTrack> tracks;
 
     String rawInput;
     Alignment alignment;
     String secondary;
-    UserData userData;
+    //UserData userData;
 
     /* Zoom level */
     float zoomWidth;
@@ -46,12 +47,26 @@ public class CoreModel {
 
     public CoreModel() {
         alignment = new Alignment();
-        userData = new UserData();
+        tracks = new ArrayList<BaseTrack>();
         rawInput = "";
         zoomWidth = 1.0f;
         zoomHeight = 10.0f;
         secondary = null;
         this.views = new CopyOnWriteArrayList<IView>();
+    }
+
+    public void addTrack(BaseTrack track) {
+        tracks.add(track);
+        updateAllViews();
+    }
+
+    public void removeTrack(BaseTrack track) {
+        tracks.remove(track);
+        updateAllViews();
+    }
+
+    public List<BaseTrack> getTracks() {
+        return tracks;
     }
 
     public void setAlignment(Alignment aln, String raw) {
@@ -68,48 +83,48 @@ public class CoreModel {
         return (alignment == null) ? true : false;
     }
 
-    public void setUserData(UserData input) {
-        this.userData = input;
-        this.updateAllViews();
-    }
+    //public void setUserData(UserData input) {
+    //    this.userData = input;
+    //    this.updateAllViews();
+    //}
 
-    public UserData getUserData() {
-        return userData;
-    }
+    //public UserData getUserData() {
+    //    return userData;
+    //}
 
-    public void setSecondary(String input) {
-        secondary = Parser.parseJPred(input);
-        this.updateAllViews();
-    }
+    //public void setSecondary(String input) {
+    //    secondary = Parser.parseJPred(input);
+    //    this.updateAllViews();
+    //}
 
-    public String getSecondary() {
-        return secondary;
-    }
+    //public String getSecondary() {
+    //    return secondary;
+    //}
 
-    // FIXME: compute this when secondary is first set and save for future use
-    public String getSecondaryWithGaps() {
-        String seq = alignment.getSequence(0).getSequence();
-        StringBuilder swg = new StringBuilder();
-        int j = 0;
-        // FIXME: Rewrite to use indexOf or something like that
-        for (int i = 0; i < seq.length(); i++) {
-            if (seq.charAt(i) == '-') {
-                swg.append('_');
-            } else {
-                swg.append(secondary.charAt(j));
-                j++;
-            }
-        }
-        return swg.toString();
-    }
+    //// FIXME: compute this when secondary is first set and save for future use
+    //public String getSecondaryWithGaps() {
+    //    String seq = alignment.getSequence(0).getSequence();
+    //    StringBuilder swg = new StringBuilder();
+    //    int j = 0;
+    //    // FIXME: Rewrite to use indexOf or something like that
+    //    for (int i = 0; i < seq.length(); i++) {
+    //        if (seq.charAt(i) == '-') {
+    //            swg.append('_');
+    //        } else {
+    //            swg.append(secondary.charAt(j));
+    //            j++;
+    //        }
+    //    }
+    //    return swg.toString();
+    //}
 
-    public boolean hasSecondary() {
-        if (secondary != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    //public boolean hasSecondary() {
+    //    if (secondary != null) {
+    //        return true;
+    //    } else {
+    //        return false;
+    //    }
+    //}
     
     /* Misc useful methods */
 
