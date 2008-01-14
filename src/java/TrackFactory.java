@@ -24,27 +24,30 @@
 //import java.util.ArrayList;
 //import java.util.List;
 
-class UIFactory {
+class TrackFactory {
 
-    final static String[] UITypes = {
-        "Amino Acid Composition",
-        "User Provided Values",
+//    final static String[] TrackTypes = {
+//        CompositionTrack.ge"Amino Acid Composition",
+//        "User Provided Values",
+//        "JPred Secondary Structure",
 //        "Test UI",
-    };
+//    };
 
-    static BaseUI getUI(String name, CoreModel model) {
-        if (name.equals("Amino Acid Composition")) {
-            return new CompositionUI(model);
-        } else if (name.equals("User Provided Values")) {
-            return new UserDataUI(model);
-        } else if (name.equals("Test UI")) {
-            return new TestUI(model);
+    static BaseTrack getTrack(String name, CoreModel model) {
+        if (name.equals(CompositionTrack.getName())) {
+            return new CompositionTrack(model);
+//        } else if (name.equals("User Provided Values")) {
+//            return new UserDataUI(model);
+//        } else if (name.equals(SecondaryTrack.getName())) {
+//            return new SecondaryTrack(model);
+//        } else if (name.equals("Test UI")) {
+//            return new TestUI(model);
         }
         System.err.println("User interface not found.");
         return null;
     }
 
-    static String[] getUINames() {
-        return UITypes;
-    }
+//    static String[] getTrackNames() {
+//        return TrackTypes;
+//    }
 }

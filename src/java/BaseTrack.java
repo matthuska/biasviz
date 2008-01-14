@@ -24,22 +24,51 @@
 import java.awt.*;
 import javax.swing.*;
 
-abstract class BaseUI extends JPanel {
+abstract class BaseTrack {
 
-    protected PlotModel model;
-    protected JPanel graphics;
-    protected JPanel controls;
+    protected BasePlotModel plotModel;
+    protected BaseControls controls;
+    protected BasePlot plot;
+    protected static String name = new String();
 
-    /*
-     * Layout the applet window.
-     */
-    protected void layoutView() {
-        this.setLayout(new BorderLayout());
-
-        this.add(graphics, BorderLayout.CENTER);
-        this.add(controls, BorderLayout.SOUTH);
-
-        controls.setBorder(BorderFactory.createTitledBorder("Settings"));
+    private void setModel(BasePlotModel newModel) {
+        assert newModel != null;
+        plotModel = newModel;
     }
+
+    public BasePlotModel getModel() {
+        return plotModel;
+    }
+
+    private void setControls(BaseControls newControls) {
+        assert newControls != null;
+        controls = newControls;
+    }
+
+    public boolean hasControls() {
+        return (controls != null);
+    }
+
+    public BaseControls getControls() {
+        return controls;
+    }
+
+    private void setPlot(BasePlot newPlot) {
+        assert newPlot != null;
+        plot = newPlot;
+    }
+
+    public BasePlot getPlot() {
+        return plot;
+    }
+
+    public SequenceLabels getLabels() {
+        return plot.getLabels();
+    }
+
+    static public String getName() {
+        return name;
+    }
+
 }
 
