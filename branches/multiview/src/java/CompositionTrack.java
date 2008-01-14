@@ -29,17 +29,14 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class CompositionUI extends BaseUI {
+public class CompositionTrack extends BaseTrack {
 
-    CompositionPlot plot;
+    CompositionTrack(CoreModel coreModel) {
+        plotModel = new CompositionModel(coreModel);
+        controls = new CompositionControls((CompositionModel)plotModel);
+        plot = new CompositionPlot(plotModel);
 
-    CompositionUI(CoreModel coreModel) {
-
-        model = new CompositionModel(coreModel);
-        controls = new CompositionControls((CompositionModel)model);
-        graphics = new CompositionGraphics(model);
-
-        this.layoutView();
+        name = "Amino Acid Composition";
     }
 
 }
