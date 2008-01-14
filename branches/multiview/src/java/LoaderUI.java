@@ -67,23 +67,6 @@ class LoaderUI extends JPanel implements IView {
         secondaryPanel = new JFilePanel("Load JPred secondary structure:");
         loadUserDataPanel = new JFilePanel("Load raw values for each amino acid:");
 
-        //URL yesUrl = getClass().getResource("icons/gtk-yes.png");
-        //URL noUrl = getClass().getResource("icons/gtk-no.png");
-
-        //Toolkit tk = Toolkit.getDefaultToolkit();
-
-        //try {
-
-        //    Image yesImage = tk.createImage(yesUrl);
-        //    Image noImage = tk.createImage(noUrl);
-
-        //    successIcon = new ImageIcon(yesImage);
-        //    failureIcon = new ImageIcon(noImage);
-
-        //} catch (Exception e) {
-        //    System.err.println(e.getCause());
-        //}
-
         doneButton = new JButton("Done");
     }
 
@@ -121,8 +104,6 @@ class LoaderUI extends JPanel implements IView {
     }
 
     public void updateView() {
-            
-
     }
 
     private void registerControllers() {
@@ -148,6 +129,8 @@ class LoaderUI extends JPanel implements IView {
                     CoreModel m = LoaderUI.this.model;
                     Alignment align = Parser.parseFasta(buf.toString());
                     m.setAlignment(align, buf.toString());
+                    BaseTrack t = TrackFactory.getTrack(CompositionTrack.getName(), m);
+                    m.addTrack(t);
                     p.setStatus("Loaded successfully.");
                 } catch (Exception e) {
                     p.setStatus("Parsing input failed.");
@@ -155,6 +138,7 @@ class LoaderUI extends JPanel implements IView {
             }
         });
 
+        /*
         this.loadUserDataPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 
@@ -183,7 +167,9 @@ class LoaderUI extends JPanel implements IView {
                 }
             }
         });
+        */
 
+        /*
         this.secondaryPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 JFilePanel p = LoaderUI.this.secondaryPanel;
@@ -210,6 +196,7 @@ class LoaderUI extends JPanel implements IView {
                 }
             }
         });
+        */
 
         this.doneButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

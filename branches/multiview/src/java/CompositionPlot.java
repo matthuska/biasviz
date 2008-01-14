@@ -30,13 +30,9 @@ import java.awt.geom.AffineTransform;
 class CompositionPlot extends BasePlot {
 
     boolean dynamicIntensity;
-//    CompositionModel cmodel;
 
-    CompositionPlot(PlotModel m) {
+    CompositionPlot(BasePlotModel m) {
         super(m);
-//        assert m != null;
-//        cmodel = m;
-//        cmodel.addView(this);
     }
 
     // Takes in an alignment and returns a visualization of it.

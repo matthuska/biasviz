@@ -29,7 +29,7 @@ import javax.swing.text.*;
 import java.io.*;
 import javax.swing.filechooser.FileFilter;
 
-public class CompositionControls extends JPanel implements IView {
+public class CompositionControls extends BaseControls implements IView {
 
     CompositionModel model;
 
@@ -174,7 +174,6 @@ public class CompositionControls extends JPanel implements IView {
             this.thresholdLevelSpinner.setEnabled(true);
             this.thresholdLevelSlider.setEnabled(true);
         }
-
 
         // Causes exception (trying to mutate on notification)
         try {

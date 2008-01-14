@@ -21,7 +21,7 @@
  *
  */
 
-public interface IView {                                                                        
+public interface IView {
     public void updateView();
 }
 

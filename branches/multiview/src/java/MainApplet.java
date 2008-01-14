@@ -85,45 +85,45 @@ public class MainApplet extends JApplet {
         }
     }
 
-    private String loadAlignment() {
-        if (getParameter("numlines") == null) {
-            return null;
-        }
-        int lines = Integer.parseInt(getParameter("numlines"));
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < lines; i++) {
-            buf.append(getParameter("line" + i) + "\n");
-        }
-        return buf.toString();
-    }
+    //private String loadAlignment() {
+    //    if (getParameter("numlines") == null) {
+    //        return null;
+    //    }
+    //    int lines = Integer.parseInt(getParameter("numlines"));
+    //    StringBuffer buf = new StringBuffer();
+    //    for (int i = 0; i < lines; i++) {
+    //        buf.append(getParameter("line" + i) + "\n");
+    //    }
+    //    return buf.toString();
+    //}
 
-    private String loadSecondary() {
-        if (getParameter("snumlines") == null) {
-            return null;
-        }
-            
-        int lines = Integer.parseInt(getParameter("snumlines"));
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < lines; i++) {
-            buf.append(getParameter("sline" + i) + "\n");
-        }
-        return buf.toString();
-    }
+    //private String loadSecondary() {
+    //    if (getParameter("snumlines") == null) {
+    //        return null;
+    //    }
+    //        
+    //    int lines = Integer.parseInt(getParameter("snumlines"));
+    //    StringBuffer buf = new StringBuffer();
+    //    for (int i = 0; i < lines; i++) {
+    //        buf.append(getParameter("sline" + i) + "\n");
+    //    }
+    //    return buf.toString();
+    //}
 
-    private String loadUserData() {
-        if (getParameter("unumlines") == null) {
-            return null;
-        }
+    //private String loadUserData() {
+    //    if (getParameter("unumlines") == null) {
+    //        return null;
+    //    }
 
-        int lines = Integer.parseInt(getParameter("unumlines"));
-        StringBuffer buf = new StringBuffer();
-        for (int i = 0; i < lines; i++) {
-            buf.append(getParameter("uline" + i) + "\n");
-        }
+    //    int lines = Integer.parseInt(getParameter("unumlines"));
+    //    StringBuffer buf = new StringBuffer();
+    //    for (int i = 0; i < lines; i++) {
+    //        buf.append(getParameter("uline" + i) + "\n");
+    //    }
 
-        System.err.println(buf.toString());
-        return buf.toString();
-    }
+    //    System.err.println(buf.toString());
+    //    return buf.toString();
+    //}
 
 }
 

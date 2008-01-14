@@ -48,6 +48,14 @@ public class SequenceLabels extends JComponent implements IView {
         setPreferredSize(new Dimension(pw, 30));
     }
 
+    public void setMinimumHeight(int ph) {
+        setMinimumSize(new Dimension(100, ph));
+    }
+
+    public void setMinimumWidth(int pw) {
+        setMinimumSize(new Dimension(pw, 30));
+    }
+
     protected void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         Rectangle drawHere = g2.getClipBounds();
@@ -65,8 +73,23 @@ public class SequenceLabels extends JComponent implements IView {
 
     }
 
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        for (String name: names) {
+            buf.append(name + "\n");
+        }
+        return buf.toString();
+    }
+
     public void updateView() {
         this.names = model.getAlignment().getNames();
+
+        setPreferredWidth(50);
+        setMinimumWidth(50);
+
+        setPreferredHeight(names.size() * 10);
+        setMinimumHeight(names.size() * 10);
+
         this.repaint();
     }
 

@@ -31,26 +31,15 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel implements PlotModel, IView {
-
-    //final static float ZOOM_WIDTH_STEP = 1.2f; 
-    //final static float ZOOM_HEIGHT_STEP = 1.2f; 
+public class CompositionModel extends BasePlotModel implements IView
+{
 
     final static int DISPLAY_DYNAMIC    = 1;
     final static int DISPLAY_FIXED      = 2;
     final static int DISPLAY_THRESHOLD  = 3;
 
-    List<IView> views;
-    CoreModel coreModel;
-
-    //String plotName; // type of plot
-
     String aminoAcids;
     int windowSize;
-
-    ///* Zoom level */
-    //float zoomWidth;
-    //float zoomHeight;
 
     ///* Dynamically adjust intensity */
     int displayType;
@@ -62,12 +51,10 @@ public class CompositionModel implements PlotModel, IView {
 
         this.views = new CopyOnWriteArrayList<IView>();
 
-    //    // Set some defaults
         this.aminoAcids = "A";
         this.windowSize = 100;
         this.displayType = DISPLAY_DYNAMIC;
         this.displayThreshold = 15;
-    //    this.plotName = "Hydrophobicity Plot 2";
 
         coreModel.addView(this);
     }
@@ -148,33 +135,30 @@ public class CompositionModel implements PlotModel, IView {
     //    this.updateAllViews();
     //}
 
-    public CoreModel getCoreModel() {
-        return coreModel;
-    }
+    //public CoreModel getCoreModel() {
+    //    return coreModel;
+    //}
 
-    public void setCoreModel(CoreModel m) {
-        coreModel = m;
-    }
+    //public void setCoreModel(CoreModel m) {
+    //    coreModel = m;
+    //}
 
-    public void updateView() {
-        this.updateAllViews();
-    }
 
     /*
      * View management
      */
-    public void addView(IView view) {
-        views.add(view);
-    }
+    //public void addView(IView view) {
+    //    views.add(view);
+    //}
 
-    public void removeView(IView view) {
-        views.remove(view);
-    }
+    //public void removeView(IView view) {
+    //    views.remove(view);
+    //}
 
-    private void updateAllViews() {
-        for (IView view : views) {
-            view.updateView();
-        }
-    }
+    //private void updateAllViews() {
+    //    for (IView view : views) {
+    //        view.updateView();
+    //    }
+    //}
 }
 

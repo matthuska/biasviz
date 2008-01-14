@@ -29,19 +29,20 @@ import java.awt.geom.AffineTransform;
 
 public abstract class BasePlot extends JPanel implements IView {
 
-    protected PlotModel model;
+    protected BasePlotModel model;
     protected BufferedImage image;
-    protected BufferedImage simage;
-    protected String name;
+    //protected BufferedImage simage;
+    protected SequenceLabels names;
 
     public static final int GAP_RGB   = Color.red.getRGB();
     public static final int HELIX_RGB = Color.green.getRGB();
     public static final int BETA_RGB  = (new Color(0, 100, 255)).getRGB();
     public static final int BLANK_RGB  = Color.black.getRGB();
 
-    //boolean dynamicIntensity;
+    BasePlot() {
+    }
 
-    BasePlot(PlotModel pm) {
+    BasePlot(BasePlotModel pm) {
         assert pm != null;
         this.model = pm;
 
@@ -60,8 +61,13 @@ public abstract class BasePlot extends JPanel implements IView {
         this.updateView();
     }
 
+    public SequenceLabels getLabels() {
+        return names;
+    }
+
     public void layoutView() {
         CoreModel c = model.getCoreModel();
+        names = new SequenceLabels(c);
 
         // Needed for scrollbars to show up correctly
         Dimension mySize = new Dimension((int)(image.getWidth() * c.getZoomWidth() + 1),
@@ -114,7 +120,7 @@ public abstract class BasePlot extends JPanel implements IView {
     }
 
     public Dimension getSize() {
-      return getPreferredSize();
+        return getPreferredSize();
     }
 
     // Takes in an alignment and returns a visualization of it.
