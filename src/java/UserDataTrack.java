@@ -29,18 +29,16 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class UserDataUI extends BaseUI {
+public class UserDataTrack extends BaseTrack {
 
-    UserDataPlot plot;
-
-    UserDataUI(CoreModel coreModel) {
-
-        model = new UserDataModel(coreModel);
-        controls = new UserDataControls((UserDataModel)model);
-        graphics = new UserDataGraphics(model);
-
-        this.layoutView();
+    UserDataTrack(CoreModel coreModel) {
+        plotModel = new UserDataModel(coreModel);
+        controls = new UserDataControls((UserDataModel)plotModel);
+        plot = new UserDataPlot(plotModel);
     }
 
+    public String getName() {
+        return "Raw User Submitted Data";
+    }
 }
 

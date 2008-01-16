@@ -129,7 +129,7 @@ class LoaderUI extends JPanel implements IView {
                     CoreModel m = LoaderUI.this.model;
                     Alignment align = Parser.parseFasta(buf.toString());
                     m.setAlignment(align, buf.toString());
-                    BaseTrack t = TrackFactory.getTrack(CompositionTrack.getName(), m);
+                    BaseTrack t = TrackFactory.getTrack("Amino Acid Composition", m);
                     m.addTrack(t);
                     p.setStatus("Loaded successfully.");
                 } catch (Exception e) {
@@ -138,7 +138,6 @@ class LoaderUI extends JPanel implements IView {
             }
         });
 
-        /*
         this.loadUserDataPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 
@@ -154,6 +153,8 @@ class LoaderUI extends JPanel implements IView {
                     }
                 } catch (IOException e) {
                     p.setStatus("Parsing input failed.");
+                    System.err.println(e);
+                    e.printStackTrace();
                 }
 
                 try {
@@ -161,13 +162,16 @@ class LoaderUI extends JPanel implements IView {
                     UserData ud = Parser.parseUserData(buf.toString(), 
                             m.getAlignment());
                     m.setUserData(ud);
+                    BaseTrack t = TrackFactory.getTrack("Raw User Submitted Data", m);
+                    m.addTrack(t);
                     p.setStatus("Loaded successfully.");
                 } catch (Exception e) {
-                    p.setStatus("Parsing input failed.");
+                    p.setStatus("Parsing input failed 2.");
+                    System.err.println(e);
+                    e.printStackTrace();
                 }
             }
         });
-        */
 
         /*
         this.secondaryPanel.addActionListener(new ActionListener() {

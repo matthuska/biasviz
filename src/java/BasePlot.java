@@ -62,6 +62,7 @@ public abstract class BasePlot extends JPanel implements IView {
     }
 
     public SequenceLabels getLabels() {
+        assert names != null;
         return names;
     }
 

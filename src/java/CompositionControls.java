@@ -53,9 +53,6 @@ public class CompositionControls extends BaseControls implements IView {
     JSpinner thresholdLevelSpinner;
     DisplaySelectionListener displayListener;
 
-    //JLabel downloadLabel;
-    //JButton download;
-
     public CompositionControls(CompositionModel model) {
         super();
 
@@ -144,13 +141,6 @@ public class CompositionControls extends BaseControls implements IView {
         this.displayPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         this.add(displayOptions);
         this.add(displayPanel);
-
-        //this.add(downloadLabel);
-        //JPanel downloadPanel = new JPanel();
-        //downloadPanel.setLayout(new BoxLayout(downloadPanel, BoxLayout.X_AXIS));
-        //downloadPanel.add(download);
-        //this.add(downloadPanel);
-        //this.add(new JLabel());
 
         SpringUtilities.makeCompactGrid(this,
                 3, 2, // Rows, Cols
@@ -256,47 +246,6 @@ public class CompositionControls extends BaseControls implements IView {
                 model.setDisplayThreshold(val.intValue());
             }
         });
-
-//        this.download.addActionListener(new ActionListener()
-//        {
-//            public void actionPerformed(ActionEvent e) {
-//                JFileChooser fc = new JFileChooser();
-//
-//                FileFilter filter = new CsvFilenameFilter();
-//                fc.setFileFilter(filter);
-//
-//                fc.setSelectedFile(new File("biasviz-output.csv"));
-//                int retval = fc.showSaveDialog(ControlView.this);
-//
-//                if (retval == JFileChooser.APPROVE_OPTION) {
-//                    File file = fc.getSelectedFile();
-//                    try {
-//                        if (file.exists()) {
-//                            int choice = JOptionPane.showConfirmDialog(
-//                                    ControlView.this, 
-//                                    "The file \"" + file.getName() + 
-//                                    "\" already exists in that location.\n" +
-//                                    "Do you want to replace it with the one you are saving?", 
-//                                    "Replace Existing File?", 
-//                                    JOptionPane.YES_NO_OPTION);
-//                            if (choice != JOptionPane.YES_OPTION) {
-//                                return;
-//                            }
-//                        }
-//                        file.createNewFile();
-//                        BufferedWriter out = new BufferedWriter(new FileWriter(file));
-//                        out.write(model.getCSV());
-//                        out.close();
-//                    } catch (IOException io) {
-//                        JOptionPane.showMessageDialog(null,
-//                                "Could not save the file in that location.",
-//                                "File Save Error",
-//                                JOptionPane.ERROR_MESSAGE);
-//                    }
-//                }
-//            }
-//        });
-//
 
         this.dynamicIntensity.addActionListener(displayListener);
         this.fixedIntensity.addActionListener(displayListener);

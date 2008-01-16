@@ -32,7 +32,7 @@ class UserDataPlot extends BasePlot {
 
     boolean dynamicIntensity;
 
-    UserDataPlot(PlotModel m) {
+    UserDataPlot(BasePlotModel m) {
         super(m);
     }
 

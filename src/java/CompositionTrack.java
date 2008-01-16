@@ -35,9 +35,11 @@ public class CompositionTrack extends BaseTrack {
         plotModel = new CompositionModel(coreModel);
         controls = new CompositionControls((CompositionModel)plotModel);
         plot = new CompositionPlot(plotModel);
-
-        name = "Amino Acid Composition";
     }
 
+    public String getName() {
+        return "Amino Acid Composition";
+    }
 }
+
 
