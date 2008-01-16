@@ -30,6 +30,10 @@ public class SequenceLabels extends JComponent implements IView {
     List<String> names;
     CoreModel model;
 
+    SequenceLabels() {
+        names.add("");
+    }
+
     SequenceLabels(CoreModel model) {
         assert model != null;
         this.model = model;

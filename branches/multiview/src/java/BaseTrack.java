@@ -29,7 +29,6 @@ abstract class BaseTrack {
     protected BasePlotModel plotModel;
     protected BaseControls controls;
     protected BasePlot plot;
-    protected static String name = new String();
 
     private void setModel(BasePlotModel newModel) {
         assert newModel != null;
@@ -66,9 +65,7 @@ abstract class BaseTrack {
         return plot.getLabels();
     }
 
-    static public String getName() {
-        return name;
-    }
+    protected abstract String getName();
 
 }
 

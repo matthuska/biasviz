@@ -37,7 +37,7 @@ public class CoreModel {
     String rawInput;
     Alignment alignment;
     String secondary;
-    //UserData userData;
+    UserData userData;
 
     /* Zoom level */
     float zoomWidth;
@@ -83,14 +83,14 @@ public class CoreModel {
         return (alignment == null) ? true : false;
     }
 
-    //public void setUserData(UserData input) {
-    //    this.userData = input;
-    //    this.updateAllViews();
-    //}
+    public void setUserData(UserData input) {
+        this.userData = input;
+        this.updateAllViews();
+    }
 
-    //public UserData getUserData() {
-    //    return userData;
-    //}
+    public UserData getUserData() {
+        return userData;
+    }
 
     //public void setSecondary(String input) {
     //    secondary = Parser.parseJPred(input);
@@ -130,6 +130,7 @@ public class CoreModel {
 
     public String toString() {
         return alignment.toString();
+
     }
 
     public int maxLength() {

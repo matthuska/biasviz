@@ -97,7 +97,6 @@ public class Parser {
      * problem parsing
      *
      */
-    /*
     static public UserData parseUserData(String input, Alignment align) throws Exception {
         UserData ud = new UserData();
         BufferedReader in = new BufferedReader(new StringReader(input));
@@ -161,7 +160,6 @@ public class Parser {
 
         return ud;
     }
-    */
 
 }
 

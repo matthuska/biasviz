@@ -31,14 +31,11 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class UserDataModel implements PlotModel, IView {
+public class UserDataModel extends BasePlotModel implements IView {
 
     final static int DISPLAY_DYNAMIC    = 1;
     final static int DISPLAY_FIXED      = 2;
     final static int DISPLAY_THRESHOLD  = 3;
-
-    List<IView> views;
-    CoreModel coreModel;
 
     int windowSize;
 
@@ -95,33 +92,5 @@ public class UserDataModel implements PlotModel, IView {
         return displayThreshold;
     }
 
-    public CoreModel getCoreModel() {
-        return coreModel;
-    }
-
-    public void setCoreModel(CoreModel m) {
-        coreModel = m;
-    }
-
-    public void updateView() {
-        this.updateAllViews();
-    }
-
-    /*
-     * View management
-     */
-    public void addView(IView view) {
-        views.add(view);
-    }
-
-    public void removeView(IView view) {
-        views.remove(view);
-    }
-
-    private void updateAllViews() {
-        for (IView view : views) {
-            view.updateView();
-        }
-    }
 }
 

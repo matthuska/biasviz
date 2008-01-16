@@ -21,33 +21,17 @@
  *
  */
 
-//import java.util.ArrayList;
-//import java.util.List;
-
 class TrackFactory {
 
-//    final static String[] TrackTypes = {
-//        CompositionTrack.ge"Amino Acid Composition",
-//        "User Provided Values",
-//        "JPred Secondary Structure",
-//        "Test UI",
-//    };
-
     static BaseTrack getTrack(String name, CoreModel model) {
-        if (name.equals(CompositionTrack.getName())) {
+        if (name.equals("Amino Acid Composition")) {
             return new CompositionTrack(model);
-//        } else if (name.equals("User Provided Values")) {
-//            return new UserDataUI(model);
-//        } else if (name.equals(SecondaryTrack.getName())) {
-//            return new SecondaryTrack(model);
-//        } else if (name.equals("Test UI")) {
-//            return new TestUI(model);
+        } else if (name.equals("Raw User Submitted Data")) {
+            return new UserDataTrack(model);
         }
+
         System.err.println("User interface not found.");
         return null;
     }
 
-//    static String[] getTrackNames() {
-//        return TrackTypes;
-//    }
 }

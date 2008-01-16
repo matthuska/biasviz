@@ -107,58 +107,5 @@ public class CompositionModel extends BasePlotModel implements IView
         }
     }
 
-
-    //public float getZoomWidth() { return 1.0; }
-
-    //public float getZoomHeight() { return zoomHeight; }
-    //public float getZoomWidth() { return zoomWidth; }
-
-    //public void setZoomHeight(float zoom) {
-    //    this.zoomHeight = zoom;
-    //}
-
-    //// Increase zoom level for width
-    //public void incZoomWidth() {
-    //    this.zoomWidth *= ZOOM_WIDTH_STEP;
-    //    this.updateAllViews();
-    //}
-
-    //// Decrease zoom level for width
-    //public void decZoomWidth() {
-    //    this.zoomWidth /= ZOOM_WIDTH_STEP;
-    //    this.updateAllViews();
-    //}
-
-    //// Reset zoom level to 1:1
-    //public void zoomWidth1to1() {
-    //    this.zoomWidth = 1.0f;
-    //    this.updateAllViews();
-    //}
-
-    //public CoreModel getCoreModel() {
-    //    return coreModel;
-    //}
-
-    //public void setCoreModel(CoreModel m) {
-    //    coreModel = m;
-    //}
-
-
-    /*
-     * View management
-     */
-    //public void addView(IView view) {
-    //    views.add(view);
-    //}
-
-    //public void removeView(IView view) {
-    //    views.remove(view);
-    //}
-
-    //private void updateAllViews() {
-    //    for (IView view : views) {
-    //        view.updateView();
-    //    }
-    //}
 }
 
