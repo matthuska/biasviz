@@ -24,24 +24,39 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.ArrayList;
 
 public class SequenceLabels extends JComponent implements IView {
 
-    List<String> names;
+    List<String> names = new ArrayList<String>();
     CoreModel model;
 
-    SequenceLabels() {
-        names.add("");
+    SequenceLabels(String name) {
+        names.add(name);
+        updateView();
+    }
+
+    SequenceLabels(List<String> newNames) {
+        names = newNames;
+        updateView();
     }
 
     SequenceLabels(CoreModel model) {
-        assert model != null;
-        this.model = model;
-
+//        assert model != null;
+//        this.model = model;
+//
         this.names = model.getAlignment().getNames();
 
-        this.model.addView(this);
+//        this.model.addView(this);
         updateView();
+    }
+
+    public void setMaximumHeight(int ph) {
+        setMaximumSize(new Dimension(100, ph));
+    }
+
+    public void setMaximumWidth(int pw) {
+        setMaximumSize(new Dimension(pw, 30));
     }
 
     public void setPreferredHeight(int ph) {
@@ -86,13 +101,15 @@ public class SequenceLabels extends JComponent implements IView {
     }
 
     public void updateView() {
-        this.names = model.getAlignment().getNames();
+        //this.names = model.getAlignment().getNames();
 
         setPreferredWidth(50);
         setMinimumWidth(50);
+        setMaximumWidth(50);
 
         setPreferredHeight(names.size() * 10);
         setMinimumHeight(names.size() * 10);
+        setMaximumHeight(names.size() * 10);
 
         this.repaint();
     }

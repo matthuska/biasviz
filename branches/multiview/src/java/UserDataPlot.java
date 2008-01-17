@@ -36,11 +36,10 @@ class UserDataPlot extends BasePlot {
         super(m);
     }
 
-    // Takes in an alignment and returns a visualization of it.
-    protected void parseAlignment(Alignment align) {
-
+    protected void recalculate() {
         UserDataModel cmodel = (UserDataModel)model;
         CoreModel core = cmodel.getCoreModel();
+        Alignment align = core.getAlignment();
         UserData ud = core.getUserData();
 
         int height = align.numSequences();

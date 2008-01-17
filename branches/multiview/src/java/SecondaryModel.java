@@ -31,7 +31,7 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel extends BasePlotModel implements IView
+public class SecondaryModel extends BasePlotModel implements IView
 {
 
     final static int DISPLAY_DYNAMIC    = 1;
@@ -45,7 +45,7 @@ public class CompositionModel extends BasePlotModel implements IView
     int displayType;
     int displayThreshold;
 
-    public CompositionModel(CoreModel m) {
+    public SecondaryModel(CoreModel m) {
         assert m != null;
         coreModel = m;
 

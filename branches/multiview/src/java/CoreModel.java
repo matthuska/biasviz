@@ -92,39 +92,31 @@ public class CoreModel {
         return userData;
     }
 
-    //public void setSecondary(String input) {
-    //    secondary = Parser.parseJPred(input);
-    //    this.updateAllViews();
-    //}
+    public void setSecondary(String input) {
+        secondary = Parser.parseJPred(input);
+        this.updateAllViews();
+    }
 
-    //public String getSecondary() {
-    //    return secondary;
-    //}
+    public String getSecondary() {
+        return secondary;
+    }
 
-    //// FIXME: compute this when secondary is first set and save for future use
-    //public String getSecondaryWithGaps() {
-    //    String seq = alignment.getSequence(0).getSequence();
-    //    StringBuilder swg = new StringBuilder();
-    //    int j = 0;
-    //    // FIXME: Rewrite to use indexOf or something like that
-    //    for (int i = 0; i < seq.length(); i++) {
-    //        if (seq.charAt(i) == '-') {
-    //            swg.append('_');
-    //        } else {
-    //            swg.append(secondary.charAt(j));
-    //            j++;
-    //        }
-    //    }
-    //    return swg.toString();
-    //}
-
-    //public boolean hasSecondary() {
-    //    if (secondary != null) {
-    //        return true;
-    //    } else {
-    //        return false;
-    //    }
-    //}
+    // FIXME: compute this when secondary is first set and save for future use
+    public String getSecondaryWithGaps() {
+        String seq = alignment.getSequence(0).getSequence();
+        StringBuilder swg = new StringBuilder();
+        int j = 0;
+        // FIXME: Rewrite to use indexOf or something like that
+        for (int i = 0; i < seq.length(); i++) {
+            if (seq.charAt(i) == '-') {
+                swg.append('_');
+            } else {
+                swg.append(secondary.charAt(j));
+                j++;
+            }
+        }
+        return swg.toString();
+    }
     
     /* Misc useful methods */
 

@@ -173,7 +173,6 @@ class LoaderUI extends JPanel implements IView {
             }
         });
 
-        /*
         this.secondaryPanel.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 JFilePanel p = LoaderUI.this.secondaryPanel;
@@ -191,16 +190,21 @@ class LoaderUI extends JPanel implements IView {
                 }
 
                 String secondary;
+
                 try {
+                    CoreModel m = LoaderUI.this.model;
                     secondary = Parser.parseJPred(buf.toString());
-                    LoaderUI.this.model.setSecondary(buf.toString());
-                    p.setStatus("Secondary structure set successfully.");
+                    m.setSecondary(secondary);
+                    BaseTrack t = TrackFactory.getTrack("Secondary Structure", m);
+                    m.addTrack(t);
+                    p.setStatus("Loaded successfully.");
                 } catch (Exception e) {
-                    p.setStatus("Parsing input failed.");
+                    p.setStatus("Parsing input failed 2.");
+                    System.err.println(e);
+                    e.printStackTrace();
                 }
             }
         });
-        */
 
         this.doneButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

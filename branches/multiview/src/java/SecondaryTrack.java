@@ -29,16 +29,15 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class CompositionTrack extends BaseTrack {
+public class SecondaryTrack extends BaseTrack {
 
-    CompositionTrack(CoreModel coreModel) {
-        plotModel = new CompositionModel(coreModel);
-        controls = new CompositionControls((CompositionModel)plotModel);
-        plot = new CompositionPlot(plotModel);
+    SecondaryTrack(CoreModel coreModel) {
+        plotModel = new SecondaryModel(coreModel);
+        plot = new SecondaryPlot(plotModel);
     }
 
     public String getName() {
-        return "Amino Acid Composition";
+        return "Secondary Structure";
     }
 }
 

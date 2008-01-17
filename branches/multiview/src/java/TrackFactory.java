@@ -28,6 +28,8 @@ class TrackFactory {
             return new CompositionTrack(model);
         } else if (name.equals("Raw User Submitted Data")) {
             return new UserDataTrack(model);
+        } else if (name.equals("Secondary Structure")) {
+            return new SecondaryTrack(model);
         }
 
         System.err.println("User interface not found.");

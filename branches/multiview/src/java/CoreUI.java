@@ -92,8 +92,10 @@ class CoreUI extends JPanel implements IView {
 
         List<BaseTrack> tracks = model.getTracks();
 
-        GridLayout layout = new GridLayout(0, 1);
-        layout.setVgap(5);
+        //GridLayout layout = new GridLayout(0, 1);
+        SpringLayout layout = new SpringLayout();
+
+        //layout.setVgap(5);
 
         JPanel main = new JPanel(layout);
         JPanel labels = new JPanel(layout);
@@ -111,6 +113,21 @@ class CoreUI extends JPanel implements IView {
                 controls.addTab(track.getName(), track.getControls());
             }
         }
+        
+        // Push everything upwards
+        main.add(Box.createVerticalGlue());
+        labels.add(Box.createVerticalGlue());
+
+        SpringUtilities.makeCompactGrid(main,
+                main.getComponentCount(), 1, // Rows, Cols
+                0, 0,
+                0, 4);
+
+        SpringUtilities.makeCompactGrid(labels,
+                labels.getComponentCount(), 1, // Rows, Cols
+                0, 0,
+                0, 4);
+
 
         scroll.setViewportView(main);
         scroll.setRowHeaderView(labels);
