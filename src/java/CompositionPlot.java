@@ -36,9 +36,11 @@ class CompositionPlot extends BasePlot {
     }
 
     // Takes in an alignment and returns a visualization of it.
-    protected void parseAlignment(Alignment align) {
-
+    //protected void parseAlignment(Alignment align) {
+    protected void recalculate() {
         CompositionModel cmodel = (CompositionModel)model;
+        CoreModel core = cmodel.getCoreModel();
+        Alignment align = core.getAlignment();
 
         int height = align.numSequences();
         int width = align.maxLength();
