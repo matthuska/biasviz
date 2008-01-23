@@ -133,17 +133,29 @@ class JFilePanel extends JPanel {
     private void registerControllers() {
         this.selectFile.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                FileDialog fc = new FileDialog(new Frame(), "Select file", FileDialog.LOAD);
-                fc.setVisible(true);
 
-                // Check to see if user cancelled the dialog.
-                if (fc.getFile() == null) {
-                    return;
+                File file;
+                // Use Swing file chooser on Linux, AWT on others
+                String os = System.getProperty("os.name");
+                if (os != null && !os.startsWith("Linux")) {
+                    FileDialog fc = new FileDialog(new Frame(), "Select file", FileDialog.LOAD);
+                    fc.setVisible(true);
+
+                    // Check to see if user cancelled the dialog.
+                    if (fc.getFile() == null) {
+                        return;
+                    }
+                    String filename = fc.getDirectory() + fc.getFile();
+                    file = new File(filename);
+                } else {
+                    JFileChooser fc = new JFileChooser();
+                    int returnVal = fc.showOpenDialog(JFilePanel.this);
+                    if (returnVal != JFileChooser.APPROVE_OPTION) {
+                        return;
+                    }
+                    file = fc.getSelectedFile();
                 }
 
-                String filename = fc.getDirectory() + fc.getFile();
-
-                File file = new File(filename);
                 if (!file.canRead()) {
                     int choice = JOptionPane.showConfirmDialog(
                         JFilePanel.this, 
