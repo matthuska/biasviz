@@ -36,7 +36,7 @@
 
     <target name="compile" depends="init"
         description="Compiles code, output goes to the build directory.">
-        <javac srcdir="${javasrc}" destdir="${build}"/>
+        <javac srcdir="${javasrc}" destdir="${build}" target="1.5"/>
     </target>
 
     <target name="debug" depends="init"
@@ -53,13 +53,13 @@
         <mkdir dir="${dist}/lib"/>
 
         <!-- Put everything in ${build} into the biasviz.jar file -->
-        <jar jarfile="${dist}/lib/biasviz-unsigned.jar" basedir="${build}"/>
+        <!-- <jar jarfile="${dist}/lib/biasviz-unsigned.jar" basedir="${build}"/> -->
+        <jar destfile="${dist}/lib/biasviz.jar" basedir="${build}" manifest="${javasrc}/Manifest.txt"/>
     </target>
 
     <target name="sign" depends="jar,makekey">
-        <!--<signjar jar="${jar-file}" alias="biasviz-key" storepass="secret" keystore="~/.keystore"/>-->
-        <signjar jar="${dist}/lib/biasviz-unsigned.jar" alias="biasviz-key"
-            storepass="secret" signedjar="${dist}/lib/biasviz.jar"/>
+        <signjar jar="${dist}/lib/biasviz.jar" alias="biasviz-key" storepass="secret"/>
+        <!-- <signjar jar="${dist}/lib/biasviz-unsigned.jar" alias="biasviz-key" storepass="secret" signedjar="${dist}/lib/biasviz.jar" keystore="${user.home}/.keystore"/> -->
     </target>
 
     <target name="check-keystore" >
@@ -73,10 +73,6 @@
             <dname>
                 <param name="CN" value="Dummy Key"/>
                 <param name="OU" value="Dummy Division"/>
-                <!--
-                <param name="CN" value="OGIC Key"/>
-                <param name="OU" value="Bioinformatics Division"/>
-                -->
                 <param name="O"  value="ogic.ca"/>
                 <param name="C"  value="CA"/>
             </dname>
