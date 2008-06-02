@@ -36,10 +36,13 @@ class LoaderUI extends JPanel implements IView {
 
     JPanel required;
     JPanel optional;
+    JPanel current;
 
     JFilePanel loadMSAPanel;
     JFilePanel secondaryPanel;
     JFilePanel loadUserDataPanel;
+
+    CurrentTracksUI currentTracks;
 
     JButton doneButton;
 
@@ -62,12 +65,15 @@ class LoaderUI extends JPanel implements IView {
 
         required = new JPanel();
         optional = new JPanel();
+        current = new JPanel();
 
-        loadMSAPanel = new JFilePanel("Load multiple sequence alignment:");
+        loadMSAPanel = new JFilePanel("Load FASTA format multiple sequence alignment:");
         secondaryPanel = new JFilePanel("Load JPred secondary structure:");
         loadUserDataPanel = new JFilePanel("Load raw values for each amino acid:");
 
-        doneButton = new JButton("Done");
+        currentTracks = new CurrentTracksUI(model);
+
+        doneButton = new JButton("Go to Graphical View >>");
     }
 
     private void layoutView() {
@@ -75,18 +81,24 @@ class LoaderUI extends JPanel implements IView {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         required.setLayout(new BoxLayout(required, BoxLayout.Y_AXIS));
-        required.setBorder(BorderFactory.createTitledBorder("Required"));
+        required.setBorder(BorderFactory.createTitledBorder("Step 1: Add Multiple Sequence Alignment (required)"));
         required.add(loadMSAPanel);
 
         optional.setLayout(new BoxLayout(optional, BoxLayout.Y_AXIS));
-        optional.setBorder(BorderFactory.createTitledBorder("Optional"));
+        optional.setBorder(BorderFactory.createTitledBorder("Step 2: Add Additional Data Tracks (optional)"));
         optional.add(secondaryPanel);
         optional.add(Box.createVerticalStrut(12));
         optional.add(loadUserDataPanel);
 
+        current.setLayout(new BoxLayout(current, BoxLayout.Y_AXIS));
+        current.setBorder(BorderFactory.createTitledBorder("Status: Currently Loaded Tracks"));
+        current.add(currentTracks);
+        current.add(Box.createVerticalStrut(12));
+
         titleLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         required.setAlignmentX(Component.LEFT_ALIGNMENT);
         optional.setAlignmentX(Component.LEFT_ALIGNMENT);
+        current.setAlignmentX(Component.LEFT_ALIGNMENT);
         doneButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         this.add(titleLabel);
@@ -94,6 +106,8 @@ class LoaderUI extends JPanel implements IView {
         this.add(required);
         this.add(Box.createVerticalStrut(12));
         this.add(optional);
+        this.add(Box.createVerticalStrut(12));
+        this.add(current);
         this.add(Box.createVerticalStrut(12));
         this.add(doneButton);
 

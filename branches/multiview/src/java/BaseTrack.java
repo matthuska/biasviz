@@ -67,5 +67,7 @@ abstract class BaseTrack {
 
     protected abstract String getName();
 
+    public abstract String toString();
+
 }
 

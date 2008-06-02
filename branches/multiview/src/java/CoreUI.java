@@ -56,7 +56,7 @@ class CoreUI extends JPanel implements IView {
         scroll = new JScrollPane(new JPanel(new GridLayout(0, 1)));
 
         zoomControls = new ZoomControlView(model);
-        loadFilesButton = new JButton("Change Input Files");
+        loadFilesButton = new JButton("<< Change Input Files");
 
         aarule = new Rule(model, Rule.HORIZONTAL);
         controls = new JTabbedPane();
@@ -101,19 +101,23 @@ class CoreUI extends JPanel implements IView {
         JPanel labels = new JPanel(layout);
 
         // Add all interface components from each track to their proper areas
-        for (BaseTrack track: tracks) {
-            // Labels next to each row in the plot
-            labels.add(track.getLabels());
+        if (tracks.size() == 0) {
+            controls.removeAll();
+        } else {
+            for (BaseTrack track: tracks) {
+                // Labels next to each row in the plot
+                labels.add(track.getLabels());
 
-            // Track's plot
-            main.add(track.getPlot());
+                // Track's plot
+                main.add(track.getPlot());
 
-            // Add the track's controls
-            if (track.hasControls()) {
-                controls.addTab(track.getName(), track.getControls());
+                // Add the track's controls
+                if (track.hasControls()) {
+                    controls.addTab(track.getName(), track.getControls());
+                }
             }
         }
-        
+
         // Push everything upwards
         main.add(Box.createVerticalGlue());
         labels.add(Box.createVerticalGlue());
