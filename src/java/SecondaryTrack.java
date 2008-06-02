@@ -39,6 +39,9 @@ public class SecondaryTrack extends BaseTrack {
     public String getName() {
         return "Secondary Structure";
     }
+    public String toString() {
+        return "Secondary Structure";
+    }
 }
 
 

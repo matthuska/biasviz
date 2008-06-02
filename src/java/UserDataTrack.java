@@ -40,5 +40,9 @@ public class UserDataTrack extends BaseTrack {
     public String getName() {
         return "Raw User Submitted Data";
     }
+
+    public String toString() {
+        return "Raw User Submitted Data";
+    }
 }
 

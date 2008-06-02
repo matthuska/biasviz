@@ -60,7 +60,7 @@ public class CoreModel {
         updateAllViews();
     }
 
-    public void removeTrack(BaseTrack track) {
+    public void removeTrack(Object track) {
         tracks.remove(track);
         updateAllViews();
     }

@@ -40,6 +40,10 @@ public class CompositionTrack extends BaseTrack {
     public String getName() {
         return "Amino Acid Composition";
     }
+
+    public String toString() {
+        return "Multiple Sequence Alignment";
+    }
 }
 
 

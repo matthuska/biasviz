@@ -79,6 +79,7 @@ public class MainApplet extends JApplet {
     public void setLookAndFeel() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("Slider.paintValue", Boolean.FALSE);
             SwingUtilities.updateComponentTreeUI(this);
         } catch (Exception e) {
             e.printStackTrace();
