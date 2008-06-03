@@ -23,6 +23,7 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.Map;
 
 abstract class BaseTrack {
 
@@ -66,6 +67,8 @@ abstract class BaseTrack {
     }
 
     protected abstract String getName();
+    protected abstract Map<String, String> getSettings();
+    protected abstract String getData();
 
     public abstract String toString();
 

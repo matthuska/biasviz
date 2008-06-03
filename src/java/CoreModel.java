@@ -174,5 +174,92 @@ public class CoreModel {
         }
     }
 
+    // Returns the composition data in comma separated value format
+    public String getCSV() {
+
+        StringBuffer csvString = new StringBuffer();
+
+        for (BaseTrack track : tracks) {
+            csvString.append("[" + track.getName() + "]");
+            csvString.append(System.getProperty("line.separator"));
+
+            Map<String, String> settings = track.getSettings();
+            TreeSet<String> sortedKeys = new TreeSet<String>();
+            sortedKeys.addAll(settings.keySet());
+            for (String key : sortedKeys) {
+                csvString.append(key + " = " + settings.get(key));
+                csvString.append(System.getProperty("line.separator"));
+            }
+
+            csvString.append(track.getData());
+            csvString.append(System.getProperty("line.separator"));
+        }
+
+        return csvString.toString();
+
+        // OLD CSV CODE //
+       
+        //Alignment align = alignment;
+        //System.err.println("Parsing");
+
+        //StringBuffer csvString = new StringBuffer();
+
+        //int height = align.size();
+        //int width = align.maxLength();
+
+        //if (height == 0 || width == 0) {
+        //    return "";
+        //}
+
+        //int windowSize = this.getWindowSize();
+        //int halfWindowSize = windowSize / 2;
+        //String acids = this.getAminoAcids();
+
+        //csvString.append("\"Amino Acid Composition Values\"\n");
+        //csvString.append("\"\"\n");
+        //csvString.append("\"Settings:\"\n");
+        //csvString.append("\" Window size: " + windowSize + "\"\n");
+        //csvString.append("\" Amino acid(s): " + acids + "\"\n");
+        //
+        // Iterate through sequences
+        //for (int seq = 0; seq < height; seq++) {
+
+        //    csvString.append("\n\">" + align.getSequenceName(seq) + "\"\n");
+
+        //    Sequence sobj = align.getSequence(seq);
+        //    String seqGaps = sobj.getSequence();
+        //    String seqNoGaps = sobj.getSequenceNoGaps();
+
+        //    int nongaps = 0; // Number of non-gap positions processed
+
+        //    // Iterate through individual amino acids in the current sequence
+        //    for (int aa = 0; aa < seqGaps.length(); aa++) {
+        //        if (seqGaps.charAt(aa) == '-') {
+        //            continue;
+        //        }
+
+        //        int startpos = Math.max(0, nongaps - halfWindowSize);
+        //        int endpos = Math.min(seqNoGaps.length() - 1, nongaps + halfWindowSize);
+        //        assert startpos <= endpos;
+
+        //        int matches = 0;
+
+        //        for (int pos = startpos; pos <= endpos; pos++) {
+        //            for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
+        //                if (seqNoGaps.charAt(pos) == acids.charAt(acidpos)) {
+        //                    matches += 1;
+        //                }
+        //            }
+        //        }
+
+        //        double comp = (double)matches / windowSize;
+        //        csvString.append((nongaps + 1) + ", " + comp + ", \"" + seqNoGaps.charAt(nongaps) + "\"\n");
+        //        nongaps += 1;
+        //    }
+        //}
+
+        //return csvString.toString();
+    }
+
 }
 

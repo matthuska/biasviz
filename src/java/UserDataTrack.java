@@ -28,6 +28,8 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.Map;
+import java.util.Hashtable;
 
 public class UserDataTrack extends BaseTrack {
 
@@ -43,6 +45,15 @@ public class UserDataTrack extends BaseTrack {
 
     public String toString() {
         return "Raw User Submitted Data";
+    }
+
+    public Map<String, String> getSettings() {
+        return new Hashtable<String, String>(); 
+    }
+
+    //public Map<String, Vector> getData() {
+    public String getData() {
+        return new String();
     }
 }
 
