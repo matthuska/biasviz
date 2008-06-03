@@ -28,6 +28,8 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.Map;
+import java.util.Hashtable;
 
 public class CompositionTrack extends BaseTrack {
 
@@ -43,6 +45,20 @@ public class CompositionTrack extends BaseTrack {
 
     public String toString() {
         return "Multiple Sequence Alignment";
+    }
+
+    public Map<String, String> getSettings() {
+        Map<String, String> settings = new Hashtable<String, String>();
+        CompositionModel compModel = (CompositionModel)plotModel;
+        settings.put("Window Size", Integer.toString(compModel.getWindowSize()));
+        settings.put("Amino Acids", compModel.getAminoAcids());
+        settings.put("Display Type", Integer.toString(compModel.getDisplayType()));
+        settings.put("Display Threshold", Integer.toString(compModel.getDisplayThreshold()));
+        return settings;
+    }
+
+    public String getData() {
+        return new String();
     }
 }
 

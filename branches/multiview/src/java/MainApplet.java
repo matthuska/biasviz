@@ -39,28 +39,7 @@ public class MainApplet extends JApplet {
     JPanel cards; 
     JPanel loader;
     JPanel ui;
-
-    //public void init(String input, String secondary, String userData) {
-    //    // Load and parse input
-    //    setLookAndFeel();
-
-    //    CoreModel model = new CoreModel();
-
-    //    if (input != null) {
-    //        model.setAlignment(input);
-    //    }
-
-    //    if (secondary != null) {
-    //        model.setSecondary(secondary);
-    //    }
-
-    //    if (userData != null) {
-    //        model.setUserData(userData);
-    //    }
-
-    //    JPanel ui = new CoreUI(model);
-    //    this.add(ui);
-    //}
+    JPanel save;
 
     public void init() {
         setLookAndFeel();
@@ -68,11 +47,15 @@ public class MainApplet extends JApplet {
         model = new CoreModel();
  
         cards = new JPanel(new CardLayout());
+
         loader = new LoaderUI(model, cards);
         ui = new CoreUI(model, cards);
+        save = new SaveUI(model, cards);
 
         cards.add(loader, "Loader");
         cards.add(ui, "Main");
+        cards.add(save, "Save");
+
         this.add(cards);
     }
 
@@ -85,46 +68,5 @@ public class MainApplet extends JApplet {
             e.printStackTrace();
         }
     }
-
-    //private String loadAlignment() {
-    //    if (getParameter("numlines") == null) {
-    //        return null;
-    //    }
-    //    int lines = Integer.parseInt(getParameter("numlines"));
-    //    StringBuffer buf = new StringBuffer();
-    //    for (int i = 0; i < lines; i++) {
-    //        buf.append(getParameter("line" + i) + "\n");
-    //    }
-    //    return buf.toString();
-    //}
-
-    //private String loadSecondary() {
-    //    if (getParameter("snumlines") == null) {
-    //        return null;
-    //    }
-    //        
-    //    int lines = Integer.parseInt(getParameter("snumlines"));
-    //    StringBuffer buf = new StringBuffer();
-    //    for (int i = 0; i < lines; i++) {
-    //        buf.append(getParameter("sline" + i) + "\n");
-    //    }
-    //    return buf.toString();
-    //}
-
-    //private String loadUserData() {
-    //    if (getParameter("unumlines") == null) {
-    //        return null;
-    //    }
-
-    //    int lines = Integer.parseInt(getParameter("unumlines"));
-    //    StringBuffer buf = new StringBuffer();
-    //    for (int i = 0; i < lines; i++) {
-    //        buf.append(getParameter("uline" + i) + "\n");
-    //    }
-
-    //    System.err.println(buf.toString());
-    //    return buf.toString();
-    //}
-
 }
 

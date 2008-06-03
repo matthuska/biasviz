@@ -40,6 +40,7 @@ class CoreUI extends JPanel implements IView {
 
     JPanel topPanel;
     JButton loadFilesButton;
+    JButton saveButton;
     ZoomControlView zoomControls;
 
     public CoreUI(CoreModel m, JPanel c) {
@@ -57,6 +58,7 @@ class CoreUI extends JPanel implements IView {
 
         zoomControls = new ZoomControlView(model);
         loadFilesButton = new JButton("<< Change Input Files");
+        saveButton = new JButton("Save");
 
         aarule = new Rule(model, Rule.HORIZONTAL);
         controls = new JTabbedPane();
@@ -72,6 +74,7 @@ class CoreUI extends JPanel implements IView {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.LINE_AXIS));
         topPanel.add(Box.createHorizontalStrut(6));
         topPanel.add(loadFilesButton);
+        topPanel.add(saveButton);
         topPanel.add(Box.createHorizontalGlue());
         topPanel.add(zoomControls);
 
@@ -167,21 +170,14 @@ class CoreUI extends JPanel implements IView {
     }
 
     private void registerControllers() {
-        //this.plotType.addActionListener(new ActionListener()
-        //{
-        //    public void actionPerformed(ActionEvent e) {
-        //        JComboBox cb = (JComboBox)e.getSource();
-        //        String name = (String)cb.getSelectedItem();
-
-        //        ////CoreUI.ui.remove(name);
-        //        //CoreUI.this.remove(ui);
-        //        //CoreUI.this.ui = UIFactory.getUI(name, model);
-        //        //CoreUI.this.add(CoreUI.this.ui, BorderLayout.CENTER);
-        //        //CoreUI.this.revalidate();
-        //    }
-        //});
-
         this.loadFilesButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cl = (CardLayout)(CoreUI.this.cards.getLayout());
+                cl.previous(CoreUI.this.cards);
+            }
+        });
+
+        this.saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout)(CoreUI.this.cards.getLayout());
                 cl.next(CoreUI.this.cards);

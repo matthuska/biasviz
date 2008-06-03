@@ -28,6 +28,8 @@
 
 import java.awt.*;
 import javax.swing.*;
+import java.util.Map;
+import java.util.Hashtable;
 
 public class SecondaryTrack extends BaseTrack {
 
@@ -41,6 +43,15 @@ public class SecondaryTrack extends BaseTrack {
     }
     public String toString() {
         return "Secondary Structure";
+    }
+
+    // There are no settings for this track
+    public Map<String, String> getSettings() {
+        return new Hashtable<String, String>(); 
+    }
+
+    public String getData() {
+        return new String();
     }
 }
 
