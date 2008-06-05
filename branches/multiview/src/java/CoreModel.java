@@ -190,8 +190,24 @@ public class CoreModel {
                 csvString.append(key + " = " + settings.get(key));
                 csvString.append(System.getProperty("line.separator"));
             }
+            csvString.append(System.getProperty("line.separator"));
 
-            csvString.append(track.getData());
+            Map<String, List> seqData = track.getData();
+            //TreeSet<String> sortedKeys = new TreeSet<String>();
+            for (String seqName : seqData.keySet()) {
+                csvString.append(">" + seqName);
+                csvString.append(System.getProperty("line.separator"));
+                for (Object tmp : seqData.get(seqName)) {
+                    CompositionDataElement e = (CompositionDataElement)tmp;
+                    csvString.append(
+                            e.getPosition() + ", " +
+                            e.getScore() + ", " +
+                            "\"" + e.getAminoAcid() + "\""
+                            );
+                    csvString.append(System.getProperty("line.separator"));
+                }
+                csvString.append(System.getProperty("line.separator"));
+            }
             csvString.append(System.getProperty("line.separator"));
         }
 

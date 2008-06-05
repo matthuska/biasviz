@@ -56,6 +56,7 @@ class CompositionPlot extends BasePlot {
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         int[][] matchArray = new int[height][width];
+        float[][] scoreArray = new float[height][width];
         int matchMax = 0;
 
         for (int seq = 0; seq < height; seq++) {
@@ -143,6 +144,7 @@ class CompositionPlot extends BasePlot {
             for (int aa = 0; aa < seqGaps.length(); aa++) {
 
                 if (matchArray[seq][aa] < 0) {
+                    scoreArray[seq][aa] = -1.0f;
                     image.setRGB(aa, seq, GAP_RGB);
                     continue;
                 }
@@ -152,25 +154,31 @@ class CompositionPlot extends BasePlot {
 
                 if (cmodel.getDisplayType() == cmodel.DISPLAY_DYNAMIC) {
                     divisor = matchMax;
+                    scoreArray[seq][aa] = (float)matchArray[seq][aa] / divisor;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
                 } else if (cmodel.getDisplayType() == cmodel.DISPLAY_FIXED) {
                     divisor = windowSize;
+                    scoreArray[seq][aa] = (float)matchArray[seq][aa] / divisor;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
                 } else {
                     if (((float)matchArray[seq][aa] / windowSize) >= 
                             (cmodel.getDisplayThreshold() / 100.0f)) {
+                        scoreArray[seq][aa] = 1.0f;
                         shade = 255;
                     } else {
+                        scoreArray[seq][aa] = 0.0f;
                         shade = 0;
                     }
                 }
 
-                Color c = new Color(shade, shade, shade);
-                shade = c.getRGB();
-                image.setRGB(aa, seq, shade);
+                //Color c = new Color(shade, shade, shade);
+                float s = scoreArray[seq][aa];
+                Color c = new Color(s, s, s);
+                image.setRGB(aa, seq, c.getRGB());
 
             }
         }
+        cmodel.setScoreArray(scoreArray);
     }
 }
 

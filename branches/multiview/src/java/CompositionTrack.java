@@ -26,10 +26,13 @@
  * @author mhuska
  */
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.util.Map;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompositionTrack extends BaseTrack {
 
@@ -57,8 +60,39 @@ public class CompositionTrack extends BaseTrack {
         return settings;
     }
 
-    public String getData() {
-        return new String();
+    public Map<String, List> getData() {
+        Map<String, List> data = new LinkedHashMap<String, List>();
+
+        CoreModel core = plotModel.getCoreModel();
+
+        Alignment alignment = core.getAlignment();
+        BufferedImage image = plot.getImage();
+
+        int maxAA = image.getWidth();
+        int maxSeq = image.getHeight();
+
+        int seq = 0;
+
+        float[][] scoreArray = ((CompositionModel)plotModel).getScoreArray();
+
+        for (Sequence sequence : alignment.getSequences()) {
+            List<CompositionDataElement> elements = new ArrayList<CompositionDataElement>();
+            int nongaps = 0;
+            for (int aa = 0; aa < maxAA; aa++) {
+                int color = image.getRGB(aa, seq);
+                if (color != Color.red.getRGB()) {
+                    nongaps++;
+                    elements.add(new CompositionDataElement(
+                                nongaps,
+                                scoreArray[seq][aa],
+                                sequence.getSequence().charAt(aa))
+                            );
+                }
+            }
+            data.put(sequence.getName(), elements);
+            seq++;
+        }
+        return data;
     }
 }
 
