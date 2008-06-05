@@ -122,5 +122,9 @@ public abstract class BasePlot extends JPanel implements IView {
     protected void finalize() {
         model.removeView(this);
     }
+
+    public BufferedImage getImage() {
+        return image;
+    }
 }
 

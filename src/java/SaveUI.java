@@ -76,11 +76,11 @@ class SaveUI extends JPanel implements IView {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         data.setLayout(new BoxLayout(data, BoxLayout.Y_AXIS));
-        data.setBorder(BorderFactory.createTitledBorder("Step 1: Add Multiple Sequence Alignment (required)"));
+        data.setBorder(BorderFactory.createTitledBorder("Save Data"));
         data.add(exportCsvButton);
 
         image.setLayout(new BoxLayout(image, BoxLayout.Y_AXIS));
-        image.setBorder(BorderFactory.createTitledBorder("Step 2: Add Additional Data Tracks (optional)"));
+        image.setBorder(BorderFactory.createTitledBorder("Save Image"));
         //image.add(secondaryPanel);
         //image.add(Box.createVerticalStrut(12));
         //image.add(loadUserDataPanel);

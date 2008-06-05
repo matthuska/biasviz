@@ -30,6 +30,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.Map;
 import java.util.Hashtable;
+import java.util.List;
 
 public class UserDataTrack extends BaseTrack {
 
@@ -51,9 +52,8 @@ public class UserDataTrack extends BaseTrack {
         return new Hashtable<String, String>(); 
     }
 
-    //public Map<String, Vector> getData() {
-    public String getData() {
-        return new String();
+    public Map<String, List> getData() {
+        return null;
     }
 }
 

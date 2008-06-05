@@ -21,39 +21,30 @@
  *
  */
 
-/**
- *
- * @author mhuska
- */
+public class CompositionDataElement {
 
-import java.awt.*;
-import javax.swing.*;
-import java.util.Map;
-import java.util.Hashtable;
-import java.util.List;
+    int position;
+    float score;
+    char aminoAcid;
 
-public class SecondaryTrack extends BaseTrack {
-
-    SecondaryTrack(CoreModel coreModel) {
-        plotModel = new SecondaryModel(coreModel);
-        plot = new SecondaryPlot(plotModel);
+    CompositionDataElement(int pos, float s, char aa) {
+        position = pos;
+        score = s;
+        aminoAcid = aa;
     }
 
-    public String getName() {
-        return "Secondary Structure";
-    }
-    public String toString() {
-        return "Secondary Structure";
+    public int getPosition() {
+        return position;
     }
 
-    // There are no settings for this track
-    public Map<String, String> getSettings() {
-        return new Hashtable<String, String>(); 
+    public float getScore() {
+        return score;
     }
 
-    public Map<String, List> getData() {
-        return null;
+    public char getAminoAcid() {
+        return aminoAcid;
     }
+	  
 }
 
 
