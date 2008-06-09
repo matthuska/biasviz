@@ -31,14 +31,12 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel extends BasePlotModel implements IView
+public class SecondaryModel extends BasePlotModel implements IView
 {
 
     final static int DISPLAY_DYNAMIC    = 1;
     final static int DISPLAY_FIXED      = 2;
     final static int DISPLAY_THRESHOLD  = 3;
-
-    float[][] scoreArray;
 
     String aminoAcids;
     int windowSize;
@@ -47,7 +45,7 @@ public class CompositionModel extends BasePlotModel implements IView
     int displayType;
     int displayThreshold;
 
-    public CompositionModel(CoreModel m) {
+    public SecondaryModel(CoreModel m) {
         assert m != null;
         coreModel = m;
 
@@ -57,20 +55,11 @@ public class CompositionModel extends BasePlotModel implements IView
         this.windowSize = 100;
         this.displayType = DISPLAY_DYNAMIC;
         this.displayThreshold = 15;
-        this.scoreArray = new float[0][0];
 
         coreModel.addView(this);
     }
 
     /* For Controller and View interaction */
-
-    public void setScoreArray(float[][] sa) {
-        scoreArray = sa;
-    }
-
-    public float[][] getScoreArray() {
-        return scoreArray;
-    }
 
     public String getAminoAcids() {
         return aminoAcids;

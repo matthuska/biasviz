@@ -21,7 +21,8 @@
  *
  */
 
-public interface IView {
-    public void updateView();
-}
+import javax.swing.JPanel;
 
+class BaseControls extends JPanel {
+
+}

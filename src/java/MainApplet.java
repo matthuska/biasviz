@@ -21,7 +21,52 @@
  *
  */
 
-public interface IView {
-    public void updateView();
+/**
+ * Parse input and create core objects.
+ *
+ * @author mhuska
+ */
+
+import javax.swing.JApplet;
+import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
+
+public class MainApplet extends JApplet {
+
+    CoreModel model;
+    // Layout that contains the file loading interface and main UI
+    JPanel cards; 
+    JPanel loader;
+    JPanel ui;
+    JPanel save;
+
+    public void init() {
+        setLookAndFeel();
+
+        model = new CoreModel();
+ 
+        cards = new JPanel(new CardLayout());
+
+        loader = new LoaderUI(model, cards);
+        ui = new CoreUI(model, cards);
+        save = new SaveUI(model, cards);
+
+        cards.add(loader, "Loader");
+        cards.add(ui, "Main");
+        cards.add(save, "Save");
+
+        this.add(cards);
+    }
+
+    public void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("Slider.paintValue", Boolean.FALSE);
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

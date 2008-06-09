@@ -21,27 +21,57 @@
  *
  */
 
-import java.util.TreeMap;
+//import java.awt.*;
+import javax.swing.*;
 import java.util.Map;
+import java.util.List;
 
-class AAConstants {
+abstract class BaseTrack {
 
-    public final static String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
+    protected BasePlotModel plotModel;
+    protected BaseControls controls;
+    protected BasePlot plot;
 
-    public final static Map<String, String> AMINO_ACID_GROUPS = new TreeMap<String, String>();
-    static {
-        //AMINO_ACID_GROUPS.put("",    "");
-        AMINO_ACID_GROUPS.put("Hydrophobic",    "ILVCAGMFYWHT");
-        AMINO_ACID_GROUPS.put("Polar",          "YWHKREQDNSTP");
-        AMINO_ACID_GROUPS.put("Small",          "VCAGDNSTP");
-        AMINO_ACID_GROUPS.put("Tiny",           "AGS");
-        AMINO_ACID_GROUPS.put("Aliphatic",      "ILV");
-        AMINO_ACID_GROUPS.put("Aromatic",       "FYWH");
-        AMINO_ACID_GROUPS.put("Positive",       "HKR");
-        AMINO_ACID_GROUPS.put("Negative",       "ED");
-        AMINO_ACID_GROUPS.put("Charged",        "HKRED");
-        AMINO_ACID_GROUPS.put("Alcohols",       "ST");
+    private void setModel(BasePlotModel newModel) {
+        assert newModel != null;
+        plotModel = newModel;
     }
+
+    public BasePlotModel getModel() {
+        return plotModel;
+    }
+
+    private void setControls(BaseControls newControls) {
+        assert newControls != null;
+        controls = newControls;
+    }
+
+    public boolean hasControls() {
+        return (controls != null);
+    }
+
+    public BaseControls getControls() {
+        return controls;
+    }
+
+    private void setPlot(BasePlot newPlot) {
+        assert newPlot != null;
+        plot = newPlot;
+    }
+
+    public BasePlot getPlot() {
+        return plot;
+    }
+
+    public SequenceLabels getLabels() {
+        return plot.getLabels();
+    }
+
+    protected abstract String getName();
+    protected abstract Map<String, String> getSettings();
+    protected abstract Map<String, List> getData();
+
+    public abstract String toString();
 
 }
 
