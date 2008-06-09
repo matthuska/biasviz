@@ -29,14 +29,20 @@ import javax.swing.text.*;
 import java.io.*;
 import javax.swing.filechooser.FileFilter;
 
-public class UserDataControls extends BaseControls implements IView {
+public class ControlView extends JPanel implements IView {
 
-    UserDataModel model;
+    CompositionModel model;
+
+    JLabel aminoAcidsLabel;
+    JTextField aminoAcids;
 
     JLabel windowSizeLabel;
     JPanel windowSizeControls;
     JSlider windowSizeSlide;
     JSpinner windowSizeSpin;
+
+    JLabel downloadLabel;
+    JButton download;
 
     JLabel displayOptions;
     JPanel displayPanel;
@@ -49,20 +55,22 @@ public class UserDataControls extends BaseControls implements IView {
     JSpinner thresholdLevelSpinner;
     DisplaySelectionListener displayListener;
 
-    public UserDataControls(UserDataModel model) {
+    JComboBox aaGroups;
+
+    public ControlView(CompositionModel model) {
         super();
 
         assert model != null;
         this.model = model;
 
-        createWidgets();
-        layoutView();
-        registerControllers();
+        this.aminoAcidsLabel = new JLabel("Amino Acids:");
+        this.aminoAcids = new JTextField(model.getAminoAcids(), 10);
+        this.aaGroups = new JComboBox(AAConstants.AMINO_ACID_GROUPS.keySet().toArray(new String[1]));
+        this.aaGroups.setSelectedIndex(-1); // Default to no selected item
 
-        this.model.addView(this);
-    }
+        this.aminoAcidsLabel.setLabelFor(aminoAcids);
+        this.aminoAcids.setMinimumSize(aminoAcids.getPreferredSize());
 
-    private void createWidgets() {
         this.windowSizeLabel = new JLabel("Windows Size:");
         this.windowSizeSlide = new JSlider(1, 200, model.getWindowSize());
         // FIXME: make an adapter for this interface in our model
@@ -73,6 +81,9 @@ public class UserDataControls extends BaseControls implements IView {
         windowSizeControls.add(windowSizeSlide, BorderLayout.CENTER);
         windowSizeControls.add(windowSizeSpin, BorderLayout.EAST);
 
+        this.downloadLabel = new JLabel("Download data as CSV:");
+        this.download = new JButton("Download");
+
         this.displayOptions = new JLabel("Display options:");
         this.displayOptions.setVerticalAlignment(JLabel.TOP);
 
@@ -80,7 +91,7 @@ public class UserDataControls extends BaseControls implements IView {
         GridLayout displayGrid = new GridLayout(4, 1);
         displayGrid.setVgap(0);
         displayPanel.setLayout(displayGrid);
-
+        //displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
         this.displayGroup = new ButtonGroup();
         this.dynamicIntensity = new JRadioButton("Dynamic intensity", true);
         this.displayGroup.add(dynamicIntensity);
@@ -95,7 +106,7 @@ public class UserDataControls extends BaseControls implements IView {
 
         this.thresholdLevelSlider = new JSlider(1, 100, 15);
         this.thresholdLevelSpinner = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
-        //// default to disabled
+        // default to disabled
         this.thresholdLevelSpinner.setEnabled(false);
         this.thresholdLevelSlider.setEnabled(false);
 
@@ -104,11 +115,25 @@ public class UserDataControls extends BaseControls implements IView {
         thresholdLevelControls.add(thresholdLevelSlider, BorderLayout.CENTER);
         thresholdLevelControls.add(thresholdLevelSpinner, BorderLayout.EAST);
         this.displayPanel.add(thresholdLevelControls);
+
+        this.layoutView();
+
+        this.registerControllers();
+
+        this.model.addView(this);
     }
-    
+
     public void layoutView() {
         SpringLayout sl = new SpringLayout();
         this.setLayout(sl);
+
+        this.add(aminoAcidsLabel);
+
+        JPanel aaPanel = new JPanel();
+        aaPanel.setLayout(new BorderLayout());
+        aaPanel.add(aminoAcids, BorderLayout.CENTER);
+        aaPanel.add(aaGroups, BorderLayout.EAST);
+        this.add(aaPanel);
 
         this.add(windowSizeLabel);
         this.add(windowSizeControls);
@@ -117,8 +142,15 @@ public class UserDataControls extends BaseControls implements IView {
         this.add(displayOptions);
         this.add(displayPanel);
 
+        this.add(downloadLabel);
+        JPanel downloadPanel = new JPanel();
+        downloadPanel.setLayout(new BoxLayout(downloadPanel, BoxLayout.X_AXIS));
+        downloadPanel.add(download);
+        this.add(downloadPanel);
+        this.add(new JLabel());
+
         SpringUtilities.makeCompactGrid(this,
-                2, 2, // Rows, Cols
+                4, 2, // Rows, Cols
                 6, 6,
                 6, 6);
 
@@ -140,10 +172,46 @@ public class UserDataControls extends BaseControls implements IView {
             this.thresholdLevelSlider.setEnabled(true);
         }
 
+
+        // Causes exception (trying to mutate on notification)
+        try {
+            this.aminoAcids.setText(model.getAminoAcids());
+        } catch (Exception e) {
+            // FIXME: ignoring exceptions tends to be a bad idea
+        }
+ 
     }
 
     /* Controllers using anonymous classes */
     public void registerControllers() {
+
+        this.aminoAcids.getDocument().addDocumentListener(new DocumentListener()
+        {
+            public void changedUpdate(DocumentEvent e) {
+                Document d = e.getDocument();
+                try {
+                    model.setAminoAcids(d.getText(0, d.getLength()));
+                } catch (BadLocationException change) {
+                    System.err.println(change.getMessage());
+                }
+            }
+            public void insertUpdate(DocumentEvent e) {
+                Document d = e.getDocument();
+                try {
+                    model.setAminoAcids(d.getText(0, d.getLength()));
+                } catch (BadLocationException insert) {
+                    System.err.println(insert.getMessage());
+                }
+            }
+            public void removeUpdate(DocumentEvent e) {
+                Document d = e.getDocument();
+                try {
+                    model.setAminoAcids(d.getText(0, d.getLength()));
+                } catch (BadLocationException remove) {
+                    System.err.println(remove.getMessage());
+                }
+            }
+        });
 
         this.windowSizeSlide.addChangeListener(new ChangeListener()
         {
@@ -179,6 +247,54 @@ public class UserDataControls extends BaseControls implements IView {
             }
         });
 
+        this.download.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fc = new JFileChooser();
+
+                FileFilter filter = new CsvFilenameFilter();
+                fc.setFileFilter(filter);
+
+                fc.setSelectedFile(new File("biasviz-output.csv"));
+                int retval = fc.showSaveDialog(ControlView.this);
+
+                if (retval == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
+                    try {
+                        if (file.exists()) {
+                            int choice = JOptionPane.showConfirmDialog(
+                                    ControlView.this, 
+                                    "The file \"" + file.getName() + 
+                                    "\" already exists in that location.\n" +
+                                    "Do you want to replace it with the one you are saving?", 
+                                    "Replace Existing File?", 
+                                    JOptionPane.YES_NO_OPTION);
+                            if (choice != JOptionPane.YES_OPTION) {
+                                return;
+                            }
+                        }
+                        file.createNewFile();
+                        BufferedWriter out = new BufferedWriter(new FileWriter(file));
+                        out.write(model.getCSV());
+                        out.close();
+                    } catch (IOException io) {
+                        System.err.println("Error writing file " + io.getMessage());
+                    }
+                }
+            }
+        });
+
+        this.aaGroups.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cb = (JComboBox)e.getSource();
+                String group = (String)cb.getSelectedItem();
+                if (AAConstants.AMINO_ACID_GROUPS.containsKey(group)) {
+                    model.setAminoAcids((String)AAConstants.AMINO_ACID_GROUPS.get(group));
+                }
+            }
+        });
+
         this.dynamicIntensity.addActionListener(displayListener);
         this.fixedIntensity.addActionListener(displayListener);
         this.threshold.addActionListener(displayListener);
@@ -186,9 +302,9 @@ public class UserDataControls extends BaseControls implements IView {
     }
 
     class DisplaySelectionListener implements ActionListener {
-        private UserDataModel model;
+        private CompositionModel model;
 
-        public DisplaySelectionListener(UserDataModel m) {
+        public DisplaySelectionListener(CompositionModel m) {
             assert model != null;
             this.model = m;
         }
@@ -206,4 +322,5 @@ public class UserDataControls extends BaseControls implements IView {
             }
         }
     }
+
 }

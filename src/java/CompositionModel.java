@@ -29,48 +29,52 @@
  */
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel extends BasePlotModel implements IView
-{
+public class CompositionModel {
+
+    final static float ZOOM_WIDTH_STEP = 1.2f; 
+    final static float ZOOM_HEIGHT_STEP = 1.2f; 
 
     final static int DISPLAY_DYNAMIC    = 1;
     final static int DISPLAY_FIXED      = 2;
     final static int DISPLAY_THRESHOLD  = 3;
 
-    float[][] scoreArray;
+    ArrayList<IView> views;
 
+    String rawinput;
+    Alignment alignment;
     String aminoAcids;
     int windowSize;
+    int stepSize;
 
-    ///* Dynamically adjust intensity */
+    /* Zoom level */
+    float zoomWidth;
+    float zoomHeight;
+
+    /* Dynamically adjust intensity */
     int displayType;
     int displayThreshold;
 
-    public CompositionModel(CoreModel m) {
-        assert m != null;
-        coreModel = m;
+    public CompositionModel() {
+        this(new Alignment());
+    }
 
-        this.views = new CopyOnWriteArrayList<IView>();
+    public CompositionModel(Alignment align) {
+        this.alignment = align;
+
+        this.views = new ArrayList<IView>();
 
         this.aminoAcids = "A";
         this.windowSize = 100;
+        this.stepSize = 1;
         this.displayType = DISPLAY_DYNAMIC;
         this.displayThreshold = 15;
-        this.scoreArray = new float[0][0];
 
-        coreModel.addView(this);
+        this.zoomWidth = 1.0f;
+        this.zoomHeight = 10.0f;
     }
 
     /* For Controller and View interaction */
-
-    public void setScoreArray(float[][] sa) {
-        scoreArray = sa;
-    }
-
-    public float[][] getScoreArray() {
-        return scoreArray;
-    }
 
     public String getAminoAcids() {
         return aminoAcids;
@@ -118,5 +122,142 @@ public class CompositionModel extends BasePlotModel implements IView
         }
     }
 
+    // *************************************************
+    // Zoom related
+    public float getZoomHeight() { return zoomHeight; }
+
+    public float getZoomWidth() { return zoomWidth; }
+
+    public void setZoomHeight(float zoom) {
+        this.zoomHeight = zoom;
+    }
+
+    // Increase zoom level for width
+    public void incZoomWidth() {
+        this.zoomWidth *= ZOOM_WIDTH_STEP;
+        this.updateAllViews();
+    }
+
+    // Decrease zoom level for width
+    public void decZoomWidth() {
+        this.zoomWidth /= ZOOM_WIDTH_STEP;
+        this.updateAllViews();
+    }
+
+    // Reset zoom level to 1:1
+    public void zoomWidth1to1() {
+        this.zoomWidth = 1.0f;
+        this.updateAllViews();
+    }
+
+    // Returns the composition data in comma separated value format
+    public String getCSV() {
+        Alignment align = alignment;
+        System.err.println("Parsing");
+
+        StringBuffer csvString = new StringBuffer();
+
+        int height = align.size();
+        int width = align.maxLength();
+
+        if (height == 0 || width == 0) {
+            return "";
+        }
+
+        int windowSize = this.getWindowSize();
+        int halfWindowSize = windowSize / 2;
+        String acids = this.getAminoAcids();
+
+        csvString.append("\"Amino Acid Composition Values\"\n");
+        csvString.append("\"\"\n");
+        csvString.append("\"Settings:\"\n");
+        csvString.append("\" Window size: " + windowSize + "\"\n");
+        csvString.append("\" Amino acid(s): " + acids + "\"\n");
+
+        // Iterate through sequences
+        for (int seq = 0; seq < height; seq++) {
+
+            csvString.append("\n\">" + align.getSequenceName(seq) + "\"\n");
+
+            Sequence sobj = align.getSequence(seq);
+            String seqGaps = sobj.getSequence();
+            String seqNoGaps = sobj.getSequenceNoGaps();
+
+            int nongaps = 0; // Number of non-gap positions processed
+
+            // Iterate through individual amino acids in the current sequence
+            for (int aa = 0; aa < seqGaps.length(); aa++) {
+                if (seqGaps.charAt(aa) == '-') {
+                    continue;
+                }
+
+                int startpos = Math.max(0, nongaps - halfWindowSize);
+                int endpos = Math.min(seqNoGaps.length() - 1, nongaps + halfWindowSize);
+                assert startpos <= endpos;
+
+                int matches = 0;
+
+                for (int pos = startpos; pos <= endpos; pos++) {
+                    for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
+                        if (seqNoGaps.charAt(pos) == acids.charAt(acidpos)) {
+                            matches += 1;
+                        }
+                    }
+                }
+
+                double comp = (double)matches / windowSize;
+                csvString.append((nongaps + 1) + ", " + comp + ", \"" + seqNoGaps.charAt(nongaps) + "\"\n");
+                nongaps += 1;
+            }
+        }
+
+        return csvString.toString();
+    }
+
+    // *************************************************
+    
+    /* Misc useful methods */
+
+    public String toString() {
+        return alignment.toString();
+    }
+
+    public int maxLength() {
+        return alignment.maxLength();
+    }
+
+    public int numSeqs() {
+        return alignment.size();
+    }
+
+    public Alignment getAlignment() {
+        return alignment;
+    }
+
+    public void setAlignment(String input) {
+        Parser parser = new Parser();
+        alignment = parser.parseFasta(input);
+        rawinput = input;
+        this.updateAllViews();
+    }
+
+    /*
+     * View management
+     */
+    public void addView(IView view) {
+        views.add(view);
+    }
+
+    public void removeView(IView view) {
+        this.views.remove(view);
+    }
+
+    public void updateAllViews() {
+        Iterator v_it = views.iterator();
+        while (v_it.hasNext()) {
+            IView view = (IView)v_it.next();
+            view.updateView();
+        }
+    }
 }
 

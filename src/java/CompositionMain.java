@@ -31,26 +31,17 @@ import java.awt.*;
 import javax.swing.*;
 import java.io.*;
 
-public class Main {
+public class CompositionMain {
 
     // not needed for applet version
     public static void main(String[] args) {
-        String input = null;
-        String secondary = null;
-        String userData = null;
-
-        JFrame f = new JFrame("BiasViz");
+        JFrame f = new JFrame("Test java app");
         f.setSize(800, 600);
-        f.setLayout(new BorderLayout());
 
-        MainApplet comp = new MainApplet();
-
-        if (args.length > 0) { input = readInput(args[0]); }
-        if (args.length > 1) { secondary = readInput(args[1]); }
-        if (args.length > 2) { userData = readInput(args[2]); }
-
-        //comp.init(input, secondary, userData);
-        comp.init();
+        CompositionApplet comp = new CompositionApplet();
+        String input = readInput(args[0]);
+        //String input = readInput("input.txt");
+        comp.init(input);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.add(comp);
 

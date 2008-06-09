@@ -16,9 +16,9 @@ public class Rule extends JComponent implements IView {
     public int orientation;
     private int increment;
 
-    private CoreModel model;
+    private CompositionModel model;
 
-    public Rule(CoreModel m, int o) {
+    public Rule(CompositionModel m, int o) {
         assert m != null;
         this.model = m;
 
@@ -42,6 +42,7 @@ public class Rule extends JComponent implements IView {
 
 
     private void setIncrement() {
+        //increment = (int) (100 * model.getZoomWidth());
         increment = 50;
     }
 
@@ -106,7 +107,6 @@ public class Rule extends JComponent implements IView {
         for (int i = start; i < end; i += increment) {
             //if (i % units == 0)  {
             tickLength = 10;
-            //text = Integer.toString(10);
             text = Integer.toString((int)(i/model.getZoomWidth()));
             //} else {
             //tickLength = 7;

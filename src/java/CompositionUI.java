@@ -21,19 +21,48 @@
  *
  */
 
-class TrackFactory {
+/**
+ * Split up the interface into different areas.
+ *
+ * @author mhuska
+ */
 
-    static BaseTrack getTrack(String name, CoreModel model) {
-        if (name.equals("Amino Acid Composition")) {
-            return new CompositionTrack(model);
-        } else if (name.equals("Raw User Submitted Data")) {
-            return new UserDataTrack(model);
-        } else if (name.equals("Secondary Structure")) {
-            return new SecondaryTrack(model);
-        }
+import java.awt.*;
+import javax.swing.*;
 
-        System.err.println("User interface not found.");
-        return null;
+public class CompositionUI extends JPanel implements IView {
+
+    CompositionModel model;
+    GraphicView gv;
+    ControlView cv;
+
+    CompositionUI(CompositionModel model) {
+        super();
+        assert model != null;
+        this.model = model;
+
+        this.gv = new GraphicView(model);
+        this.cv = new ControlView(model);
+
+        this.layoutView();
+        this.model.addView(this);
+    }
+
+    /*
+     * Layout the applet window.
+     */
+    private void layoutView() {
+        this.setLayout(new BorderLayout());
+
+        this.add(gv, BorderLayout.CENTER);
+
+        cv.setBorder(BorderFactory.createTitledBorder("Settings"));
+        this.add(cv, BorderLayout.SOUTH);
+    }
+
+    public void updateView() {
+        // Do nothing for now
     }
 
 }
+

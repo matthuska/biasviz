@@ -27,36 +27,90 @@ import java.awt.image.BufferedImage;
 import java.lang.Math;
 import java.awt.geom.AffineTransform;
 
-class CompositionPlot extends BasePlot {
+class CompositionPlot extends JPanel implements IView {
+
+    CompositionModel model;
+    BufferedImage image;
+
+    public static final int GAPCOLOUR = (new Color(255, 0, 0)).getRGB();
 
     boolean dynamicIntensity;
 
-    CompositionPlot(BasePlotModel m) {
-        super(m);
+    CompositionPlot(CompositionModel model) {
+        assert model != null;
+        this.model = model;
+
+        this.image = new BufferedImage(999, 999, BufferedImage.TYPE_INT_RGB);
+        parseAlignment(model.getAlignment());
+        this.layoutView();
+
+        this.model.addView(this);
+    }
+
+    public void layoutView() {
+        // Needed for scrollbars to show up correctly
+        Dimension mySize = new Dimension((int)(image.getWidth() * model.getZoomWidth()),
+                                         (int)(image.getHeight() * model.getZoomHeight()));
+        setSize(mySize);
+        setPreferredSize(mySize);
+    }
+
+    public void updateView() {
+        // Recalculate image matrix
+        parseAlignment(model.getAlignment());
+
+        Dimension mySize = new Dimension(
+                (int)(image.getWidth() * model.getZoomWidth()),
+                (int)(image.getHeight() * model.getZoomHeight())
+                );
+        setSize(mySize);
+        setPreferredSize(mySize);
+        this.repaint(this.getVisibleRect());
+
+    }
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D)g;
+
+        // We need simple scaling so that the image doesn't appear blurred
+        g2.setRenderingHint(
+                RenderingHints.KEY_INTERPOLATION, 
+                RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        g2.drawRenderedImage(image, AffineTransform.getScaleInstance(
+                                        model.getZoomWidth(),
+                                        model.getZoomHeight()));
+
+        g2.setColor(Color.black); // Draw border around image
+        g2.drawRect(0, 0, 
+                (int)(model.getZoomWidth() * model.getAlignment().maxLength()),
+                (int)(model.getZoomHeight() * model.getAlignment().size())
+                );
+
+    }
+
+    public Dimension getSize() {
+      return getPreferredSize();
     }
 
     // Takes in an alignment and returns a visualization of it.
-    //protected void parseAlignment(Alignment align) {
-    protected void recalculate() {
-        CompositionModel cmodel = (CompositionModel)model;
-        CoreModel core = cmodel.getCoreModel();
-        Alignment align = core.getAlignment();
+    private void parseAlignment(Alignment align) {
 
-        int height = align.numSequences();
+        int height = align.size();
         int width = align.maxLength();
 
         if (height == 0 || width == 0) {
             return;
         }
 
-        String acids = cmodel.getAminoAcids();
-        int windowSize = cmodel.getWindowSize();
+        int windowSize = model.getWindowSize();
         int halfWindowSize = windowSize / 2;
+        String acids = model.getAminoAcids();
 
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         int[][] matchArray = new int[height][width];
-        float[][] scoreArray = new float[height][width];
         int matchMax = 0;
 
         for (int seq = 0; seq < height; seq++) {
@@ -75,8 +129,8 @@ class CompositionPlot extends BasePlot {
                 }
 
                 int startpos = Math.max(0, nongaps - halfWindowSize);
-                int endpos = Math.min(seqNoGaps.length() - 1, nongaps - halfWindowSize + windowSize);
-                assert startpos < endpos;
+                int endpos = Math.min(seqNoGaps.length() - 1, nongaps + halfWindowSize);
+                assert startpos <= endpos;
 
                 int matches = 0;
 
@@ -92,7 +146,7 @@ class CompositionPlot extends BasePlot {
                 // New and slightly optimized
                 if (nongaps == 0) {
                     // Compute the whole window (should only happen once per sequence)
-                    for (int pos = startpos; pos < endpos; pos++) {
+                    for (int pos = startpos; pos <= endpos; pos++) {
                         for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
                             if (seqNoGaps.charAt(pos) == acids.charAt(acidpos)) {
                                 matches += 1;
@@ -100,8 +154,7 @@ class CompositionPlot extends BasePlot {
                         }
                     }
                 } else {
-                    // Use value from last window computation to calculate this
-                    // position (much faster for large windows)
+                    // Use value from last window computation to calculate this position (much faster for large windows)
                     matches = matchArray[seq][prevNongap];
                     if (startpos > 0) {
                         for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
@@ -113,7 +166,7 @@ class CompositionPlot extends BasePlot {
 
                     if (endpos < seqNoGaps.length() - 1) {
                         for (int acidpos = 0; acidpos < acids.length(); acidpos++) {
-                            if (seqNoGaps.charAt(endpos - 1) == acids.charAt(acidpos)) {
+                            if (seqNoGaps.charAt(endpos) == acids.charAt(acidpos)) {
                                 matches += 1;
                             }
                         }
@@ -135,50 +188,45 @@ class CompositionPlot extends BasePlot {
             for (int k = sobj.size(); k < width; k++) {
                 image.setRGB(k, seq, emptyRGB);
             }
+
         }
 
-        // Convert score matrix into image. Should make this separate method.
+
         for (int seq = 0; seq < height; seq++) {
             Sequence sobj = align.getSequence(seq);
             String seqGaps = sobj.getSequence();
             for (int aa = 0; aa < seqGaps.length(); aa++) {
 
                 if (matchArray[seq][aa] < 0) {
-                    scoreArray[seq][aa] = -1.0f;
-                    image.setRGB(aa, seq, GAP_RGB);
+                    image.setRGB(aa, seq, GAPCOLOUR);
                     continue;
                 }
 
                 int divisor;
                 int shade;
 
-                if (cmodel.getDisplayType() == cmodel.DISPLAY_DYNAMIC) {
+                if (model.getDisplayType() == model.DISPLAY_DYNAMIC) {
                     divisor = matchMax;
-                    scoreArray[seq][aa] = (float)matchArray[seq][aa] / divisor;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
-                } else if (cmodel.getDisplayType() == cmodel.DISPLAY_FIXED) {
+                } else if (model.getDisplayType() == model.DISPLAY_FIXED) {
                     divisor = windowSize;
-                    scoreArray[seq][aa] = (float)matchArray[seq][aa] / divisor;
                     shade = (int)(( (double)matchArray[seq][aa] / divisor) * 255.0d);
                 } else {
                     if (((float)matchArray[seq][aa] / windowSize) >= 
-                            (cmodel.getDisplayThreshold() / 100.0f)) {
-                        scoreArray[seq][aa] = 1.0f;
+                            (model.getDisplayThreshold() / 100.0f)) {
                         shade = 255;
                     } else {
-                        scoreArray[seq][aa] = 0.0f;
                         shade = 0;
                     }
                 }
 
-                //Color c = new Color(shade, shade, shade);
-                float s = scoreArray[seq][aa];
-                Color c = new Color(s, s, s);
-                image.setRGB(aa, seq, c.getRGB());
+                Color c = new Color(shade, shade, shade);
+                shade = c.getRGB();
+                image.setRGB(aa, seq, shade);
 
             }
         }
-        cmodel.setScoreArray(scoreArray);
     }
+
 }
 

@@ -28,7 +28,7 @@ import java.net.URL;
 
 public class ZoomControlView extends JPanel implements IView {
 
-    CoreModel model;
+    CompositionModel model;
 
     Icon zoom1to1Icon;
     Icon zoomInIcon;
@@ -38,13 +38,16 @@ public class ZoomControlView extends JPanel implements IView {
     JButton zoom1to1;
     JButton zoomOut;
 
-    public ZoomControlView(CoreModel model) {
+    public ZoomControlView(CompositionModel model) {
         assert model != null;
         this.model = model;
 
         this.layoutView();
 
         this.registerControllers();
+
+        this.model.addView(this);
+
     }
 
     public void layoutView() {
@@ -85,7 +88,7 @@ public class ZoomControlView extends JPanel implements IView {
         this.add(zoomIn);
         
     }
-//
+
     public void updateView() {
     }
 

@@ -26,8 +26,10 @@ import java.util.HashSet;
 
 class Utilities {
 
+    public static final String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
+
     public static String stripNonAAUnique(String input) {
-        String notAA = "[^" + Constants.AMINO_ACIDS + "]";
+        String notAA = "[^" + AMINO_ACIDS + "]";
         String replaced = input.replaceAll(notAA, "");
 
         return Utilities.unique(replaced);
@@ -44,9 +46,9 @@ class Utilities {
 
         StringBuffer buf = new StringBuffer();
 
-        for (int j = 0; j < Constants.AMINO_ACIDS.length(); j++) {
-            if (unique.contains(Constants.AMINO_ACIDS.charAt(j))) {
-                buf.append(Constants.AMINO_ACIDS.charAt(j));
+        for (int j = 0; j < AMINO_ACIDS.length(); j++) {
+            if (unique.contains(AMINO_ACIDS.charAt(j))) {
+                buf.append(AMINO_ACIDS.charAt(j));
             }
         }
 

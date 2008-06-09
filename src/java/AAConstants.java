@@ -21,14 +21,15 @@
  *
  */
 
+import java.util.HashMap;
 import java.util.TreeMap;
-import java.util.Map;
 
 class AAConstants {
 
     public final static String AMINO_ACIDS = "ACDEFGHIKLMNPQRSTVWY";
 
-    public final static Map<String, String> AMINO_ACID_GROUPS = new TreeMap<String, String>();
+    //public final static TreeMap AMINO_ACID_GROUPS = new TreeMap();
+    public final static TreeMap AMINO_ACID_GROUPS = new TreeMap();
     static {
         //AMINO_ACID_GROUPS.put("",    "");
         AMINO_ACID_GROUPS.put("Hydrophobic",    "ILVCAGMFYWHT");

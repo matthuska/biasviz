@@ -21,30 +21,52 @@
  *
  */
 
-public class CompositionDataElement {
+/**
+ * Parse input and create core objects.
+ *
+ * @author mhuska
+ */
 
-    int position;
-    float score;
-    char aminoAcid;
+import javax.swing.JApplet;
+import javax.swing.JLabel;
+import javax.swing.*;
+import java.awt.*;
 
-    CompositionDataElement(int pos, float s, char aa) {
-        position = pos;
-        score = s;
-        aminoAcid = aa;
+public class CompositionApplet extends JApplet {
+
+    public void init(String input) {
+        // Load and parse input
+        setLookAndFeel();
+        Alignment align = new Alignment();
+        CompositionModel model = new CompositionModel(align);
+
+        model.setAlignment(input);
+
+        CompositionUI ui = new CompositionUI(model);
+        this.add(ui);
     }
 
-    public int getPosition() {
-        return position;
+    public void init() {
+        int lines = Integer.parseInt(getParameter("numlines"));
+        StringBuffer buf = new StringBuffer();
+        
+        for (int i = 0; i < lines; i++) {
+            buf.append(getParameter("line" + i) + "\n");
+        }
+        init(buf.toString());
     }
 
-    public float getScore() {
-        return score;
+    /**
+     * This is the default constructor
+     *
+     */
+    public void setLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            SwingUtilities.updateComponentTreeUI(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
-    public char getAminoAcid() {
-        return aminoAcid;
-    }
-	  
 }
-
 

@@ -22,18 +22,17 @@
  */
 
 import java.util.ArrayList;
-import java.util.List;
 import java.io.*;
 
 public class Alignment {
 
-    List<Sequence> sequences;
+    ArrayList sequences;
 
     public Alignment() {
-        sequences = new ArrayList<Sequence>();
+        sequences = new ArrayList();
     }
 
-    public List<Sequence> getSequences() {
+    public ArrayList getSequences() {
         return sequences;
     }
 
@@ -42,39 +41,33 @@ public class Alignment {
     }
 
     public Sequence getSequence(int index) {
-        return sequences.get(index);
+        return (Sequence)sequences.get(index);
     }
 
-    public Sequence getSequence(String name) {
-        for (Sequence seq : sequences) {
-            if (name.equals(seq.getName())) {
-                return seq;
-            }
-        }
-        return null;
-    }
-
-    public List<String> getNames() {
-        List<String> names = new ArrayList<String>();
-        for (Sequence seq : sequences) {
+    public ArrayList<String> getSequenceNames() {
+        ArrayList<String> names = new ArrayList<String>();
+        for (int i = 0; i < sequences.size(); i++) {
+            Sequence seq = (Sequence)sequences.get(i);
             names.add(seq.getName());
         }
         return names;
     }
 
     public String getSequenceName(int i) {
-        return sequences.get(i).getName();
+        return ((Sequence)sequences.get(i)).getName();
     }
 
     // Returns the number of sequences in the alignment
-    public int numSequences() {
+    public int size() {
         return sequences.size();
     }
 
     // Returns the length of the longest sequence in the alignment.
     public int maxLength() {
         int max = 0;
-        for (Sequence seq : sequences) {
+
+        for (int i = 0; i < sequences.size(); i++) {
+            Sequence seq = (Sequence)sequences.get(i);
             if (seq.size() > max) {
                 max = seq.size();
             }
@@ -83,11 +76,13 @@ public class Alignment {
     }
 
     public String toString() {
+        // For fun
         StringBuffer output = new StringBuffer();
-        for (Sequence seq : sequences) {
-            output.append(seq.getName());
+        for (int i = 0; i < sequences.size(); i++) {
+            Sequence s = (Sequence)sequences.get(i);
+            output.append(s.getName());
             output.append(System.getProperty("line.separator"));
-            output.append(seq.getSequence());
+            output.append(s.getSequence());
             output.append(System.getProperty("line.separator"));
         }
         return output.toString();
