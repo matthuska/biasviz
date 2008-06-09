@@ -1,0 +1,20 @@
+<project name="biasviz" basedir=".">
+
+    <!-- Edit these properties to match your configuration-->
+    <property name="live.server" value=""/>
+    <property name="live.dir" value=""/>
+    <property name="test.server" value=""/>
+    <property name="test.dir" value=""/>
+    <property name="keystore.password" value=""/>
+    <property name="keystore.key.password" value=""/>
+    <property name="keystore.alias" value=""/>
+
+    <!-- Leave these properties as they are -->
+    <property name="javasrc"   location="src/java"/>
+    <property name="websrc"    location="src/web"/>
+    <property name="build"     location="build"/>
+    <property name="dist"      location="dist"/>
+    <property name="examples"  location="examples"/>
+    <property name="icons"     location="src/java/icons"/>
+
+</project>
