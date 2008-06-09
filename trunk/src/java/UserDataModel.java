@@ -31,59 +31,33 @@
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class CompositionModel extends BasePlotModel implements IView
-{
+public class UserDataModel extends BasePlotModel implements IView {
 
     final static int DISPLAY_DYNAMIC    = 1;
     final static int DISPLAY_FIXED      = 2;
     final static int DISPLAY_THRESHOLD  = 3;
 
-    float[][] scoreArray;
-
-    String aminoAcids;
     int windowSize;
 
     ///* Dynamically adjust intensity */
     int displayType;
     int displayThreshold;
 
-    public CompositionModel(CoreModel m) {
+    public UserDataModel(CoreModel m) {
         assert m != null;
         coreModel = m;
 
         this.views = new CopyOnWriteArrayList<IView>();
 
-        this.aminoAcids = "A";
-        this.windowSize = 100;
+        // Set some defaults
         this.displayType = DISPLAY_DYNAMIC;
         this.displayThreshold = 15;
-        this.scoreArray = new float[0][0];
+        this.windowSize = 1;
 
         coreModel.addView(this);
     }
 
     /* For Controller and View interaction */
-
-    public void setScoreArray(float[][] sa) {
-        scoreArray = sa;
-    }
-
-    public float[][] getScoreArray() {
-        return scoreArray;
-    }
-
-    public String getAminoAcids() {
-        return aminoAcids;
-    }
-
-    public void setAminoAcids(String aa) {
-        String aaOnly = Utilities.stripNonAAUnique(aa.toUpperCase());
-        
-        if (!this.aminoAcids.equals(aaOnly)) {
-            this.aminoAcids = aaOnly;
-            this.updateAllViews();
-        }
-    }
 
     public void setDisplayType(int d) {
         if (d != displayType) {
@@ -96,17 +70,6 @@ public class CompositionModel extends BasePlotModel implements IView
         return displayType;
     }
 
-    public void setDisplayThreshold(int t) {
-        if (t != displayThreshold) {
-            displayThreshold = t;
-            this.updateAllViews();
-        }
-    }
-
-    public int getDisplayThreshold() {
-        return displayThreshold;
-    }
-
     public int getWindowSize() {
         return this.windowSize;
     }
@@ -116,6 +79,17 @@ public class CompositionModel extends BasePlotModel implements IView
             this.windowSize = size;
             this.updateAllViews();
         }
+    }
+
+    public void setDisplayThreshold(int t) {
+        if (t != displayThreshold) {
+            displayThreshold = t;
+            this.updateAllViews();
+        }
+    }
+
+    public int getDisplayThreshold() {
+        return displayThreshold;
     }
 
 }

@@ -21,7 +21,39 @@
  *
  */
 
-public interface IView {
-    public void updateView();
+/**
+ *
+ * @author mhuska
+ */
+
+import java.awt.*;
+import javax.swing.*;
+import java.util.Map;
+import java.util.Hashtable;
+import java.util.List;
+
+public class UserDataTrack extends BaseTrack {
+
+    UserDataTrack(CoreModel coreModel) {
+        plotModel = new UserDataModel(coreModel);
+        controls = new UserDataControls((UserDataModel)plotModel);
+        plot = new UserDataPlot(plotModel);
+    }
+
+    public String getName() {
+        return "Raw User Submitted Data";
+    }
+
+    public String toString() {
+        return "Raw User Submitted Data";
+    }
+
+    public Map<String, String> getSettings() {
+        return new Hashtable<String, String>(); 
+    }
+
+    public Map<String, List> getData() {
+        return null;
+    }
 }
 

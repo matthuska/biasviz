@@ -21,7 +21,38 @@
  *
  */
 
-public interface IView {
-    public void updateView();
-}
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+abstract class BasePlotModel {
+
+    protected CoreModel coreModel;
+    protected List<IView> views;
+
+    public void addView(IView view) {
+        views.add(view);
+    }
+
+    public void removeView(IView view) {
+        views.remove(view);
+    }
+
+    protected void updateAllViews() {
+        for (IView view : views) {
+            view.updateView();
+        }
+    }
+
+    public CoreModel getCoreModel() {
+        return coreModel;
+    }
+
+    public void setCoreModel(CoreModel m) {
+        coreModel = m;
+    }
+
+    public void updateView() {
+        this.updateAllViews();
+    }
+
+}

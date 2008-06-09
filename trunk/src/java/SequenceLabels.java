@@ -23,21 +23,40 @@
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 import java.util.ArrayList;
 
 public class SequenceLabels extends JComponent implements IView {
 
-    ArrayList<String> names;
-    CompositionModel model;
+    List<String> names = new ArrayList<String>();
+    CoreModel model;
 
-    SequenceLabels(CompositionModel model) {
-        assert model != null;
-        this.model = model;
-
-        this.names = model.getAlignment().getSequenceNames();
-
-        this.model.addView(this);
+    SequenceLabels(String name) {
+        names.add(name);
         updateView();
+    }
+
+    SequenceLabels(List<String> newNames) {
+        names = newNames;
+        updateView();
+    }
+
+    SequenceLabels(CoreModel model) {
+//        assert model != null;
+//        this.model = model;
+//
+        this.names = model.getAlignment().getNames();
+
+//        this.model.addView(this);
+        updateView();
+    }
+
+    public void setMaximumHeight(int ph) {
+        setMaximumSize(new Dimension(100, ph));
+    }
+
+    public void setMaximumWidth(int pw) {
+        setMaximumSize(new Dimension(pw, 30));
     }
 
     public void setPreferredHeight(int ph) {
@@ -46,6 +65,14 @@ public class SequenceLabels extends JComponent implements IView {
 
     public void setPreferredWidth(int pw) {
         setPreferredSize(new Dimension(pw, 30));
+    }
+
+    public void setMinimumHeight(int ph) {
+        setMinimumSize(new Dimension(100, ph));
+    }
+
+    public void setMinimumWidth(int pw) {
+        setMinimumSize(new Dimension(pw, 30));
     }
 
     protected void paintComponent(Graphics g) {
@@ -65,8 +92,25 @@ public class SequenceLabels extends JComponent implements IView {
 
     }
 
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        for (String name: names) {
+            buf.append(name + "\n");
+        }
+        return buf.toString();
+    }
+
     public void updateView() {
-        this.names = model.getAlignment().getSequenceNames();
+        //this.names = model.getAlignment().getNames();
+
+        setPreferredWidth(50);
+        setMinimumWidth(50);
+        setMaximumWidth(50);
+
+        setPreferredHeight(names.size() * 10);
+        setMinimumHeight(names.size() * 10);
+        setMaximumHeight(names.size() * 10);
+
         this.repaint();
     }
 

@@ -1,22 +1,10 @@
+<?xml version="1.0"?>
 <project name="biasviz" default="compile" basedir=".">
     <description>
         Simple ant build file for the BiasViz applet.
     </description>
 
-    <property name="javasrc"   location="src/java"/>
-    <property name="websrc"    location="src/web"/>
-    <property name="build"     location="build"/>
-    <property name="dist"      location="dist"/>
-    <property name="examples"  location="examples"/>
-    <property name="icons"     location="src/java/icons"/>
-
-    <property name="live.server" value="mhuska@www.scgp.ca"/>
-    <property name="live.dir" value="/data/projects/${ant.project.name}"/>
-
-    <property name="test.server" value="mhuska@10.246.159.27"/> <!-- ohri-129030 -->
-    <property name="test.dir" value="~/public_html/${ant.project.name}"/>
-
-    <property name="testinput" location="${examples}/ddbb2.fasta"/>
+    <import file="properties.xml" />
 
     <target name="init">
         <!-- Create the time stamp -->
@@ -32,7 +20,7 @@
 
     <target name="compile" depends="init"
         description="Compiles code, output goes to the build directory.">
-        <javac srcdir="${javasrc}" destdir="${build}"/>
+        <javac srcdir="${javasrc}" destdir="${build}" target="1.5"/>
     </target>
 
     <target name="debug" depends="init"
@@ -49,13 +37,11 @@
         <mkdir dir="${dist}/lib"/>
 
         <!-- Put everything in ${build} into the biasviz.jar file -->
-        <jar jarfile="${dist}/lib/biasviz-unsigned.jar" basedir="${build}"/>
+        <jar destfile="${dist}/lib/biasviz.jar" basedir="${build}" manifest="${javasrc}/Manifest.txt"/>
     </target>
 
     <target name="sign" depends="jar,makekey">
-        <!--<signjar jar="${jar-file}" alias="biasviz-key" storepass="secret" keystore="~/.keystore"/>-->
-        <signjar jar="${dist}/lib/biasviz-unsigned.jar" alias="biasviz-key"
-            storepass="secret" signedjar="${dist}/lib/biasviz.jar"/>
+        <signjar jar="${dist}/lib/biasviz.jar" alias="${keystore.alias}" storepass="${keystore.password}" keypass="${keystore.key.password}"/>
     </target>
 
     <target name="check-keystore" >
@@ -64,12 +50,13 @@
         </condition>
     </target>
 
+    <!-- Create self-signed certificate if no keystore exists -->
     <target name="makekey" depends="check-keystore" unless="keystore-exists">
-        <genkey alias="biasviz-key" storepass="secret">
+	    <genkey alias="${keystore.alias}" storepass="${keystore.password}" keypass="${keystore.key.password}">
             <dname>
                 <param name="CN" value="Dummy Key"/>
                 <param name="OU" value="Dummy Division"/>
-                <param name="O"  value="ogic.ca"/>
+                <param name="O"  value="Dummy Organization"/>
                 <param name="C"  value="CA"/>
             </dname>
         </genkey>
@@ -91,16 +78,15 @@
         <delete dir="${dist}"/>
     </target>
 
-    <target name="run" depends="compile"
+    <target name="run" depends="debug"
         description="Run the applet in a stand-alone window.">
-        <java classname="CompositionMain" classpath="${build}" fork="true">
-            <arg value="${testinput}"/>
+        <java classname="Main" classpath="${build}" fork="true">
         </java>
     </target>
     
     <target name="profileShark" depends="compile"
         description="Run the applet in the OS X's Shark profiler.">
-        <java classname="CompositionMain" classpath="${build}" fork="true">
+        <java classname="Main" classpath="${build}" fork="true">
             <arg value="${testinput}"/>
             <jvmarg value="-XrunShark"/>
         </java>

@@ -21,7 +21,50 @@
  *
  */
 
-public interface IView {
-    public void updateView();
-}
+import java.util.*;
 
+class UserData {
+
+    List<String> names;
+    List<List<Float>> data;
+
+    public UserData() {
+        names = new ArrayList<String>();
+        data = new ArrayList<List<Float>>();
+    }
+
+    public void add(String name, List<Float> d) {
+        names.add(name);
+        data.add(d);
+    }
+
+    public float get(int seq, int pos) {
+        return (data.get(seq)).get(pos);
+    }
+
+    public List<Float> getData(String name) {
+        for (int i = 0; i < names.size(); i++) {
+            if (name.equals(names.get(i))) {
+                return data.get(i);
+            }
+        }
+        return null;
+    }
+
+    public int size() {
+        return names.size();
+    }
+
+    public List<String> getNames() {
+        return names;
+    }
+
+    public String toString() {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < names.size(); i++) {
+            buf.append(names.get(i) + "\n" + data.get(i) + "\n");
+        }
+        return buf.toString();
+    }
+
+}
