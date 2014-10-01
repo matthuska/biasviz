@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <title>BiasViz: Amino Acid Composition Applet</title>
+        <style type="text/css">
+html, body {
+    margin: 0 0 0 0;
+    overflow: hidden;
+    height: 100%;
+}
+        </style>
+    </head>
+    <body>
+
+      <object classid="java:MainApplet.class" 
+              type="application/x-java-applet"
+              archive="biasviz.jar" 
+              height="100%" width="100%" >
+        <!-- Konqueror browser needs the following param -->
+        <param name="archive" value="biasviz.jar" />
+      <!--<![endif]-->
+        <!-- MSIE (Microsoft Internet Explorer) will use inner object --> 
+        <object classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" 
+                codebase="http://java.sun.com/update/1.5.0/jinstall-1_5_0-windows-i586.cab"
+                height="100%" width="100%" > 
+          <param name="code" value="MainApplet" />
+          <param name="archive" value="biasviz.jar" />
+          <strong>
+            This browser does not have a Java Plug-in.
+            <br />
+            <a href="http://www.java.com/download/">
+              Get the latest Java Plug-in here.
+            </a>
+          </strong>
+        </object> 
+      <!--[if !IE]> close outer object -->
+      </object>
+      <!--<![endif]-->
+
+
+    <!-- Google Analytics snippet -->
+    <script src='http://www.google-analytics.com/ga.js' type='text/javascript'>
+    <script type="text/javascript">
+    try{
+    var pageTracker = _gat._getTracker("UA-6628261-1");
+    pageTracker._trackPageview();
+    } catch(err) {}</script>
+    <!-- End Google Analytics snippet -->
+    </body>
+</html>
