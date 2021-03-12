@@ -1,0 +1,8 @@
+name: biasviz
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - ant=1.10.0
+  - openjdk=11.0.8

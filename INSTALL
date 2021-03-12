@@ -1,3 +1,0 @@
-Installation requires Apache Ant (http://ant.apache.org/) and Java 1.5 or
-greater. Once Ant is installed type "ant -p" in the project root directory for
-installation and build instructions.
